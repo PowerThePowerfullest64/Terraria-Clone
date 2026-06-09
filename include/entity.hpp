@@ -47,5 +47,5 @@ private:
     Collider leftCollider;
     Collider topCollider;
 
-    bool renderDebug = true;
+    bool renderDebug = false;
 };
