@@ -23,7 +23,6 @@ protected:
     Vec2f velocity = Vec2f::ZERO;
     Vec2f scale = Vec2f::ONE;
     float rotation = 0.f;
-    bool grounded = false;
 public:
     Vec2f position;
     Texture2D* sprite = nullptr;
@@ -42,10 +41,11 @@ private:
     float speed = 250.f;
     float jumpPower = 500.f;
 
-    Collider bottomCollider;
-    Collider rightCollider;
-    Collider leftCollider;
-    Collider topCollider;
+    Collider topRightCollider;
+    Collider topLeftCollider;
+    Collider bottomRightCollider;
+    Collider bottomLeftCollider;
+    Collider groundedCollider;
 
-    bool renderDebug = false;
+    bool renderDebug = true;
 };

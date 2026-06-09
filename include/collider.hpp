@@ -10,11 +10,9 @@ class Game;
 
 class Collider {
 public:
-    bool colliding = false;
-
     Collider(Game* game, Entity* entity, const Vec2f& position);
 
-    void Update();
+    bool CheckCollision();
     void Render();
 
 private:

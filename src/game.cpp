@@ -6,6 +6,9 @@
 
 #include "entity.hpp"
 
+Game::Game() :
+    wm(this) {}
+
 void UpdateCamera(Camera2D& cam, Entity* target) {
     cam.target = target->position;
 }
@@ -17,8 +20,9 @@ void Game::Run() {
     SetTargetFPS(60);
 
     tm.LoadTextures();
+    wm.SetBlockTextures();
 
-    SetTPS(180.f);
+    SetTPS(60.f);
 
     Entity* player = em.CreateEntity<Player>(this, Vec2f{100.f, 100.f});
     

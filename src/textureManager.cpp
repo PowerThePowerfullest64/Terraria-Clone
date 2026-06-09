@@ -36,6 +36,11 @@ void TextureManager::LoadTextures() {
 
     AddTexture("noTexture");
     AddTexture("human");
+    AddTexture("grass");
+    AddTexture("dirt");
+    AddTexture("stone");
+    AddTexture("quartz");
+    AddTexture("sand");
 
     std::cout << "Finished adding textures, texture loading begins!\n";
 

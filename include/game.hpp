@@ -18,6 +18,8 @@ public:
 
     const float GRAVITY = 2000.f;
 
+    Game();
+
     void Run();
     void SetTPS(float targetTps);
 

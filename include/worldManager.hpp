@@ -8,6 +8,8 @@
 
 #include "vec2f.h"
 
+class Game;
+
 enum BlockType : uint8_t {
     AIR,
     DIRT,
@@ -20,11 +22,13 @@ enum BlockType : uint8_t {
 
 class WorldManager {
 public:
-    static constexpr uint16_t WIDTH = 1024, HEIGHT = 128;
+    static constexpr uint16_t WIDTH = 256, HEIGHT = 128;
     static constexpr uint8_t blockSize = 24;
 
-    WorldManager();
+    WorldManager(Game* game);
     ~WorldManager();
+
+    void SetBlockTextures();
 
     // Gets a copy of a block at a given position.
     BlockType GetBlock(size_t index) { if (index >= WIDTH * HEIGHT) return AIR; return (BlockType)blocks[index]; }
@@ -40,6 +44,7 @@ public:
     void Render();
 
 private:
+    Game* game;
     std::vector<uint8_t> blocks;
     FastNoiseLite noise;
     int heightMap[WIDTH];
@@ -50,13 +55,6 @@ private:
     // Turns a 2D-coordinate into a 1D-index.
     size_t Index(int x, int y) { return static_cast<size_t>(y * WIDTH + x); }
 
-    // Returns a color based on the given type, like a map.
-    Color blockColors[COUNT] = {
-        {0, 0, 0, 0}, // AIR
-        {71, 33, 0, 255}, // DIRT
-        {18, 153, 0, 255}, // GRASS
-        {111, 111, 111, 255}, // STONE
-        {189, 183, 66, 255}, // SAND,
-        {142, 168, 245, 255} // QUARTZ
-    };
+    // Returns a texture based on the given type, like a map.
+    Texture2D* blockTextures[COUNT];
 };

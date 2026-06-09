@@ -7,19 +7,23 @@
 
 #include "random.h"
 
-WorldManager::WorldManager() {
+#include "game.hpp"
+
+WorldManager::WorldManager(Game* game) :
+    game(game) {
+
     blocks.resize(WIDTH * HEIGHT, AIR);
 
     noise.SetSeed(0);
     noise.SetNoiseType(FastNoiseLite::NoiseType_Perlin);
-    noise.SetFrequency(0.02f);
+    noise.SetFrequency(0.03f);
     noise.SetFractalOctaves(24);
 
     for (int x = 0; x < WIDTH; ++x) {
         float n = noise.GetNoise((float)x, 0.f);
         float value = powf(n * 0.5f + 0.5f, 5.f);
 
-        int height = (int)(value * 80.f) + 75;
+        int height = (int)(value * 100.f) + 75;
         heightMap[x] = height;
 
         for (int y = 0; y < height; ++y) {
@@ -41,6 +45,15 @@ WorldManager::~WorldManager() {
     std::cout << "Deconstruced WorldManager!\n";
 }
 
+void WorldManager::SetBlockTextures() {
+    blockTextures[0] = game->tm.Get("noTexture"); // air
+    blockTextures[1] = game->tm.Get("grass");
+    blockTextures[2] = game->tm.Get("dirt");
+    blockTextures[3] = game->tm.Get("stone");
+    blockTextures[4] = game->tm.Get("sand");
+    blockTextures[5] = game->tm.Get("quartz");
+}
+
 void WorldManager::Render() {
     for (size_t y = 0; y < HEIGHT; ++y)
     for (size_t x = 0; x < WIDTH; ++x) {
@@ -48,6 +61,6 @@ void WorldManager::Render() {
 
         if (type == AIR) continue;
 
-        DrawRectangle(x * blockSize, y * blockSize, blockSize, blockSize, blockColors[type]);
+        DrawTexture(*blockTextures[type], x * blockSize, y * blockSize, WHITE);
     }
 }

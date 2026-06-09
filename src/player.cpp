@@ -6,25 +6,19 @@
 
 Player::Player(Game* game, const Vec2f& position) :
     Entity(game, position),
-    bottomCollider(game, this, {0.f, 24.f}),
-    rightCollider(game, this, {10.f, 0.f}),
-    leftCollider(game, this, {-10.f, 0.f}),
-    topCollider(game, this, {0.f, -22.f})
+    topRightCollider(game, this, {10.f, -24.f}),
+    topLeftCollider(game, this, {-10.f, -24.f}),
+    bottomRightCollider(game, this, {10.f, 24.f}),
+    bottomLeftCollider(game, this, {-10.f, 24.f}),
+    groundedCollider(game, this, {0.f, 34.f})
     {
         sprite = game->tm.Get("human"); // use texture
     }
 
 void Player::Update(float dt) {
-    bottomCollider.Update();
-    rightCollider.Update();
-    leftCollider.Update();
+    bool grounded = groundedCollider.CheckCollision();
 
-    // do input handling also!
-    grounded = bottomCollider.colliding;
-    if (grounded) velocity.y = std::min(velocity.y, 0.f);
-
-    if (!grounded)
-        velocity.y += game->GRAVITY * dt;
+    velocity.y += game->GRAVITY * dt;
 
     if (game->im.moveLeftDown) velocity.x = std::lerp(velocity.x, -speed, acceleration * dt);
     else if (game->im.moveRightDown) velocity.x = std::lerp(velocity.x, speed, acceleration * dt);
@@ -34,12 +28,37 @@ void Player::Update(float dt) {
         velocity.y = -jumpPower;
     }
 
-    if (rightCollider.colliding) velocity.x = std::min(velocity.x, 0.f);
-    if (leftCollider.colliding) velocity.x = std::max(velocity.x, 0.f);
+    // test position
+    position.x += velocity.x * dt;
 
-    if (topCollider.colliding) velocity.y = std::max(velocity.y, 0.f);
+    // reverse position if it collides
+    if (velocity.x > 0.f) {
+        if (bottomRightCollider.CheckCollision() || topRightCollider.CheckCollision()) {
+            position.x -= velocity.x * dt;
+            velocity.x = 0.f;
+        }
+    } else if (velocity.x < 0.f) {
+        if (bottomLeftCollider.CheckCollision() || topLeftCollider.CheckCollision()) {
+            position.x -= velocity.x * dt;
+            velocity.x = 0.f;
+        }
+    }
 
-    position += velocity * dt;
+    // test position
+    position.y += velocity.y * dt;
+
+    // reverse position if it collides
+    if (velocity.y > 0.f) {
+        if (bottomRightCollider.CheckCollision() || bottomLeftCollider.CheckCollision()) {
+            position.y -= velocity.y * dt;
+            velocity.y = 0.f;
+        }
+    } else if (velocity.y < 0.f) {
+        if (topRightCollider.CheckCollision() || topLeftCollider.CheckCollision()) {
+            position.y -= velocity.y * dt;
+            velocity.y = 0.f;
+        }
+    }
 }
 
 void Player::Render() {
@@ -58,10 +77,9 @@ void Player::Render() {
         DrawLineV(position, position + velocity.normalized() * mag, YELLOW);
     }
 
-    Color c = grounded ? GREEN : RED;
-
-    bottomCollider.Render();
-    rightCollider.Render();
-    leftCollider.Render();
-    topCollider.Render();
+    topRightCollider.Render();
+    topLeftCollider.Render();
+    bottomRightCollider.Render();
+    bottomLeftCollider.Render();
+    groundedCollider.Render();
 }

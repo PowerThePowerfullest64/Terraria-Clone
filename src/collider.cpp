@@ -10,15 +10,13 @@ Collider::Collider(Game* game, Entity* entity, const Vec2f& position) :
     entity(entity),
     position(position) {}
 
-void Collider::Update() {
-    Vec2f worldPos = position + entity->position;
+bool Collider::CheckCollision() {
+    BlockType type = game->wm.GetBlockWorld(position + entity->position);
 
-    BlockType type = game->wm.GetBlockWorld(worldPos);
-
-    colliding = type != AIR;
+    return type != AIR;
 }
 
 void Collider::Render() {
-    Color c = colliding ? RED : GREEN;
+    Color c = CheckCollision() ? RED : GREEN;
     DrawCircleV(position+entity->position, 4.f, c);
 }
