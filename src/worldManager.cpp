@@ -9,9 +9,10 @@ WorldManager::WorldManager() {
 
     for (size_t y = 0; y < HEIGHT; ++y)
     for (size_t x = 0; x < WIDTH; ++x) {
-        if (y == 150) SetBlock(x, y, GRASS);
-        if (y > 150) SetBlock(x, y, DIRT);
-        if (y > 160) SetBlock(x, y, STONE);
+        if (y == 14 && x == 30) SetBlock(x, y, SAND);
+        if (y == 15) SetBlock(x, y, GRASS);
+        if (y > 15) SetBlock(x, y, DIRT);
+        if (y > 20) SetBlock(x, y, STONE);
     }
 
     std::cout << "Constructed WorldManager!\n";
@@ -24,6 +25,10 @@ WorldManager::~WorldManager() {
 void WorldManager::Render() {
     for (size_t y = 0; y < HEIGHT; ++y)
     for (size_t x = 0; x < WIDTH; ++x) {
-        DrawRectangle(x, y, blockSize, blockSize, blockColors[GetBlock(x, y)]);
+        uint8_t type = GetBlock(x, y);
+
+        if (type == AIR) continue;
+
+        DrawRectangle(x * blockSize, y * blockSize, blockSize, blockSize, blockColors[type]);
     }
 }

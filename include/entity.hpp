@@ -4,6 +4,8 @@
 
 #include "vec2f.h"
 
+#include "collider.hpp"
+
 class Game;
 
 class Entity {
@@ -35,9 +37,13 @@ public:
     void Render() override;
 
 private:
-    float acceleration = 5.0f;
+    float acceleration = 7.5f;
     float speed = 7.5f;
     float jumpPower = 10.f;
 
-    Vec2f scale = {1.5f, 1.5f};
+    Collider bottomCollider;
+    Collider rightCollider;
+    Collider leftCollider;
+
+    bool renderDebug = true;
 };

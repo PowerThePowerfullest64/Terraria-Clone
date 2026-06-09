@@ -31,8 +31,8 @@ void Game::Run() {
         BeginDrawing();
         ClearBackground(DARKBLUE);
 
+        wm.Render();
         em.Render();
-        //wm.Render();
 
         DrawFPS(4, 4);
 
