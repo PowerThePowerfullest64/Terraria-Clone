@@ -6,39 +6,40 @@
 
 Player::Player(Game* game, const Vec2f& position) :
     Entity(game, position),
-    bottomCollider(game, {0.f, 24.f}),
-    rightCollider(game, {12.f, 0.f}),
-    leftCollider(game, {-12.f, 0.f})
+    bottomCollider(game, this, {0.f, 24.f}),
+    rightCollider(game, this, {10.f, 0.f}),
+    leftCollider(game, this, {-10.f, 0.f}),
+    topCollider(game, this, {0.f, -22.f})
     {
         sprite = game->tm.Get("human"); // use texture
     }
 
 void Player::Update(float dt) {
-    Vec2f velChange = Vec2f::ZERO;
-    float groundY = 360.f; // temp variable for testing purposes
+    bottomCollider.Update();
+    rightCollider.Update();
+    leftCollider.Update();
 
     // do input handling also!
-    if (position.y >= groundY) {
-        grounded = true;
-    } else grounded = false;
+    grounded = bottomCollider.colliding;
+    if (grounded) velocity.y = std::min(velocity.y, 0.f);
 
-    velocity.y += game->GRAVITY * dt;
+    if (!grounded)
+        velocity.y += game->GRAVITY * dt;
 
     if (game->im.moveLeftDown) velocity.x = std::lerp(velocity.x, -speed, acceleration * dt);
     else if (game->im.moveRightDown) velocity.x = std::lerp(velocity.x, speed, acceleration * dt);
-    else if (grounded) velocity.x = std::lerp(velocity.x, 0.f, acceleration * dt);
+    else if (grounded) velocity.x = std::lerp(velocity.x, 0.f, friction * dt);
 
     if (game->im.jumpPressed && grounded) {
         velocity.y = -jumpPower;
     }
 
-    velocity += velChange * dt;
-    position += velocity;
+    if (rightCollider.colliding) velocity.x = std::min(velocity.x, 0.f);
+    if (leftCollider.colliding) velocity.x = std::max(velocity.x, 0.f);
 
-    if (position.y >= groundY) {
-        position.y = groundY;
-        velocity.y = std::min(velocity.y, 0.f);
-    }
+    if (topCollider.colliding) velocity.y = std::max(velocity.y, 0.f);
+
+    position += velocity * dt;
 }
 
 void Player::Render() {
@@ -52,16 +53,15 @@ void Player::Render() {
 
     if (!renderDebug) return;
 
-    float mag = velocity.length() * 5.f;
+    float mag = velocity.length() / 6.f;
     if (mag > 0.f) {
         DrawLineV(position, position + velocity.normalized() * mag, YELLOW);
     }
 
     Color c = grounded ? GREEN : RED;
 
-    //std::cout << game->wm.GetBlockWorld(position) << " type\n";
-
-    bottomCollider.Render(position);
-    rightCollider.Render(position);
-    leftCollider.Render(position);
+    bottomCollider.Render();
+    rightCollider.Render();
+    leftCollider.Render();
+    topCollider.Render();
 }

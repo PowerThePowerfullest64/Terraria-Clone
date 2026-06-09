@@ -20,12 +20,12 @@ public:
     virtual void Render() {}
 protected:
     Game* game;
-    Vec2f position;
     Vec2f velocity = Vec2f::ZERO;
     Vec2f scale = Vec2f::ONE;
     float rotation = 0.f;
     bool grounded = false;
 public:
+    Vec2f position;
     Texture2D* sprite = nullptr;
 };
 
@@ -37,13 +37,15 @@ public:
     void Render() override;
 
 private:
-    float acceleration = 7.5f;
-    float speed = 7.5f;
-    float jumpPower = 10.f;
+    float acceleration = 15.f;
+    float friction = 15.f;
+    float speed = 250.f;
+    float jumpPower = 500.f;
 
     Collider bottomCollider;
     Collider rightCollider;
     Collider leftCollider;
+    Collider topCollider;
 
     bool renderDebug = true;
 };

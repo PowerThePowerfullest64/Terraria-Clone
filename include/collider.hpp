@@ -4,18 +4,21 @@
 
 #include "vec2f.h"
 
+class Entity;
+
 class Game;
 
 class Collider {
 public:
     bool colliding = false;
 
-    Collider(Game* game, const Vec2f& position);
+    Collider(Game* game, Entity* entity, const Vec2f& position);
 
     void Update();
-    void Render(const Vec2f& rel) { Color c = colliding ? RED : GREEN; DrawCircleV(position+rel, 4.f, c); }
-    
+    void Render();
+
 private:
     Game* game;
+    Entity* entity;
     Vec2f position;
 };

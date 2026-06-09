@@ -6,6 +6,10 @@
 
 #include "entity.hpp"
 
+void UpdateCamera(Camera2D& cam, Entity* target) {
+    cam.target = target->position;
+}
+
 void Game::Run() {
     running = true;
 
@@ -14,12 +18,21 @@ void Game::Run() {
 
     tm.LoadTextures();
 
-    SetTPS(60.f);
+    SetTPS(240.f);
 
-    Entity* player = em.CreateEntity<Player>(this, Vec2f{(float)SCREEN_WIDTH/2.f, (float)SCREEN_HEIGHT/2.f});
+    Entity* player = em.CreateEntity<Player>(this, Vec2f{100.f, 100.f});
+    
+    Camera2D cam;
+    cam.rotation = 0.f;
+    cam.offset = {(float)SCREEN_WIDTH / 2.f, (float)SCREEN_HEIGHT / 2.f};
+    cam.zoom = 1.f;
+    float zoomSensitivity = 1.f;
 
     while (running) {
         im.Update();
+
+        if (im.zoomInPressed) cam.zoom *= 1.f + (0.1f * zoomSensitivity);
+        if (im.zoomOutPressed) cam.zoom /= 1.f + (0.1f * zoomSensitivity);
 
         accumulator += GetFrameTime();
         while (accumulator >= tickDuration) {
@@ -28,11 +41,18 @@ void Game::Run() {
             accumulator -= tickDuration;
         }
 
+        UpdateCamera(cam, player);
+
         BeginDrawing();
         ClearBackground(DARKBLUE);
 
+        BeginMode2D(cam);
+        
+
         wm.Render();
         em.Render();
+
+        EndMode2D();
 
         DrawFPS(4, 4);
 

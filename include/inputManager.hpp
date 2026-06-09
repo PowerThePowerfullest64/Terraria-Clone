@@ -9,6 +9,8 @@ public:
     bool moveRightDown = false;
 
     bool jumpPressed = false;
+    bool zoomInPressed = false;
+    bool zoomOutPressed = false;
 
     void Update();
 };

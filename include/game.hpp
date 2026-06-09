@@ -16,7 +16,7 @@ public:
     TextureManager tm;
     WorldManager wm;
 
-    const float GRAVITY = 40.f;
+    const float GRAVITY = 2000.f;
 
     void Run();
     void SetTPS(float targetTps);
