@@ -2,6 +2,9 @@
 
 class InputManager {
 public:
+    InputManager();
+    ~InputManager();
+
     bool moveLeftDown = false;
     bool moveRightDown = false;
 

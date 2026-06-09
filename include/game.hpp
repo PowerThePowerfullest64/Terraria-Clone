@@ -5,6 +5,7 @@
 #include "entityManager.hpp"
 #include "inputManager.hpp"
 #include "textureManager.hpp"
+#include "worldManager.hpp"
 
 class Game {
 public:
@@ -13,6 +14,7 @@ public:
     EntityManager em;
     InputManager im;
     TextureManager tm;
+    WorldManager wm;
 
     const float GRAVITY = 40.f;
 
@@ -24,5 +26,5 @@ private:
 
     float tps;
     float tickDuration;
-    float accumulator;
+    float accumulator = 0.f;
 };

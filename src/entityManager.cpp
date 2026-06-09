@@ -1,9 +1,12 @@
 #include "entityManager.hpp"
 
 #include <memory>
+#include <iostream>
 
-// player
+EntityManager::EntityManager() {
+    std::cout << "Constructed EntityManager!\n";
+}
 
-
-
-// others!
+EntityManager::~EntityManager() {
+    std::cout << "Deconstructed EntityManager!\n";
+}

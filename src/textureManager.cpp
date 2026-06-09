@@ -3,11 +3,22 @@
 #include <iostream>
 #include <cassert>
 
+TextureManager::TextureManager() {
+    std::cout << "Constructed TextureManager!\n";
+}
+
+TextureManager::~TextureManager() {
+    std::cout << "Deconstructed TextureManager!\n";
+}
+
 Texture2D* TextureManager::Get(const std::string& name) {
-    if (textures.find(name) != textures.end()) {
-        return &textures[name];
+    auto it = textures.find(name);
+
+    if (it != textures.end()) {
+        return &it->second;
     }
 
+    std::cout << "Warning: Did not find texture '" << name << "' in TextureManager\n";
     return &textures["Assets/Textures/noTexture.png"];
 }
 

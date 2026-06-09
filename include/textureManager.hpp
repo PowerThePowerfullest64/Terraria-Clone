@@ -7,6 +7,9 @@
 
 class TextureManager {
 public:
+    TextureManager();
+    ~TextureManager();
+
     Texture2D* Get(const std::string& name);
     void LoadTextures();
     void UnloadTextures();

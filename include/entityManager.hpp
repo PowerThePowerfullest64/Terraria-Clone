@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <memory>
+#include <iostream>
 
 #include "vec2f.h"
 
@@ -9,6 +10,9 @@
 
 class EntityManager {
 public:
+    EntityManager();
+    ~EntityManager();
+
     template<typename T, typename... Args>
     T* CreateEntity(Args&&... args) {
         auto entity = std::make_unique<T>(std::forward<Args>(args)...);
