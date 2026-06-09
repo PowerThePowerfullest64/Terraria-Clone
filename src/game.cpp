@@ -1,6 +1,10 @@
-#include "game.h"
+#include "game.hpp"
+
+#include <iostream>
 
 #include "raylib.h"
+
+#include "entity.hpp"
 
 void Game::Run() {
     running = true;
@@ -8,9 +12,11 @@ void Game::Run() {
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Terraria Clone Haha");
     SetTargetFPS(60);
 
-    SetTPS(20.f);
+    tm.LoadTextures();
 
-    em.CreateEntity<Player>(this, Vec2f{(float)SCREEN_WIDTH/2.f, (float)SCREEN_HEIGHT/2.f});
+    SetTPS(60.f);
+
+    Entity* player = em.CreateEntity<Player>(this, Vec2f{(float)SCREEN_WIDTH/2.f, (float)SCREEN_HEIGHT/2.f});
 
     while (running) {
         im.Update();
@@ -23,7 +29,7 @@ void Game::Run() {
         }
 
         BeginDrawing();
-        ClearBackground(BLACK);
+        ClearBackground(DARKBLUE);
 
         em.Render();
 
@@ -33,6 +39,8 @@ void Game::Run() {
 
         if (WindowShouldClose()) running = false;
     }
+
+    tm.UnloadTextures();
 
     CloseWindow();
 }

@@ -1,11 +1,6 @@
-#include "entity.h"
+#include "entity.hpp"
 
-void Player::Update(float dt) {
-    // do input handling also!
-    
-    position += velocity * dt;
-}
+#include <iostream>
 
-void Player::Render() {
-    DrawCircleV(position, 16.f, BLUE);
-}
+#include "game.hpp"
+

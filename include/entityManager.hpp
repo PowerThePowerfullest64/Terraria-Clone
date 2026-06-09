@@ -5,7 +5,7 @@
 
 #include "vec2f.h"
 
-#include "entity.h"
+#include "entity.hpp"
 
 class EntityManager {
 public:

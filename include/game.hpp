@@ -2,8 +2,9 @@
 
 #include <stdint.h>
 
-#include "entityManager.h"
-#include "inputManager.h"
+#include "entityManager.hpp"
+#include "inputManager.hpp"
+#include "textureManager.hpp"
 
 class Game {
 public:
@@ -11,6 +12,9 @@ public:
 
     EntityManager em;
     InputManager im;
+    TextureManager tm;
+
+    const float GRAVITY = 40.f;
 
     void Run();
     void SetTPS(float targetTps);
