@@ -4,6 +4,7 @@
 #include <stdint.h>
 
 #include "raylib.h"
+#include "FastNoiseLite.h"
 
 #include "vec2f.h"
 
@@ -18,7 +19,7 @@ enum BlockType : uint8_t {
 
 class WorldManager {
 public:
-    static constexpr uint16_t WIDTH = 20, HEIGHT = 30;
+    static constexpr uint16_t WIDTH = 1024, HEIGHT = 150;
     static constexpr uint8_t blockSize = 24;
 
     WorldManager();
@@ -39,6 +40,7 @@ public:
 
 private:
     std::vector<uint8_t> blocks;
+    FastNoiseLite noise;
 
     // Turns a 2D-coordinate into a 1D-index.
     size_t Index(int x, int y) { return static_cast<size_t>(y * WIDTH + x); }
@@ -48,7 +50,7 @@ private:
         {0, 0, 0, 0}, // AIR
         {71, 33, 0, 255}, // DIRT
         {18, 153, 0, 255}, // GRASS
-        {77, 77, 77, 255}, // STONE
+        {111, 111, 111, 255}, // STONE
         {189, 183, 66, 255} // SAND
     };
 };

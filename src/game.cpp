@@ -18,7 +18,7 @@ void Game::Run() {
 
     tm.LoadTextures();
 
-    SetTPS(240.f);
+    SetTPS(180.f);
 
     Entity* player = em.CreateEntity<Player>(this, Vec2f{100.f, 100.f});
     

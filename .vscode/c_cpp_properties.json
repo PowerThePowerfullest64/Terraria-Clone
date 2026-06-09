@@ -6,7 +6,8 @@
                 "${workspaceFolder}/**",
                 "${workspaceFolder}/imgui-master",
                 "${workspaceFolder}/rlImGui-main",
-                "${workspaceFolder}/customHeaders"
+                "${workspaceFolder}/customHeaders",
+                "${workspaceFolder}/foreignHeaders"
             ],
             "defines": [
                 "_DEBUG",
