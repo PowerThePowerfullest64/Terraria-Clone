@@ -27,7 +27,7 @@ void Game::Run() {
 
     SetTPS(180.f);
 
-    Entity* player = em.CreateEntity<Player>(this, Vec2f{10000.f, 0.f});
+    Entity* player = em.CreateEntity<Player>(this, Vec2f{12000.f, 0.f});
     
     Camera2D cam;
     cam.target = player->position;
