@@ -15,15 +15,15 @@ WorldManager::WorldManager(Game* game) :
     blocks.resize(WIDTH * HEIGHT, AIR);
 
     noise.SetSeed(0);
-    noise.SetNoiseType(FastNoiseLite::NoiseType_Perlin);
+    noise.SetNoiseType(FastNoiseLite::NoiseType_ValueCubic);
     noise.SetFrequency(0.03f);
     noise.SetFractalOctaves(24);
 
     for (int x = 0; x < WIDTH; ++x) {
         float n = noise.GetNoise((float)x, 0.f);
-        float value = powf(n * 0.5f + 0.5f, 5.f);
+        float value = powf(n * 0.5f + 0.5f, 3.f);
 
-        int height = (int)(value * 100.f) + 75;
+        int height = (int)(value * 150.f) + 80;
         heightMap[x] = height;
 
         for (int y = 0; y < height; ++y) {
@@ -47,8 +47,8 @@ WorldManager::~WorldManager() {
 
 void WorldManager::SetBlockTextures() {
     blockTextures[0] = game->tm.Get("noTexture"); // air
-    blockTextures[1] = game->tm.Get("grass");
-    blockTextures[2] = game->tm.Get("dirt");
+    blockTextures[1] = game->tm.Get("dirt");
+    blockTextures[2] = game->tm.Get("grass");
     blockTextures[3] = game->tm.Get("stone");
     blockTextures[4] = game->tm.Get("sand");
     blockTextures[5] = game->tm.Get("quartz");

@@ -22,7 +22,7 @@ enum BlockType : uint8_t {
 
 class WorldManager {
 public:
-    static constexpr uint16_t WIDTH = 256, HEIGHT = 128;
+    static constexpr uint16_t WIDTH = 1024, HEIGHT = 256;
     static constexpr uint8_t blockSize = 24;
 
     WorldManager(Game* game);

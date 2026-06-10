@@ -1,6 +1,8 @@
 #include "game.hpp"
 
 #include <iostream>
+#include <chrono>
+#include <string>
 
 #include "raylib.h"
 
@@ -9,8 +11,9 @@
 Game::Game() :
     wm(this) {}
 
-void UpdateCamera(Camera2D& cam, Entity* target) {
-    cam.target = target->position;
+void UpdateCamera(Camera2D& cam, Entity* target, float dt) {
+    float moveRate = 7.5f * dt;
+    cam.target = {std::lerp(cam.target.x, target->position.x, moveRate), std::lerp(cam.target.y, target->position.y, moveRate)};
 }
 
 void Game::Run() {
@@ -22,11 +25,12 @@ void Game::Run() {
     tm.LoadTextures();
     wm.SetBlockTextures();
 
-    SetTPS(60.f);
+    SetTPS(180.f);
 
-    Entity* player = em.CreateEntity<Player>(this, Vec2f{100.f, 100.f});
+    Entity* player = em.CreateEntity<Player>(this, Vec2f{10000.f, 0.f});
     
     Camera2D cam;
+    cam.target = player->position;
     cam.rotation = 0.f;
     cam.offset = {(float)SCREEN_WIDTH / 2.f, (float)SCREEN_HEIGHT / 2.f};
     cam.zoom = 1.f;
@@ -38,14 +42,23 @@ void Game::Run() {
         if (im.zoomInPressed) cam.zoom *= 1.f + (0.1f * zoomSensitivity);
         if (im.zoomOutPressed) cam.zoom /= 1.f + (0.1f * zoomSensitivity);
 
-        accumulator += GetFrameTime();
+        float dt = GetFrameTime();
+
+        auto start = std::chrono::high_resolution_clock::now();
+
+        accumulator += dt;
         while (accumulator >= tickDuration) {
             em.Update(tickDuration);
 
             accumulator -= tickDuration;
         }
 
-        UpdateCamera(cam, player);
+        auto end = std::chrono::high_resolution_clock::now();
+        auto updateTime = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+
+        UpdateCamera(cam, player, dt);
+
+        start = std::chrono::high_resolution_clock::now();
 
         BeginDrawing();
         ClearBackground(DARKBLUE);
@@ -58,7 +71,15 @@ void Game::Run() {
 
         EndMode2D();
 
+        end = std::chrono::high_resolution_clock::now();
+        auto renderTime = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+
         DrawFPS(4, 4);
+
+        std::string ut = "Update = " + std::to_string(updateTime.count()) + " ms";
+        DrawText(ut.c_str(), 4, 26, 14, WHITE);
+        std::string rt = "Render = " + std::to_string(renderTime.count()) + " ms";
+        DrawText(rt.c_str(), 4, 48, 14, WHITE);
 
         EndDrawing();
 
