@@ -2,6 +2,9 @@
 
 #include <iostream>
 #include <cassert>
+#include <filesystem>
+
+namespace fs = std::filesystem;
 
 std::unordered_map<std::string, Texture2D> TextureManager::textures;
 
@@ -13,33 +16,22 @@ Texture2D* TextureManager::Get(const std::string& name) {
     }
 
     std::cout << "Warning: Did not find texture '" << name << "' in TextureManager\n";
-    return &textures["Assets/Textures/noTexture.png"];
-}
-
-void TextureManager::AddTexture(const std::string& name) {
-    assert(textures.find(name) == textures.end() && "Could not add texture to TextureManager; texture is already stored.");
-
-    textures[name]; // add key to map
+    return &textures[path + "noTexture.png"];
 }
 
 void TextureManager::LoadTextures() {
-    std::cout << "Began adding textures!\n";
+    std::cout << "Began loading textures!\n";
 
-    std::string extension = ".png";
+    for (const auto& entry : fs::recursive_directory_iterator(path)) {
+        if (!entry.is_regular_file())
+            continue;
+        
+        if (entry.path().extension() != ".png")
+            continue;
+        
+        std::string name = entry.path().stem().string();
 
-    // Add all my textures, probably added automatically from within a folder in the future.
-    AddTexture("noTexture");
-    AddTexture("human");
-    AddTexture("grass");
-    AddTexture("dirt");
-    AddTexture("stone");
-    AddTexture("quartz");
-    AddTexture("sand");
-
-    std::cout << "Finished adding textures, texture loading begins!\n";
-
-    for (auto& it : textures) {
-        it.second = LoadTexture((path + it.first + extension).c_str()); // load and assign textures
+        textures[name] = LoadTexture(entry.path().string().c_str());
     }
 
     std::cout << "Finished loading textures!\n";
