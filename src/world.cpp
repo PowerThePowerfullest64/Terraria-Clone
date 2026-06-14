@@ -61,11 +61,11 @@ World::World(Game* game) :
         SetBlock(x, HEIGHT - height, GRASS);
     }
 
-    std::cout << "Constructed WorldManager!\n";
+    std::cout << "Constructed World!\n";
 }
 
 World::~World() {
-    std::cout << "Deconstruced WorldManager!\n";
+    std::cout << "Deconstruced World!\n";
 }
 
 void World::SetBlockTextures() {
