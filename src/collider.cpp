@@ -11,7 +11,7 @@ Collider::Collider(Game* game, Entity* entity, const Vec2f& position) :
     position(position) {}
 
 bool Collider::CheckCollision() {
-    BlockType type = game->wm.GetBlockWorld(position + entity->position);
+    BlockType type = game->world.GetBlockWorld(position + entity->position);
 
     return type != AIR;
 }

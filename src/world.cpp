@@ -1,4 +1,4 @@
-#include "worldManager.hpp"
+#include "world.hpp"
 
 #include <iostream>
 
@@ -8,8 +8,9 @@
 #include "random.h"
 
 #include "game.hpp"
+#include "textureManager.hpp"
 
-WorldManager::WorldManager(Game* game) :
+World::World(Game* game) :
     game(game) {
 
     blocks.resize(WIDTH * HEIGHT, AIR);
@@ -63,20 +64,20 @@ WorldManager::WorldManager(Game* game) :
     std::cout << "Constructed WorldManager!\n";
 }
 
-WorldManager::~WorldManager() {
+World::~World() {
     std::cout << "Deconstruced WorldManager!\n";
 }
 
-void WorldManager::SetBlockTextures() {
-    blockTextures[0] = game->tm.Get("noTexture"); // air
-    blockTextures[1] = game->tm.Get("dirt");
-    blockTextures[2] = game->tm.Get("grass");
-    blockTextures[3] = game->tm.Get("stone");
-    blockTextures[4] = game->tm.Get("sand");
-    blockTextures[5] = game->tm.Get("quartz");
+void World::SetBlockTextures() {
+    blockTextures[1] = TextureManager::Get("dirt");
+    blockTextures[0] = TextureManager::Get("noTexture"); // air
+    blockTextures[2] = TextureManager::Get("grass");
+    blockTextures[3] = TextureManager::Get("stone");
+    blockTextures[4] = TextureManager::Get("sand");
+    blockTextures[5] = TextureManager::Get("quartz");
 }
 
-void WorldManager::Render() {
+void World::Render() {
     for (size_t y = 0; y < HEIGHT; ++y)
     for (size_t x = 0; x < WIDTH; ++x) {
         BlockType type = GetBlock(x, y);

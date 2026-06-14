@@ -19,13 +19,13 @@ enum BlockType : uint8_t {
     COUNT
 };
 
-class WorldManager {
+class World {
 public:
     static constexpr uint16_t WIDTH = 1024, HEIGHT = 400;
     static constexpr uint8_t blockSize = 24;
 
-    WorldManager(Game* game);
-    ~WorldManager();
+    World(Game* game);
+    ~World();
 
     void SetBlockTextures();
 

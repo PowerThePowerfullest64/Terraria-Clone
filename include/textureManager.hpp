@@ -7,14 +7,15 @@
 
 class TextureManager {
 public:
-    TextureManager();
-    ~TextureManager();
+    TextureManager() = delete;
 
-    Texture2D* Get(const std::string& name);
-    void LoadTextures();
-    void UnloadTextures();
+    static Texture2D* Get(const std::string& name);
+    static void LoadTextures();
+    static void UnloadTextures();
 private:
-    std::unordered_map<std::string, Texture2D> textures;
+    static std::unordered_map<std::string, Texture2D> textures;
 
-    void AddTexture(const std::string& name);
+    static void AddTexture(const std::string& name);
+
+    static inline const std::string path = "Assets/Textures/";
 };

@@ -3,13 +3,7 @@
 #include <iostream>
 #include <cassert>
 
-TextureManager::TextureManager() {
-    std::cout << "Constructed TextureManager!\n";
-}
-
-TextureManager::~TextureManager() {
-    std::cout << "Deconstructed TextureManager!\n";
-}
+std::unordered_map<std::string, Texture2D> TextureManager::textures;
 
 Texture2D* TextureManager::Get(const std::string& name) {
     auto it = textures.find(name);
@@ -31,9 +25,9 @@ void TextureManager::AddTexture(const std::string& name) {
 void TextureManager::LoadTextures() {
     std::cout << "Began adding textures!\n";
 
-    std::string path = "Assets/Textures/";
     std::string extension = ".png";
 
+    // Add all my textures, probably added automatically from within a folder in the future.
     AddTexture("noTexture");
     AddTexture("human");
     AddTexture("grass");

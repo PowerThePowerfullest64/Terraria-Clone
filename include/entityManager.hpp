@@ -10,11 +10,10 @@
 
 class EntityManager {
 public:
-    EntityManager();
-    ~EntityManager();
+    EntityManager() = delete;
 
     template<typename T, typename... Args>
-    T* CreateEntity(Args&&... args) {
+    static T* CreateEntity(Args&&... args) {
         auto entity = std::make_unique<T>(std::forward<Args>(args)...);
         T* ptr = entity.get();
 
@@ -23,9 +22,9 @@ public:
         return ptr;
     }
 
-    void Update(float dt) { for (auto& entity : entities) entity->Update(dt); } // update all entities
-    void Render() { for (auto& entity : entities) entity->Render(); } // render all entities
+    static void Update(float dt) { for (auto& entity : entities) entity->Update(dt); } // update all entities
+    static void Render() { for (auto& entity : entities) entity->Render(); } // render all entities
 
 private:
-    std::vector<std::unique_ptr<Entity>> entities;
+    static std::vector<std::unique_ptr<Entity>> entities;
 };

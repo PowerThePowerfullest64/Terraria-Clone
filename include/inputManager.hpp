@@ -2,15 +2,14 @@
 
 class InputManager {
 public:
-    InputManager();
-    ~InputManager();
+    InputManager() = delete;
 
-    bool moveLeftDown = false;
-    bool moveRightDown = false;
+    static bool moveLeftDown;
+    static bool moveRightDown;
 
-    bool jumpPressed = false;
-    bool zoomInPressed = false;
-    bool zoomOutPressed = false;
+    static bool jumpPressed;
+    static bool zoomInPressed;
+    static bool zoomOutPressed;
 
-    void Update();
+    static void Update();
 };

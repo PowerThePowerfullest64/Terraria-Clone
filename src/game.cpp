@@ -7,9 +7,12 @@
 #include "raylib.h"
 
 #include "entity.hpp"
+#include "textureManager.hpp"
+#include "inputManager.hpp"
+#include "entityManager.hpp"
 
 Game::Game() :
-    wm(this) {}
+    world(this) {}
 
 void UpdateCamera(Camera2D& cam, Entity* target, float dt) {
     float moveRate = 7.5f * dt;
@@ -22,12 +25,12 @@ void Game::Run() {
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Terraria Clone Haha");
     SetTargetFPS(60);
 
-    tm.LoadTextures();
-    wm.SetBlockTextures();
+    TextureManager::LoadTextures();
+    world.SetBlockTextures();
 
     SetTPS(180.f);
 
-    Entity* player = em.CreateEntity<Player>(this, Vec2f{12000.f, 0.f});
+    Entity* player = EntityManager::CreateEntity<Player>(this, Vec2f{12000.f, 0.f});
     
     Camera2D cam;
     cam.target = player->position;
@@ -37,10 +40,10 @@ void Game::Run() {
     float zoomSensitivity = 1.f;
 
     while (running) {
-        im.Update();
+        InputManager::Update();
 
-        if (im.zoomInPressed) cam.zoom *= 1.f + (0.1f * zoomSensitivity);
-        if (im.zoomOutPressed) cam.zoom /= 1.f + (0.1f * zoomSensitivity);
+        if (InputManager::zoomInPressed) cam.zoom *= 1.f + (0.1f * zoomSensitivity);
+        if (InputManager::zoomOutPressed) cam.zoom /= 1.f + (0.1f * zoomSensitivity);
 
         float dt = GetFrameTime();
 
@@ -48,7 +51,7 @@ void Game::Run() {
 
         accumulator += dt;
         while (accumulator >= tickDuration) {
-            em.Update(tickDuration);
+            EntityManager::Update(tickDuration);
 
             accumulator -= tickDuration;
         }
@@ -66,8 +69,8 @@ void Game::Run() {
         BeginMode2D(cam);
         
 
-        wm.Render();
-        em.Render();
+        world.Render();
+        EntityManager::Render();
 
         EndMode2D();
 
@@ -86,7 +89,7 @@ void Game::Run() {
         if (WindowShouldClose()) running = false;
     }
 
-    tm.UnloadTextures();
+    TextureManager::UnloadTextures();
 
     CloseWindow();
 }

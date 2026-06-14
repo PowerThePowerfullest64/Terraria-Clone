@@ -3,6 +3,8 @@
 #include <iostream>
 
 #include "game.hpp"
+#include "textureManager.hpp"
+#include "inputManager.hpp"
 
 Player::Player(Game* game, const Vec2f& position) :
     Entity(game, position),
@@ -12,7 +14,7 @@ Player::Player(Game* game, const Vec2f& position) :
     bottomLeftCollider(game, this, {-10.f, 24.f}),
     groundedCollider(game, this, {0.f, 34.f})
     {
-        sprite = game->tm.Get("human"); // use texture
+        sprite = TextureManager::Get("human"); // use texture
     }
 
 void Player::Update(float dt) {
@@ -20,11 +22,11 @@ void Player::Update(float dt) {
 
     velocity.y += game->GRAVITY * dt;
 
-    if (game->im.moveLeftDown) velocity.x = std::lerp(velocity.x, -speed, acceleration * dt);
-    else if (game->im.moveRightDown) velocity.x = std::lerp(velocity.x, speed, acceleration * dt);
+    if (InputManager::moveLeftDown) velocity.x = std::lerp(velocity.x, -speed, acceleration * dt);
+    else if (InputManager::moveRightDown) velocity.x = std::lerp(velocity.x, speed, acceleration * dt);
     else if (grounded) velocity.x = std::lerp(velocity.x, 0.f, friction * dt);
 
-    if (game->im.jumpPressed && grounded) {
+    if (InputManager::jumpPressed && grounded) {
         velocity.y = -jumpPower;
     }
 
@@ -62,7 +64,7 @@ void Player::Update(float dt) {
 }
 
 void Player::Render() {
-    if (sprite == nullptr) sprite = game->tm.Get("noTexture");
+    if (sprite == nullptr) sprite = TextureManager::Get("noTexture");
 
     Rectangle source = {0.f, 0.f, (float)sprite->width, (float)sprite->height};
     Rectangle dest = {position.x, position.y, source.width * scale.x, source.height * scale.y};

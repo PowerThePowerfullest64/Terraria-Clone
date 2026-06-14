@@ -4,13 +4,12 @@
 
 #include "raylib.h"
 
-InputManager::InputManager() {
-    std::cout << "Construced InputManager!\n";
-}
+bool InputManager::moveLeftDown = false;
+bool InputManager::moveRightDown = false;
 
-InputManager::~InputManager() {
-    std::cout << "Deconstruced InputManager!\n";
-}
+bool InputManager::jumpPressed = false;
+bool InputManager::zoomInPressed = false;
+bool InputManager::zoomOutPressed = false;
 
 void InputManager::Update() {
     moveLeftDown = IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT);
