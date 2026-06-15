@@ -7,6 +7,9 @@
 #include "raylib.h"
 
 #include "entity.hpp"
+#include "player.hpp"
+
+
 #include "textureManager.hpp"
 #include "inputManager.hpp"
 #include "entityManager.hpp"

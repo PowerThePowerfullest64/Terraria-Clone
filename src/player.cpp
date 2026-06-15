@@ -1,4 +1,4 @@
-#include "entity.hpp"
+#include "player.hpp"
 
 #include <iostream>
 
@@ -33,7 +33,7 @@ void Player::Update(float dt) {
     // test position
     position.x += velocity.x * dt;
 
-    // reverse position if it collides
+    // undo position if it collides
     if (velocity.x > 0.f) {
         if (bottomRightCollider.CheckCollision() || topRightCollider.CheckCollision()) {
             position.x -= velocity.x * dt;
@@ -49,7 +49,7 @@ void Player::Update(float dt) {
     // test position
     position.y += velocity.y * dt;
 
-    // reverse position if it collides
+    // undo position if it collides
     if (velocity.y > 0.f) {
         if (bottomRightCollider.CheckCollision() || bottomLeftCollider.CheckCollision()) {
             position.y -= velocity.y * dt;
