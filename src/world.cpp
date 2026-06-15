@@ -13,7 +13,12 @@
 World::World(Game* game) :
     game(game) {
 
-    blocks.resize(WIDTH * HEIGHT, AIR);
+    chunks.resize(WIDTH * HEIGHT);
+
+    // Initialize chunks properly
+    for (int i = 0; i < WIDTH * HEIGHT; ++i) {
+        chunks[i] = Chunk(this, {(float)(i % WIDTH), (float)(i / WIDTH)});
+    }
 
     FastNoiseLite noise;
     noise.SetSeed(0);
@@ -39,7 +44,7 @@ World::World(Game* game) :
     noise4.SetFrequency(0.16f);
     noise4.SetFractalOctaves(24);
 
-    for (int x = 0; x < WIDTH; ++x) {
+    for (int x = 0; x < WIDTH * Chunk::WIDTH; ++x) {
         float n = noise.GetNoise((float)x, 0.f) * 1.5f +
         noise2.GetNoise((float)x, 0.f) * 0.25f +
         noise3.GetNoise((float)x, 0.f) * 0.15f +
@@ -51,14 +56,14 @@ World::World(Game* game) :
 
         for (int y = 0; y < height; ++y) {
             if (y < height - quartzDepth)
-                SetBlock(x, HEIGHT - y, QUARTZ);
+                SetBlock(x, HEIGHT * Chunk::HEIGHT - y, QUARTZ);
             else if (y < height - stoneDepth)
-                SetBlock(x, HEIGHT - y, STONE);
+                SetBlock(x, HEIGHT * Chunk::HEIGHT - y, STONE);
             else
-                SetBlock(x, HEIGHT - y, DIRT);
+                SetBlock(x, HEIGHT * Chunk::HEIGHT - y, DIRT);
         }
 
-        SetBlock(x, HEIGHT - height, GRASS);
+        SetBlock(x, HEIGHT * Chunk::HEIGHT - height, GRASS);
     }
 
     std::cout << "Constructed World!\n";
@@ -68,6 +73,36 @@ World::~World() {
     std::cout << "Deconstruced World!\n";
 }
 
+BlockType World::GetBlock(int x, int y) {
+    if (x < 0 || x >= WIDTH * Chunk::WIDTH || y < 0 || y >= HEIGHT * Chunk::HEIGHT)
+        return AIR;
+    
+    int chunk =
+        (y / Chunk::HEIGHT) * WIDTH +
+        (x / Chunk::WIDTH);
+
+    uint16_t block =
+        (y % Chunk::HEIGHT) * Chunk::WIDTH +
+        (x % Chunk::WIDTH);
+
+    return chunks[chunk].GetBlock(block);
+}
+
+void World::SetBlock(int x, int y, BlockType type) {
+    if (x < 0 || x >= WIDTH * Chunk::WIDTH || y < 0 || y >= HEIGHT * Chunk::HEIGHT)
+        return;
+    
+    int chunk =
+        (y / Chunk::HEIGHT) * WIDTH +
+        (x / Chunk::WIDTH);
+
+    uint16_t block =
+        (y % Chunk::HEIGHT) * Chunk::WIDTH +
+        (x % Chunk::WIDTH);
+    
+    chunks[chunk].SetBlock(block, type);
+}
+
 void World::SetBlockTextures() {
     blockTextures[0] = TextureManager::Get("noTexture"); // air
     blockTextures[1] = TextureManager::Get("dirt");
@@ -75,15 +110,4 @@ void World::SetBlockTextures() {
     blockTextures[3] = TextureManager::Get("stone");
     blockTextures[4] = TextureManager::Get("sand");
     blockTextures[5] = TextureManager::Get("quartz");
-}
-
-void World::Render() {
-    for (size_t y = 0; y < HEIGHT; ++y)
-    for (size_t x = 0; x < WIDTH; ++x) {
-        BlockType type = GetBlock(x, y);
-
-        if (type == AIR) continue;
-
-        DrawTexture(*blockTextures[type], x * blockSize, y * blockSize, WHITE);
-    }
 }

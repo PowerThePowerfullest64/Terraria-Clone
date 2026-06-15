@@ -30,9 +30,8 @@ void Game::Run() {
 
     SetTPS(180.f);
 
-    Entity* player = EntityManager::CreateEntity<Player>(this, Vec2f{12000.f, 0.f});
+    Entity* player = EntityManager::CreateEntity<Player>(this, Vec2f{32.f, 0.f});
     
-    Camera2D cam;
     cam.target = player->position;
     cam.rotation = 0.f;
     cam.offset = {(float)SCREEN_WIDTH / 2.f, (float)SCREEN_HEIGHT / 2.f};
