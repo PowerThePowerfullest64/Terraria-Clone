@@ -51,7 +51,7 @@ World::World(Game* game) :
         noise4.GetNoise((float)x, 0.f) * 0.075f;
         float value = n;
 
-        int height = (int)(value * 100.f) + 180;
+        int height = (int)(value * 100.f) + 500;
         heightMap[x] = height;
 
         for (int y = 0; y < height; ++y) {

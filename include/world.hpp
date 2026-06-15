@@ -13,7 +13,7 @@ class Game;
 
 class World {
 public:
-    static constexpr int WIDTH = 512, HEIGHT = 24;
+    static constexpr int WIDTH = 2048, HEIGHT = 48;
 
     // Returns a texture based on the given type, like a map.
     Texture2D* blockTextures[COUNT];
@@ -40,7 +40,7 @@ private:
     int heightMap[WIDTH * Chunk::WIDTH];
 
     int stoneDepth = 10;
-    int quartzDepth = 90;
+    int quartzDepth = 500;
 
     // Turns a 2D-coordinate into a 1D-index.
     size_t Index(int x, int y) { return static_cast<size_t>(y * WIDTH + x); }
