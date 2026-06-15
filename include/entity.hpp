@@ -46,6 +46,4 @@ private:
     Collider bottomRightCollider;
     Collider bottomLeftCollider;
     Collider groundedCollider;
-
-    bool renderDebug = true;
 };

@@ -72,7 +72,7 @@ void Player::Render() {
 
     DrawTexturePro(*sprite, source, dest, origin, rotation, WHITE);
 
-    if (!renderDebug) return;
+    if (!game->debugMode) return;
 
     float mag = velocity.length() / 6.f;
     if (mag > 0.f) {

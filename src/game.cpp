@@ -19,7 +19,8 @@ void UpdateCamera(Camera2D& cam, Entity* target, float dt) {
     cam.target = {std::lerp(cam.target.x, target->position.x, moveRate), std::lerp(cam.target.y, target->position.y, moveRate)};
 }
 
-void Game::Run() {
+void Game::Run(bool debug) {
+    debugMode = debug;
     running = true;
 
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Terraria Clone Haha");
@@ -30,13 +31,7 @@ void Game::Run() {
 
     SetTPS(180.f);
 
-    Entity* player = EntityManager::CreateEntity<Player>(this, Vec2f{32.f, 0.f});
-    
-    cam.target = player->position;
-    cam.rotation = 0.f;
-    cam.offset = {(float)SCREEN_WIDTH / 2.f, (float)SCREEN_HEIGHT / 2.f};
-    cam.zoom = 1.f;
-    float zoomSensitivity = 1.f;
+    Entity* player = EntityManager::CreateEntity<Player>(this, Vec2f{12000.f, 0.f});
 
     while (running) {
         InputManager::Update();
@@ -65,11 +60,20 @@ void Game::Run() {
         BeginDrawing();
         ClearBackground(DARKBLUE);
 
-        BeginMode2D(cam);
-        
+        BeginMode2D(debugMode ? editorCam : cam);
 
         world.Render();
         EntityManager::Render();
+
+        if (debugMode) {
+            float viewW = SCREEN_WIDTH / cam.zoom;
+            float viewH = SCREEN_HEIGHT / cam.zoom;
+
+            float viewX = cam.target.x - viewW * 0.5f;
+            float viewY = cam.target.y - viewH * 0.5f;
+
+            DrawRectangleLines(viewX, viewY, viewW, viewH, RED);
+        }
 
         EndMode2D();
 
