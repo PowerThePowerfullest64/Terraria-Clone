@@ -70,7 +70,7 @@ World::World(Game* game) :
 }
 
 World::~World() {
-    std::cout << "Deconstruced World!\n";
+    std::cout << "Deconstructed World!\n";
 }
 
 BlockType World::GetBlock(int x, int y) {
@@ -101,6 +101,10 @@ void World::SetBlock(int x, int y, BlockType type) {
         (x % Chunk::WIDTH);
     
     chunks[chunk].SetBlock(block, type);
+}
+
+void World::Render() {
+    for (Chunk& chunk : chunks) chunk.Render(game->cam, game->SCREEN_WIDTH, game->SCREEN_HEIGHT);
 }
 
 void World::SetBlockTextures() {

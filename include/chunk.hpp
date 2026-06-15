@@ -37,7 +37,7 @@ public:
     void SetBlock(int x, int y, BlockType type) { SetBlock(Index(x, y), type); }
 
     // Renders every block in the chunk.
-    void Render();
+    void Render(const Camera2D& cam, int sWidth, int sHeight);
 
 private:
     World* world;
@@ -49,4 +49,6 @@ private:
     // Turns a 2D-coordinate into a 1D-index.
     size_t Index(int x, int y) { return static_cast<size_t>(y * WIDTH + x); }
     size_t Index(const Vec2f& pos) { return static_cast<size_t>((int)pos.y * WIDTH + (int)pos.x); }
+
+    bool IsVisible(const Camera2D& cam, int sWidth, int sHeight);
 };

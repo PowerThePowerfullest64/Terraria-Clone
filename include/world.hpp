@@ -32,7 +32,7 @@ public:
     void SetBlock(int x, int y, BlockType type);
 
     // Renders every block in the world.
-    void Render() { for (Chunk& chunk : chunks) chunk.Render(); }
+    void Render();
 
 private:
     Game* game;
