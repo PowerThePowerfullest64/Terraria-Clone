@@ -31,7 +31,7 @@ void Game::Run(bool debug) {
 
     SetTPS(240.f);
 
-    Entity* player = EntityManager::CreateEntity<Player>(this, Vec2f{6000.f, 0.f});
+    Entity* player = EntityManager::CreateEntity<Player>(this, Vec2f{24000.f, 0.f});
 
     while (running) {
         InputManager::Update();
