@@ -21,7 +21,7 @@ enum BlockType : uint8_t {
 
 class World {
 public:
-    static constexpr uint16_t WIDTH = 1024, HEIGHT = 400;
+    static constexpr uint16_t WIDTH = 1024, HEIGHT = 200;
     static constexpr uint8_t blockSize = 24;
 
     World(Game* game);
