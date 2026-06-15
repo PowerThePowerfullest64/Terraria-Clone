@@ -31,13 +31,15 @@ void Game::Run(bool debug) {
 
     // zoom levels
     {
-        zoomLevels[0] = 0.5f;
-        zoomLevels[1] = 0.75f;
-        zoomLevels[2] = 1.f;
-        zoomLevels[3] = 1.5f;
-        zoomLevels[4] = 2.f;
-        zoomLevels[5] = 4.f;
-        zoomLevels[6] = 6.f;
+        zoomLevels[0] = 0.0025f;
+        zoomLevels[1] = 0.025f;
+        zoomLevels[2] = 0.5f;
+        zoomLevels[3] = 0.75f;
+        zoomLevels[4] = 1.f;
+        zoomLevels[5] = 1.5f;
+        zoomLevels[6] = 2.f;
+        zoomLevels[7] = 4.f;
+        zoomLevels[8] = 6.f;
     }
 
     TextureManager::LoadTextures();
@@ -45,12 +47,12 @@ void Game::Run(bool debug) {
 
     SetTPS(240.f);
 
-    Entity* player = EntityManager::CreateEntity<Player>(this, Vec2f{24000.f, 0.f});
+    Entity* player = EntityManager::CreateEntity<Player>(this, Vec2f{96000.f, 0.f});
 
     while (running) {
         InputManager::Update();
 
-        if (InputManager::zoomInPressed) { currentZoomLevel++; currentZoomLevel = std::min(currentZoomLevel, 6); cam.zoom = zoomLevels[currentZoomLevel]; };
+        if (InputManager::zoomInPressed) { currentZoomLevel++; currentZoomLevel = std::min(currentZoomLevel, 8); cam.zoom = zoomLevels[currentZoomLevel]; };
         if (InputManager::zoomOutPressed) { currentZoomLevel--; currentZoomLevel = std::max(currentZoomLevel, 0); cam.zoom = zoomLevels[currentZoomLevel]; }
 
         float dt = GetFrameTime();

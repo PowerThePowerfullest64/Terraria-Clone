@@ -43,7 +43,7 @@ public:
 
 private:
     World* world;
-    // Chunk position in chunk coordinates
+    // Chunk position in chunk coordinates.
     Vec2f pos;
     std::vector<BlockType> blocks;
 
