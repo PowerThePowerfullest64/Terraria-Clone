@@ -69,8 +69,8 @@ World::~World() {
 }
 
 void World::SetBlockTextures() {
-    blockTextures[1] = TextureManager::Get("dirt");
     blockTextures[0] = TextureManager::Get("noTexture"); // air
+    blockTextures[1] = TextureManager::Get("dirt");
     blockTextures[2] = TextureManager::Get("grass");
     blockTextures[3] = TextureManager::Get("stone");
     blockTextures[4] = TextureManager::Get("sand");
