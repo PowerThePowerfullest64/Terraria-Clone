@@ -33,6 +33,6 @@ private:
 
     float zoomSensitivity = 1.f;
 
-    float zoomLevels[6];
-    int currentZoomLevel = 2;
+    float zoomLevels[7];
+    int currentZoomLevel = 3;
 };

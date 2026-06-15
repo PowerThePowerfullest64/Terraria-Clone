@@ -29,14 +29,15 @@ void Game::Run(bool debug) {
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Terraria Clone Haha");
     SetTargetFPS(60);
 
+    // zoom levels
     {
         zoomLevels[0] = 0.5f;
-        zoomLevels[1] = 0.625f;
         zoomLevels[1] = 0.75f;
         zoomLevels[2] = 1.f;
-        zoomLevels[3] = 1.25f;
-        zoomLevels[4] = 1.5f;
-        zoomLevels[5] = 2.f;
+        zoomLevels[3] = 1.5f;
+        zoomLevels[4] = 2.f;
+        zoomLevels[5] = 4.f;
+        zoomLevels[6] = 6.f;
     }
 
     TextureManager::LoadTextures();
@@ -49,7 +50,7 @@ void Game::Run(bool debug) {
     while (running) {
         InputManager::Update();
 
-        if (InputManager::zoomInPressed) { currentZoomLevel++; currentZoomLevel = std::min(currentZoomLevel, 5); cam.zoom = zoomLevels[currentZoomLevel]; };
+        if (InputManager::zoomInPressed) { currentZoomLevel++; currentZoomLevel = std::min(currentZoomLevel, 6); cam.zoom = zoomLevels[currentZoomLevel]; };
         if (InputManager::zoomOutPressed) { currentZoomLevel--; currentZoomLevel = std::max(currentZoomLevel, 0); cam.zoom = zoomLevels[currentZoomLevel]; }
 
         float dt = GetFrameTime();
