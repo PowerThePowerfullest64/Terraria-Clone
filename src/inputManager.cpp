@@ -6,16 +6,16 @@
 
 bool InputManager::moveLeftDown = false;
 bool InputManager::moveRightDown = false;
+bool InputManager::jumpDown = false;
 
-bool InputManager::jumpPressed = false;
 bool InputManager::zoomInPressed = false;
 bool InputManager::zoomOutPressed = false;
 
 void InputManager::Update() {
-    moveLeftDown = IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT);
-    moveRightDown = IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT);
+    moveLeftDown = IsKeyDown(KEY_A);
+    moveRightDown = IsKeyDown(KEY_D);
+    jumpDown = IsKeyDown(KEY_SPACE) || IsKeyDown(KEY_W);
 
-    jumpPressed = IsKeyDown(KEY_SPACE) || IsKeyDown(KEY_UP) || IsKeyDown(KEY_W);
-    zoomInPressed = GetMouseWheelMove() < 0.f;
-    zoomOutPressed = GetMouseWheelMove() > 0.f;
+    zoomInPressed = IsKeyPressed(KEY_UP) || GetMouseWheelMove() < -0.1f;
+    zoomOutPressed = IsKeyPressed(KEY_DOWN) || GetMouseWheelMove() > 0.1f;
 }

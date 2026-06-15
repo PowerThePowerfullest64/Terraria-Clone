@@ -32,6 +32,9 @@ void TextureManager::LoadTextures() {
         std::string name = entry.path().stem().string();
 
         textures[name] = LoadTexture(entry.path().string().c_str());
+        
+        GenTextureMipmaps(&textures[name]);
+        SetTextureFilter(textures[name], TEXTURE_FILTER_POINT);
     }
 
     std::cout << "Finished loading textures!\n";

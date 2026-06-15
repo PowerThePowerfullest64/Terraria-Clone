@@ -6,8 +6,8 @@ public:
 
     static bool moveLeftDown;
     static bool moveRightDown;
-
-    static bool jumpPressed;
+    static bool jumpDown;
+    
     static bool zoomInPressed;
     static bool zoomOutPressed;
 

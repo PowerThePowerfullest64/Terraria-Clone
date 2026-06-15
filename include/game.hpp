@@ -32,4 +32,7 @@ private:
     float accumulator = 0.f;
 
     float zoomSensitivity = 1.f;
+
+    float zoomLevels[6];
+    int currentZoomLevel = 2;
 };

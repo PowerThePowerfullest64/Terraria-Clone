@@ -26,7 +26,7 @@ void Player::Update(float dt) {
     else if (InputManager::moveRightDown) velocity.x = std::lerp(velocity.x, speed, acceleration * dt);
     else if (grounded) velocity.x = std::lerp(velocity.x, 0.f, friction * dt);
 
-    if (InputManager::jumpPressed && grounded) {
+    if (InputManager::jumpDown && grounded) {
         velocity.y = -jumpPower;
     }
 

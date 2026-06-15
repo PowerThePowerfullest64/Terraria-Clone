@@ -19,7 +19,7 @@ Game::Game() :
 
 void UpdateCamera(Camera2D& cam, Entity* target, float dt) {
     float moveRate = 7.5f * dt;
-    cam.target = {std::lerp(cam.target.x, target->position.x, moveRate), std::lerp(cam.target.y, target->position.y, moveRate)};
+    cam.target = {roundf(std::lerp(cam.target.x, target->position.x, moveRate)), roundf(std::lerp(cam.target.y, target->position.y, moveRate))};
 }
 
 void Game::Run(bool debug) {
@@ -28,6 +28,16 @@ void Game::Run(bool debug) {
 
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Terraria Clone Haha");
     SetTargetFPS(60);
+
+    {
+        zoomLevels[0] = 0.5f;
+        zoomLevels[1] = 0.625f;
+        zoomLevels[1] = 0.75f;
+        zoomLevels[2] = 1.f;
+        zoomLevels[3] = 1.25f;
+        zoomLevels[4] = 1.5f;
+        zoomLevels[5] = 2.f;
+    }
 
     TextureManager::LoadTextures();
     world.SetBlockTextures();
@@ -39,8 +49,8 @@ void Game::Run(bool debug) {
     while (running) {
         InputManager::Update();
 
-        if (InputManager::zoomInPressed) cam.zoom *= 1.f + (0.1f * zoomSensitivity);
-        if (InputManager::zoomOutPressed) cam.zoom /= 1.f + (0.1f * zoomSensitivity);
+        if (InputManager::zoomInPressed) { currentZoomLevel++; currentZoomLevel = std::min(currentZoomLevel, 5); cam.zoom = zoomLevels[currentZoomLevel]; };
+        if (InputManager::zoomOutPressed) { currentZoomLevel--; currentZoomLevel = std::max(currentZoomLevel, 0); cam.zoom = zoomLevels[currentZoomLevel]; }
 
         float dt = GetFrameTime();
 
