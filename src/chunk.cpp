@@ -29,6 +29,4 @@ void Chunk::Render() {
             WHITE
         );
     }
-
-    std::cout << worldPos.x << ", " << worldPos.y << "\n";
 }
