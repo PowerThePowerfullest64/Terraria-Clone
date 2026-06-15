@@ -28,7 +28,6 @@ public:
     static constexpr int blockSize = 24;
 
     Chunk(World* world = nullptr, const Vec2f& pos = Vec2f::ZERO);
-    ~Chunk() { std::cout << "Deconstructing Chunk " << Index(pos) << "\n"; } // Unload texture from chunk.
 
     // Gets a copy of a block at a given position.
     BlockType GetBlock(size_t index) { if (index >= WIDTH * HEIGHT) return AIR; return (BlockType)blocks[index]; }
