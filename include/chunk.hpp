@@ -25,7 +25,10 @@ public:
     static constexpr int WIDTH = 16, HEIGHT = 16;
     static constexpr int blockSize = 24;
 
+    RenderTexture2D texture;
+
     Chunk(World* world = nullptr, const Vec2f& pos = Vec2f::ZERO);
+    ~Chunk() { UnloadRenderTexture(texture); } // Unload texture from chunk.
 
     // Gets a copy of a block at a given position.
     BlockType GetBlock(size_t index) { if (index >= WIDTH * HEIGHT) return AIR; return (BlockType)blocks[index]; }
@@ -33,7 +36,7 @@ public:
     BlockType GetBlock(const Vec2f& pos) { return GetBlock(Index(pos)); }
 
     // Sets a block at a given position to a given type.
-    void SetBlock(size_t index, BlockType type) { if (index >= WIDTH * HEIGHT) return; blocks[index] = type; }
+    void SetBlock(size_t index, BlockType type) { if (index >= WIDTH * HEIGHT) return; blocks[index] = type; dirty = true; }
     void SetBlock(int x, int y, BlockType type) { SetBlock(Index(x, y), type); }
 
     // Renders every block in the chunk.
@@ -43,12 +46,15 @@ private:
     World* world;
     // Chunk position in chunk coordinates
     Vec2f pos;
-
     std::vector<BlockType> blocks;
+
+    bool dirty = true;
 
     // Turns a 2D-coordinate into a 1D-index.
     size_t Index(int x, int y) { return static_cast<size_t>(y * WIDTH + x); }
     size_t Index(const Vec2f& pos) { return static_cast<size_t>((int)pos.y * WIDTH + (int)pos.x); }
 
     bool IsVisible(const Camera2D& cam, int sWidth, int sHeight);
+
+    void BuildTexture();
 };
