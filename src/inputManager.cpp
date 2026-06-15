@@ -16,6 +16,6 @@ void InputManager::Update() {
     moveRightDown = IsKeyDown(KEY_D);
     jumpDown = IsKeyDown(KEY_SPACE) || IsKeyDown(KEY_W);
 
-    zoomInPressed = IsKeyPressed(KEY_UP) || GetMouseWheelMove() < -0.1f;
-    zoomOutPressed = IsKeyPressed(KEY_DOWN) || GetMouseWheelMove() > 0.1f;
+    zoomInPressed = IsKeyPressed(KEY_UP) || GetMouseWheelMove() < -0.05f;
+    zoomOutPressed = IsKeyPressed(KEY_DOWN) || GetMouseWheelMove() > 0.05f;
 }
