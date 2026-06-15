@@ -29,9 +29,9 @@ void Game::Run(bool debug) {
     TextureManager::LoadTextures();
     world.SetBlockTextures();
 
-    SetTPS(180.f);
+    SetTPS(240.f);
 
-    Entity* player = EntityManager::CreateEntity<Player>(this, Vec2f{12000.f, 0.f});
+    Entity* player = EntityManager::CreateEntity<Player>(this, Vec2f{6000.f, 0.f});
 
     while (running) {
         InputManager::Update();

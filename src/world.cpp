@@ -114,8 +114,4 @@ void World::SetBlockTextures() {
     blockTextures[3] = TextureManager::Get("stone");
     blockTextures[4] = TextureManager::Get("sand");
     blockTextures[5] = TextureManager::Get("quartz");
-
-    for (Chunk& chunk : chunks) {
-        chunk.texture = LoadRenderTexture(Chunk::WIDTH * Chunk::blockSize, Chunk::HEIGHT * Chunk::blockSize);
-    }
 }

@@ -17,19 +17,26 @@ void Chunk::Render(const Camera2D& cam, int sWidth, int sHeight) {
     Vec2f worldPos;
     worldPos.x = pos.x * (float)blockSize * WIDTH;
     worldPos.y = pos.y * (float)blockSize * HEIGHT;
-
-    if (dirty) BuildTexture();
     
     if (!IsVisible(cam, sWidth, sHeight)) return;
 
-    DrawTexturePro(
-        texture.texture,
-        {0.f, 0.f, (float)texture.texture.width, -(float)texture.texture.height},
-        {worldPos.x, worldPos.y, (float)texture.texture.width, (float)texture.texture.height},
-        {0.f, 0.f},
-        0.f,
-        WHITE
-    );
+    for (int y = 0; y < HEIGHT; ++y)
+    for (int x = 0; x < WIDTH; ++x) {
+        BlockType type = GetBlock(x, y);
+
+        if (type == AIR) continue;
+
+        Texture2D* tex = world->blockTextures[type];
+
+        DrawTexturePro(
+            *tex,
+            {0.f, 0.f, (float)tex->width, -(float)tex->height},
+            {worldPos.x + x * blockSize, worldPos.y + y * blockSize, (float)tex->width, (float)tex->height},
+            {0.f, 0.f},
+            0.f,
+            WHITE
+        );
+    }
 }
 
 bool Chunk::IsVisible(const Camera2D& cam, int sWidth, int sHeight) {
@@ -57,29 +64,4 @@ bool Chunk::IsVisible(const Camera2D& cam, int sWidth, int sHeight) {
     };
 
     return Intersects(chunk, camera);
-}
-
-void Chunk::BuildTexture() {
-    std::cout << "Building Chunk Texture.\n";
-    
-    BeginTextureMode(texture);
-    ClearBackground(BLANK);
-
-    for (int y = 0; y < HEIGHT; ++y)
-    for (int x = 0; x < WIDTH; ++x) {
-        BlockType type = GetBlock(x, y);
-        if (type == AIR) continue;
-
-        DrawTexture(
-            *world->blockTextures[type],
-            x * blockSize,
-            y * blockSize,
-            WHITE
-        );
-    }
-
-    EndTextureMode();
-    dirty = false;
-
-    std::cout << "Finished Building Chunk Texture.\n";
 }

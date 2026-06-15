@@ -13,7 +13,7 @@ class Game;
 
 class World {
 public:
-    static constexpr uint16_t WIDTH = 64, HEIGHT = 16;
+    static constexpr uint16_t WIDTH = 32, HEIGHT = 16;
 
     // Returns a texture based on the given type, like a map.
     Texture2D* blockTextures[COUNT];
