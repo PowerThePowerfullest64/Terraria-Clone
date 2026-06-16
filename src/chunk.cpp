@@ -24,7 +24,7 @@ void Chunk::Render(const Camera2D& cam, int sWidth, int sHeight) {
     for (int x = 0; x < WIDTH; ++x) {
         BlockType type = GetBlock(x, y);
 
-        if (type == AIR) continue;
+        if (type == AIR) continue; // comment this line out to see air as missing texture (might be useful)
 
         Texture2D* tex = world->blockTextures[type];
 
