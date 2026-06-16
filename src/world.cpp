@@ -34,25 +34,25 @@ void World::Generate(uint16_t seed) {
     FastNoiseLite noise;
     noise.SetSeed(seed);
     noise.SetNoiseType(FastNoiseLite::NoiseType_ValueCubic);
-    noise.SetFrequency(0.005f);
+    noise.SetFrequency(0.0025f);
     noise.SetFractalOctaves(24);
 
     FastNoiseLite noise2;
     noise2.SetSeed(seed+1);
     noise2.SetNoiseType(FastNoiseLite::NoiseType_ValueCubic);
-    noise2.SetFrequency(0.04f);
+    noise2.SetFrequency(0.02f);
     noise2.SetFractalOctaves(24);
 
     FastNoiseLite noise3;
     noise3.SetSeed(seed+2);
     noise3.SetNoiseType(FastNoiseLite::NoiseType_ValueCubic);
-    noise3.SetFrequency(0.08);
+    noise3.SetFrequency(0.04);
     noise3.SetFractalOctaves(24);
 
     FastNoiseLite noise4;
     noise4.SetSeed(seed+3);
     noise4.SetNoiseType(FastNoiseLite::NoiseType_ValueCubic);
-    noise4.SetFrequency(0.16f);
+    noise4.SetFrequency(0.08f);
     noise4.SetFractalOctaves(24);
 
     for (int x = 0; x < WIDTH * Chunk::WIDTH; ++x) {
@@ -62,7 +62,7 @@ void World::Generate(uint16_t seed) {
         noise4.GetNoise((float)x, 0.f) * 0.075f;
         float value = n;
 
-        int height = (int)(value * 100.f) + 500;
+        int height = (int)(value * 300.f) + 700;
         heightMap[x] = height;
 
         for (int y = 0; y < height; ++y) {

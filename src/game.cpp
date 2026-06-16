@@ -21,6 +21,8 @@ Game::Game() {
 }
 
 void UpdateCamera(Camera2D& cam, Entity* target, float dt) {
+    if (target == nullptr) return;
+
     float baseSpeed = 7.5f * sqrtf(cam.zoom);
 
     float blendFactor = 1.f - std::expf(-baseSpeed * dt);
@@ -51,8 +53,6 @@ void Game::Run(bool debug) {
     TextureManager::SetBlockTextures();
 
     SetTPS(240.f);
-
-    player = EntityManager::CreateEntity<Player>(this, Vec2f{96000.f, 0.f});
 
     while (running && !WindowShouldClose()) {
         InputManager::Update();
@@ -171,20 +171,21 @@ void Game::RenderMenuUI() {
 
     if (GuiButton(Rectangle{x, y, (float)buttonWidth, (float)buttonHeight}, "Play")) {
         gs = GameState::GAME;
-
-        // Delete old world, if any existed.
-        if (world != nullptr) {
-            delete world;
-            world = nullptr; 
-        }
+        
         world = new World(this);
         world->Generate();
+
+        player = EntityManager::CreateEntity<Player>(this, Vec2f{96000.f, 0.f});
     }
 
     if (GuiButton(Rectangle{x, y + buttonHeight + 16, (float)buttonWidth, (float)buttonHeight}, "Exit")) {
         if (world != nullptr) {
             delete world;
             world = nullptr;
+        }
+
+        if (player != nullptr) {
+            player = nullptr;
         }
 
         running = false;
@@ -207,6 +208,11 @@ void Game::RenderPausedUI() {
         if (world != nullptr) {
             delete world;
             world = nullptr;
+        }
+
+        if (player != nullptr) {
+            EntityManager::ClearEntities();
+            player = nullptr;
         }
     }
 }

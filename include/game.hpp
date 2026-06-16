@@ -19,6 +19,7 @@ public:
     const uint16_t SCREEN_WIDTH = 1440u, SCREEN_HEIGHT = 810u;
 
     World* world = nullptr;
+    Player* player = nullptr;
 
     Camera2D cam = {{(float)SCREEN_WIDTH / 2.f, (float)SCREEN_HEIGHT / 2.f}, {0.f, 0.f}, 0.f, 1.f};
     Camera2D editorCam = {{0.f, 0.f}, {0.f, 0.f}, 0.f, 0.1f};
@@ -46,8 +47,6 @@ private:
     int currentZoomLevel = 3;
 
     GameState gs = GameState::MENU;
-
-    Player* player;
 
     std::chrono::high_resolution_clock::time_point timer;
     std::chrono::milliseconds updateTime;

@@ -14,7 +14,7 @@ class Game;
 
 class World {
 public:
-    static constexpr int WIDTH = 512, HEIGHT = 48;
+    static constexpr int WIDTH = 2048, HEIGHT = 72;
 
     World(Game* game);
     ~World();
