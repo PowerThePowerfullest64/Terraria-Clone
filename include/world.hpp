@@ -8,6 +8,7 @@
 #include "vec2f.h"
 
 #include "chunk.hpp"
+#include "blockTypes.hpp"
 
 class Game;
 
@@ -15,13 +16,8 @@ class World {
 public:
     static constexpr int WIDTH = 512, HEIGHT = 48;
 
-    // Returns a texture based on the given type, like a map.
-    Texture2D* blockTextures[COUNT];
-
     World(Game* game);
     ~World();
-
-    void SetBlockTextures();
 
     // Gets a copy of a block at a given position.
     BlockType GetBlock(int x, int y);

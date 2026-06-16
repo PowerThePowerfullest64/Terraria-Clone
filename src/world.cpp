@@ -19,8 +19,6 @@ World::World(Game* game) :
     for (int i = 0; i < WIDTH * HEIGHT; ++i) {
         chunks[i] = Chunk(this, {(float)(i % WIDTH), (float)(i / WIDTH)});
     }
-
-    Generate();
 }
 
 World::~World() {
@@ -29,6 +27,8 @@ World::~World() {
 }
 
 void World::Generate(uint16_t seed) {
+    for (Chunk& chunk : chunks) { chunk.Reset(); } // Reset old world if any existed.
+
     if (seed == UINT16_MAX) seed = randomInt(0, UINT16_MAX);
 
     FastNoiseLite noise;
@@ -67,14 +67,14 @@ void World::Generate(uint16_t seed) {
 
         for (int y = 0; y < height; ++y) {
             if (y < height - quartzDepth)
-                SetBlock(x, HEIGHT * Chunk::HEIGHT - y, QUARTZ);
+                SetBlock(x, HEIGHT * Chunk::HEIGHT - y, BlockType::QUARTZ);
             else if (y < height - stoneDepth)
-                SetBlock(x, HEIGHT * Chunk::HEIGHT - y, STONE);
+                SetBlock(x, HEIGHT * Chunk::HEIGHT - y, BlockType::STONE);
             else
-                SetBlock(x, HEIGHT * Chunk::HEIGHT - y, DIRT);
+                SetBlock(x, HEIGHT * Chunk::HEIGHT - y, BlockType::DIRT);
         }
 
-        SetBlock(x, HEIGHT * Chunk::HEIGHT - height, GRASS);
+        SetBlock(x, HEIGHT * Chunk::HEIGHT - height, BlockType::GRASS);
     }
 
     std::cout << "Generated World!\n";
@@ -82,7 +82,7 @@ void World::Generate(uint16_t seed) {
 
 BlockType World::GetBlock(int x, int y) {
     if (x < 0 || x >= WIDTH * Chunk::WIDTH || y < 0 || y >= HEIGHT * Chunk::HEIGHT)
-        return AIR;
+        return BlockType::AIR;
     
     int chunk =
         (y / Chunk::HEIGHT) * WIDTH +
@@ -112,13 +112,4 @@ void World::SetBlock(int x, int y, BlockType type) {
 
 void World::Render() {
     for (Chunk& chunk : chunks) chunk.Render(game->cam, game->SCREEN_WIDTH, game->SCREEN_HEIGHT);
-}
-
-void World::SetBlockTextures() {
-    blockTextures[0] = TextureManager::Get("noTexture"); // air
-    blockTextures[1] = TextureManager::Get("dirt");
-    blockTextures[2] = TextureManager::Get("grass");
-    blockTextures[3] = TextureManager::Get("stone");
-    blockTextures[4] = TextureManager::Get("sand");
-    blockTextures[5] = TextureManager::Get("quartz");
 }

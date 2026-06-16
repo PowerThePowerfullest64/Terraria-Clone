@@ -4,12 +4,12 @@
 
 #include "aabb.hpp"
 
-#include "world.hpp"
+#include "textureManager.hpp"
 
 Chunk::Chunk(World* world, const Vec2f& pos) : 
     world(world),
     pos(pos) {
-        blocks.resize(WIDTH * HEIGHT, AIR);
+        blocks.resize(WIDTH * HEIGHT, BlockType::AIR);
     }
 
 void Chunk::Render(const Camera2D& cam, int sWidth, int sHeight) {
@@ -24,9 +24,9 @@ void Chunk::Render(const Camera2D& cam, int sWidth, int sHeight) {
     for (int x = 0; x < WIDTH; ++x) {
         BlockType type = GetBlock(x, y);
 
-        if (type == AIR) continue; // comment this line out to see air as missing texture (might be useful)
+        if (type == BlockType::AIR) continue; // comment this line out to see air as missing texture (might be useful)
 
-        Texture2D* tex = world->blockTextures[type];
+        Texture2D* tex = TextureManager::blockTextures[static_cast<size_t>(type)];
 
         DrawTexturePro(
             *tex,

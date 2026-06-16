@@ -16,8 +16,9 @@
 #include "inputManager.hpp"
 #include "entityManager.hpp"
 
-Game::Game() :
-    world(this) {}
+Game::Game() {
+    // do stuff here
+}
 
 void UpdateCamera(Camera2D& cam, Entity* target, float dt) {
     float baseSpeed = 7.5f * sqrtf(cam.zoom);
@@ -47,7 +48,7 @@ void Game::Run(bool debug) {
     }
 
     TextureManager::LoadTextures();
-    world.SetBlockTextures();
+    TextureManager::SetBlockTextures();
 
     SetTPS(240.f);
 
@@ -131,7 +132,7 @@ void Game::RenderGame() {
 
     BeginMode2D(debugMode ? editorCam : renderCam);
 
-    world.Render();
+    world->Render();
     EntityManager::Render();
 
     if (debugMode) {
@@ -170,9 +171,22 @@ void Game::RenderMenuUI() {
 
     if (GuiButton(Rectangle{x, y, (float)buttonWidth, (float)buttonHeight}, "Play")) {
         gs = GameState::GAME;
+
+        // Delete old world, if any existed.
+        if (world != nullptr) {
+            delete world;
+            world = nullptr; 
+        }
+        world = new World(this);
+        world->Generate();
     }
 
     if (GuiButton(Rectangle{x, y + buttonHeight + 16, (float)buttonWidth, (float)buttonHeight}, "Exit")) {
+        if (world != nullptr) {
+            delete world;
+            world = nullptr;
+        }
+
         running = false;
     }
 }
@@ -189,5 +203,10 @@ void Game::RenderPausedUI() {
 
     if (GuiButton(Rectangle{x, y + buttonHeight + 16, (float)buttonWidth, (float)buttonHeight}, "Exit to Menu")) {
         gs = GameState::MENU;
+
+        if (world != nullptr) {
+            delete world;
+            world = nullptr;
+        }
     }
 }
