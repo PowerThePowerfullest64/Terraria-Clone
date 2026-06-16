@@ -98,7 +98,10 @@ void Game::RenderGame() {
     BeginDrawing();
     ClearBackground(DARKBLUE);
 
-    BeginMode2D(debugMode ? editorCam : cam);
+    Camera2D renderCam = cam;
+    renderCam.target = {roundf(cam.target.x), roundf(cam.target.y)};
+
+    BeginMode2D(debugMode ? editorCam : renderCam);
 
     world.Render();
     EntityManager::Render();
