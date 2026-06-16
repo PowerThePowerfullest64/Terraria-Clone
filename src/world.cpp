@@ -70,7 +70,8 @@ World::World(Game* game) :
 }
 
 World::~World() {
-    std::cout << "Deconstructed World!\n";
+    std::cout << "Deconstructing " << chunks.size() << " chunks! (" << chunks.size() * Chunk::WIDTH * Chunk::HEIGHT << " blocks)\n";
+    std::cout << "Deconstructing World!\n";
 }
 
 BlockType World::GetBlock(int x, int y) {

@@ -8,6 +8,11 @@
 #include "world.hpp"
 #include "player.hpp"
 
+enum class GameState {
+    MENU,
+    GAME
+};
+
 class Game {
 public:
     const uint16_t SCREEN_WIDTH = 1440u, SCREEN_HEIGHT = 810u;
@@ -37,6 +42,8 @@ private:
 
     float zoomLevels[9];
     int currentZoomLevel = 3;
+
+    GameState gs = GameState::MENU;
 
     Player* player;
 
