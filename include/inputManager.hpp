@@ -11,5 +11,7 @@ public:
     static bool zoomInPressed;
     static bool zoomOutPressed;
 
+    static bool togglePausedReleased;
+
     static void Update();
 };

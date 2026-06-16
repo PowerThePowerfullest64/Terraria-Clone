@@ -5,6 +5,9 @@
 #include <string>
 
 #include "raylib.h"
+#define RAYGUI_IMPLEMENTATION
+#define RAYGUI_SUPPORT_ICONS
+#include "raygui.h"
 
 #include "entity.hpp"
 #include "player.hpp"
@@ -30,6 +33,7 @@ void Game::Run(bool debug) {
 
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Terraria Clone Haha");
     SetTargetFPS(60);
+    SetExitKey(KEY_P);
 
     // zoom levels
     {
@@ -49,13 +53,40 @@ void Game::Run(bool debug) {
 
     player = EntityManager::CreateEntity<Player>(this, Vec2f{96000.f, 0.f});
 
-    while (running) {
-        Update();
+    while (running && !WindowShouldClose()) {
+        InputManager::Update();
 
-        RenderGame();
-        RenderUI();
+        if (InputManager::togglePausedReleased) {
+            if (gs == GameState::GAME) gs = GameState::PAUSED;
+            else if (gs == GameState::PAUSED) gs = GameState::GAME;
+        }
 
-        if (WindowShouldClose()) running = false;
+        BeginDrawing();
+
+        switch (gs)
+        {
+        case GameState::MENU:
+            RenderMenuUI();
+
+            break;
+        case GameState::GAME:
+            UpdateGame();
+
+            RenderGame();
+            RenderGameUI();
+
+            break;
+        case GameState::PAUSED:
+            RenderGame();
+            RenderPausedUI();
+
+            break;
+        
+        default:
+            running = false; // No gamestate set, exit because wth?
+        }
+
+        EndDrawing();
     }
 
     TextureManager::UnloadTextures();
@@ -68,10 +99,8 @@ void Game::SetTPS(float targetTps) {
     tickDuration = 1.f / tps;
 }
 
-void Game::Update() {
+void Game::UpdateGame() {
     timer = std::chrono::high_resolution_clock::now();
-
-    InputManager::Update();
 
     if (InputManager::zoomInPressed) { currentZoomLevel++; currentZoomLevel = std::min(currentZoomLevel, 6); cam.zoom = zoomLevels[currentZoomLevel]; };
     if (InputManager::zoomOutPressed) { currentZoomLevel--; currentZoomLevel = std::max(currentZoomLevel, 0); cam.zoom = zoomLevels[currentZoomLevel]; }
@@ -95,7 +124,6 @@ void Game::Update() {
 void Game::RenderGame() {
     timer = std::chrono::high_resolution_clock::now();
 
-    BeginDrawing();
     ClearBackground(DARKBLUE);
 
     Camera2D renderCam = cam;
@@ -119,7 +147,7 @@ void Game::RenderGame() {
     EndMode2D();
 }
 
-void Game::RenderUI() {
+void Game::RenderGameUI() {
     // Get render time
     auto now = std::chrono::high_resolution_clock::now();
     renderTime = std::chrono::duration_cast<std::chrono::milliseconds>(now - timer);
@@ -130,6 +158,36 @@ void Game::RenderUI() {
     DrawText(ut.c_str(), 4, 26, 14, WHITE);
     std::string rt = "Render = " + std::to_string(renderTime.count()) + " ms";
     DrawText(rt.c_str(), 4, 48, 14, WHITE);
+}
 
-    EndDrawing();
+void Game::RenderMenuUI() {
+    ClearBackground(GRAY);
+
+    int buttonWidth = 256, buttonHeight = 48;
+
+    float x = SCREEN_WIDTH / 2.f - buttonWidth / 2.f;
+    float y = SCREEN_HEIGHT / 2.f - buttonHeight;
+
+    if (GuiButton(Rectangle{x, y, (float)buttonWidth, (float)buttonHeight}, "Play")) {
+        gs = GameState::GAME;
+    }
+
+    if (GuiButton(Rectangle{x, y + buttonHeight + 16, (float)buttonWidth, (float)buttonHeight}, "Exit")) {
+        running = false;
+    }
+}
+
+void Game::RenderPausedUI() {
+    int buttonWidth = 256, buttonHeight = 48;
+
+    float x = SCREEN_WIDTH / 2.f - buttonWidth / 2.f;
+    float y = SCREEN_HEIGHT / 2.f - buttonHeight;
+
+    if (GuiButton(Rectangle{x, y, (float)buttonWidth, (float)buttonHeight}, "Resume")) {
+        gs = GameState::GAME;
+    }
+
+    if (GuiButton(Rectangle{x, y + buttonHeight + 16, (float)buttonWidth, (float)buttonHeight}, "Exit to Menu")) {
+        gs = GameState::MENU;
+    }
 }

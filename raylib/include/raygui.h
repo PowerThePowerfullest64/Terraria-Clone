@@ -1806,7 +1806,7 @@ int GuiTabBar(Rectangle bounds, char **text, int count, int *active)
     //GuiState state = guiState;
     
     int tabItemsWidth = GuiGetStyle(TABBAR, TAB_ITEMS_WIDTH);
-    Rectangle tabBounds = { bounds.x, bounds.y, tabItemsWidth, bounds.height };
+    Rectangle tabBounds = { bounds.x, bounds.y, (float)tabItemsWidth, bounds.height };
 
     if (*active < 0) *active = 0;
     else if (*active > count - 1) *active = count - 1;
@@ -2188,7 +2188,7 @@ int GuiToggleGroup(Rectangle bounds, const char *text, int *active)
 
     bool toggle = false;    // Required for individual toggles
 
-    char *textPtr = text;
+    char *textPtr = (char*)text;
     bool itemReady = false;
     float initBoundsX = bounds.x;
     float initBoundsY = bounds.y;

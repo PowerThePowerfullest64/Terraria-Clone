@@ -10,7 +10,8 @@
 
 enum class GameState {
     MENU,
-    GAME
+    GAME,
+    PAUSED
 };
 
 class Game {
@@ -51,7 +52,9 @@ private:
     std::chrono::milliseconds updateTime;
     std::chrono::milliseconds renderTime;
 
-    void Update();
+    void UpdateGame();
     void RenderGame();
-    void RenderUI();
+    void RenderGameUI();
+    void RenderMenuUI();
+    void RenderPausedUI();
 };

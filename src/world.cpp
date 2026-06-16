@@ -20,26 +20,37 @@ World::World(Game* game) :
         chunks[i] = Chunk(this, {(float)(i % WIDTH), (float)(i / WIDTH)});
     }
 
+    Generate();
+}
+
+World::~World() {
+    std::cout << "Deconstructing " << chunks.size() << " chunks! (" << chunks.size() * Chunk::WIDTH * Chunk::HEIGHT << " blocks)\n";
+    std::cout << "Deconstructing World!\n";
+}
+
+void World::Generate(uint16_t seed) {
+    if (seed == UINT16_MAX) seed = randomInt(0, UINT16_MAX);
+
     FastNoiseLite noise;
-    noise.SetSeed(0);
+    noise.SetSeed(seed);
     noise.SetNoiseType(FastNoiseLite::NoiseType_ValueCubic);
     noise.SetFrequency(0.005f);
     noise.SetFractalOctaves(24);
 
     FastNoiseLite noise2;
-    noise2.SetSeed(1);
+    noise2.SetSeed(seed+1);
     noise2.SetNoiseType(FastNoiseLite::NoiseType_ValueCubic);
     noise2.SetFrequency(0.04f);
     noise2.SetFractalOctaves(24);
 
     FastNoiseLite noise3;
-    noise3.SetSeed(2);
+    noise3.SetSeed(seed+2);
     noise3.SetNoiseType(FastNoiseLite::NoiseType_ValueCubic);
     noise3.SetFrequency(0.08);
     noise3.SetFractalOctaves(24);
 
     FastNoiseLite noise4;
-    noise4.SetSeed(3);
+    noise4.SetSeed(seed+3);
     noise4.SetNoiseType(FastNoiseLite::NoiseType_ValueCubic);
     noise4.SetFrequency(0.16f);
     noise4.SetFractalOctaves(24);
@@ -66,12 +77,7 @@ World::World(Game* game) :
         SetBlock(x, HEIGHT * Chunk::HEIGHT - height, GRASS);
     }
 
-    std::cout << "Constructed World!\n";
-}
-
-World::~World() {
-    std::cout << "Deconstructing " << chunks.size() << " chunks! (" << chunks.size() * Chunk::WIDTH * Chunk::HEIGHT << " blocks)\n";
-    std::cout << "Deconstructing World!\n";
+    std::cout << "Generated World!\n";
 }
 
 BlockType World::GetBlock(int x, int y) {

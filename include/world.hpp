@@ -34,6 +34,9 @@ public:
     // Renders every block in the world.
     void Render();
 
+    // Generates a random world, random seed if none is provided or seed == UINT16_MAX.
+    void Generate(uint16_t seed = UINT16_MAX);
+
 private:
     Game* game;
     std::vector<Chunk> chunks;
