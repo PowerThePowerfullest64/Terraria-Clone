@@ -1,10 +1,12 @@
 #pragma once
 
 #include <stdint.h>
+#include <chrono>
 
 #include "raylib.h"
 
 #include "world.hpp"
+#include "player.hpp"
 
 class Game {
 public:
@@ -35,4 +37,14 @@ private:
 
     float zoomLevels[9];
     int currentZoomLevel = 3;
+
+    Player* player;
+
+    std::chrono::high_resolution_clock::time_point timer;
+    std::chrono::milliseconds updateTime;
+    std::chrono::milliseconds renderTime;
+
+    void Update();
+    void RenderGame();
+    void RenderUI();
 };

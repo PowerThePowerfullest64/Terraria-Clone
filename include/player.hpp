@@ -16,7 +16,7 @@ private:
     float acceleration = 15.f;
     float friction = 15.f;
     float speed = 250.f;
-    float jumpPower = 500.f;
+    float jumpPower = 550.f;
 
     Collider topRightCollider;
     Collider topLeftCollider;
