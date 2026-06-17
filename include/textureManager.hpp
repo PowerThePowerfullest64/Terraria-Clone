@@ -5,7 +5,7 @@
 
 #include "raylib.h"
 
-#include "blockTypes.hpp"
+#include "block.hpp"
 
 class TextureManager {
 public:

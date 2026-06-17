@@ -27,43 +27,31 @@ World::~World() {
     std::cout << "Deconstructing World!\n";
 }
 
-void World::Generate(uint16_t seed) {
+void World::Generate(int seed) {
     for (Chunk& chunk : chunks) { chunk.Reset(); } // Reset old world if any existed.
 
-    if (seed == UINT16_MAX) seed = randomInt(0, UINT16_MAX);
+    if (seed == INT32_MAX) seed = randomInt(INT32_MIN, INT32_MAX);
 
     FastNoiseLite noise;
     noise.SetSeed(seed);
-    noise.SetNoiseType(FastNoiseLite::NoiseType_ValueCubic);
-    noise.SetFrequency(0.002f);
-    noise.SetFractalOctaves(24);
-
-    FastNoiseLite noise2;
-    noise2.SetSeed(seed+1);
-    noise2.SetNoiseType(FastNoiseLite::NoiseType_ValueCubic);
-    noise2.SetFrequency(0.02f);
-    noise2.SetFractalOctaves(24);
-
-    FastNoiseLite noise3;
-    noise3.SetSeed(seed+2);
-    noise3.SetNoiseType(FastNoiseLite::NoiseType_ValueCubic);
-    noise3.SetFrequency(0.06);
-    noise3.SetFractalOctaves(24);
-
-    FastNoiseLite noise4;
-    noise4.SetSeed(seed+3);
-    noise4.SetNoiseType(FastNoiseLite::NoiseType_ValueCubic);
-    noise4.SetFrequency(0.12f);
-    noise4.SetFractalOctaves(24);
+    noise.SetNoiseType(FastNoiseLite::NoiseType_Perlin); // better than ValueCubic for terrain
+    noise.SetFractalType(FastNoiseLite::FractalType_FBm);
+    noise.SetFractalOctaves(12);
 
     for (int x = 0; x < WIDTH * Chunk::WIDTH; ++x) {
-        float n = noise.GetNoise((float)x, 0.f) * 2.0f +
-        noise2.GetNoise((float)x, 0.f) * 0.25f +
-        noise3.GetNoise((float)x, 0.f) * 0.1f +
-        noise4.GetNoise((float)x, 0.f) * 0.05f;
-        float value = n;
+        float fx = (float)x;
 
-        int height = (int)(value * 300.f) + 700;
+        float base   = noise.GetNoise(fx * 0.001f, 0.0f);
+        float hills  = noise.GetNoise(fx * 0.005f, 500.0f);
+        float detail = noise.GetNoise(fx * 0.02f, 1000.0f);
+
+        float value =
+            base   * 1.4f +
+            hills  * 0.9f +
+            detail * 0.25f;
+
+        int height = (int)(value * 2000.0f) + 1500;
+
         heightMap[x] = height;
 
         for (int y = 0; y < height; ++y) {

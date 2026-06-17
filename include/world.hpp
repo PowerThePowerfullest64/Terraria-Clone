@@ -8,13 +8,13 @@
 #include "vec2f.h"
 
 #include "chunk.hpp"
-#include "blockTypes.hpp"
+#include "block.hpp"
 
 class GameplaySession;
 
 class World {
 public:
-    static constexpr int WIDTH = 2048, HEIGHT = 72;
+    static constexpr int WIDTH = 522, HEIGHT = 150;
 
     World(GameplaySession* gameplaySession);
     ~World();
@@ -31,7 +31,7 @@ public:
     void Render();
 
     // Generates a random world, random seed if none is provided or seed == UINT16_MAX.
-    void Generate(uint16_t seed = UINT16_MAX);
+    void Generate(int seed = INT32_MAX);
 
 private:
     GameplaySession* gameplaySession;
@@ -39,7 +39,7 @@ private:
     int heightMap[WIDTH * Chunk::WIDTH];
 
     int stoneDepth = 10;
-    int quartzDepth = 500;
+    int quartzDepth = 1500;
 
     // Turns a 2D-coordinate into a 1D-index.
     size_t Index(int x, int y) { return static_cast<size_t>(y * WIDTH + x); }

@@ -11,3 +11,7 @@ enum class BlockType : uint8_t {
     QUARTZ,
     COUNT
 };
+
+struct Block {
+    BlockType type;
+};

@@ -9,7 +9,7 @@
 Chunk::Chunk(World* world, const Vec2f& pos) : 
     world(world),
     pos(pos) {
-        blocks.resize(WIDTH * HEIGHT, BlockType::AIR);
+        blocks.resize(WIDTH * HEIGHT, {BlockType::AIR});
     }
 
 void Chunk::Render(const Camera2D& cam, int sWidth, int sHeight) {
