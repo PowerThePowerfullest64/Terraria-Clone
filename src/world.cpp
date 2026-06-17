@@ -23,8 +23,7 @@ World::World(GameplaySession* gameplaySession) :
 }
 
 World::~World() {
-    std::cout << "Deconstructing chunks." << "\n";
-    std::cout << "Deconstructing World!\n";
+    std::cout << "Deconstructed World!\n";
 }
 
 void World::Generate(int seed) {
