@@ -35,7 +35,7 @@ void World::Generate(uint16_t seed) {
     FastNoiseLite noise;
     noise.SetSeed(seed);
     noise.SetNoiseType(FastNoiseLite::NoiseType_ValueCubic);
-    noise.SetFrequency(0.0025f);
+    noise.SetFrequency(0.002f);
     noise.SetFractalOctaves(24);
 
     FastNoiseLite noise2;
@@ -47,20 +47,20 @@ void World::Generate(uint16_t seed) {
     FastNoiseLite noise3;
     noise3.SetSeed(seed+2);
     noise3.SetNoiseType(FastNoiseLite::NoiseType_ValueCubic);
-    noise3.SetFrequency(0.04);
+    noise3.SetFrequency(0.06);
     noise3.SetFractalOctaves(24);
 
     FastNoiseLite noise4;
     noise4.SetSeed(seed+3);
     noise4.SetNoiseType(FastNoiseLite::NoiseType_ValueCubic);
-    noise4.SetFrequency(0.08f);
+    noise4.SetFrequency(0.12f);
     noise4.SetFractalOctaves(24);
 
     for (int x = 0; x < WIDTH * Chunk::WIDTH; ++x) {
-        float n = noise.GetNoise((float)x, 0.f) * 1.5f +
+        float n = noise.GetNoise((float)x, 0.f) * 2.0f +
         noise2.GetNoise((float)x, 0.f) * 0.25f +
-        noise3.GetNoise((float)x, 0.f) * 0.15f +
-        noise4.GetNoise((float)x, 0.f) * 0.075f;
+        noise3.GetNoise((float)x, 0.f) * 0.1f +
+        noise4.GetNoise((float)x, 0.f) * 0.05f;
         float value = n;
 
         int height = (int)(value * 300.f) + 700;

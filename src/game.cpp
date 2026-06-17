@@ -66,14 +66,15 @@ void Game::Run() {
 
         case GameState::MENU:
             BeginDrawing();
-
             RenderMenuUI();
-            
             EndDrawing();
 
             break;
         
         default:
+            running = false;
+            std::cout << "Menu has no valid GameState (MENU, GAME); closing game.\n";
+
             break;
         }
     }
