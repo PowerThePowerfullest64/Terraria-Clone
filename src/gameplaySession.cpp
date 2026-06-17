@@ -9,6 +9,7 @@
 #include "game.hpp"
 #include "inputManager.hpp"
 #include "entityManager.hpp"
+#include "player.hpp"
 
 void UpdateCamera(Camera2D& cam, Entity* target, float dt) {
     assert(target != nullptr);
@@ -22,10 +23,12 @@ void UpdateCamera(Camera2D& cam, Entity* target, float dt) {
 
 GameplaySession::GameplaySession(Game* game) :
     game(game) {
+
+    em = new EntityManager();
     
     world = new World(this);
     world->Generate();
-    player = EntityManager::CreateEntity<Player>(this, Vec2f{96000.f, 0.f});
+    player = em->CreateEntity<Player>(this, Vec2f{96000.f, 0.f});
 
     std::cout << "Opened GameplaySession.\n";
 }
@@ -36,8 +39,10 @@ GameplaySession::~GameplaySession() {
         world = nullptr;
     }
 
-    EntityManager::ClearEntities();
-    player = nullptr;
+    if (em != nullptr) {
+        delete em;
+        em = nullptr;
+    }
 
     std::cout << "Closed GameplaySession.\n";
 }
@@ -99,7 +104,7 @@ void GameplaySession::UpdateGame() {
 
     accumulator += dt;
     while (accumulator >= tickDuration) {
-        EntityManager::Update(tickDuration);
+        em->Update(tickDuration);
 
         accumulator -= tickDuration;
     }
@@ -122,7 +127,7 @@ void GameplaySession::RenderGame() {
     BeginMode2D(renderCam);
 
     world->Render();
-    EntityManager::Render();
+    em->Render();
 
     EndMode2D();
 }

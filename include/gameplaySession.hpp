@@ -5,6 +5,7 @@
 #include "game.hpp"
 #include "world.hpp"
 #include "player.hpp"
+#include "entityManager.hpp"
 
 class GameplaySession {
 public:
@@ -14,6 +15,8 @@ public:
 
     World* world = nullptr;
     Player* player = nullptr;
+
+    EntityManager* em = nullptr;
 
     GameplaySession(Game* game);
     ~GameplaySession();
