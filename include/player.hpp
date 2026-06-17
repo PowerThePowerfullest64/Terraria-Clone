@@ -5,9 +5,11 @@
 #include "entity.hpp"
 #include "collider.hpp"
 
+class GameplaySession;
+
 class Player : public Entity {
 public:
-    Player(Game* game, const Vec2f& position);
+    Player(GameplaySession* gameplaySession, const Vec2f& position);
     
     void Update(float dt) override;
     void Render() override;

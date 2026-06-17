@@ -2,16 +2,16 @@
 
 #include <stdint.h>
 
-#include "game.hpp"
+#include "gameplaySession.hpp"
 #include "entity.hpp"
 
-Collider::Collider(Game* game, Entity* entity, const Vec2f& position) :
-    game(game),
+Collider::Collider(GameplaySession* gameplaySession, Entity* entity, const Vec2f& position) :
+    gameplaySession(gameplaySession),
     entity(entity),
     position(position) {}
 
 bool Collider::CheckCollision() {
-    BlockType type = game->world->GetBlockWorld(position + entity->position);
+    BlockType type = gameplaySession->world->GetBlockWorld(position + entity->position);
 
     return type != BlockType::AIR;
 }

@@ -6,17 +6,17 @@
 
 class Entity;
 
-class Game;
+class GameplaySession;
 
 class Collider {
 public:
-    Collider(Game* game, Entity* entity, const Vec2f& position);
+    Collider(GameplaySession* gameplaySession, Entity* entity, const Vec2f& position);
 
     bool CheckCollision();
     void Render();
 
 private:
-    Game* game;
+    GameplaySession* gameplaySession;
     Entity* entity;
     Vec2f position;
 };

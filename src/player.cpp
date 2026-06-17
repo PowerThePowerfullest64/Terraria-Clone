@@ -2,17 +2,18 @@
 
 #include <iostream>
 
+#include "gameplaySession.hpp"
 #include "game.hpp"
 #include "textureManager.hpp"
 #include "inputManager.hpp"
 
-Player::Player(Game* game, const Vec2f& position) :
-    Entity(game, position),
-    topRightCollider(game, this, {10.f, -24.f}),
-    topLeftCollider(game, this, {-10.f, -24.f}),
-    bottomRightCollider(game, this, {10.f, 24.f}),
-    bottomLeftCollider(game, this, {-10.f, 24.f}),
-    groundedCollider(game, this, {0.f, 34.f})
+Player::Player(GameplaySession* gameplaySession, const Vec2f& position) :
+    Entity(gameplaySession, position),
+    topRightCollider(gameplaySession, this, {10.f, -24.f}),
+    topLeftCollider(gameplaySession, this, {-10.f, -24.f}),
+    bottomRightCollider(gameplaySession, this, {10.f, 24.f}),
+    bottomLeftCollider(gameplaySession, this, {-10.f, 24.f}),
+    groundedCollider(gameplaySession, this, {0.f, 34.f})
     {
         sprite = TextureManager::Get("human"); // use texture
     }
@@ -20,7 +21,7 @@ Player::Player(Game* game, const Vec2f& position) :
 void Player::Update(float dt) {
     bool grounded = groundedCollider.CheckCollision();
 
-    velocity.y += game->GRAVITY * dt;
+    velocity.y += gameplaySession->game->GRAVITY * dt;
 
     if (InputManager::moveLeftDown) velocity.x = std::lerp(velocity.x, -speed, acceleration * dt);
     else if (InputManager::moveRightDown) velocity.x = std::lerp(velocity.x, speed, acceleration * dt);
@@ -72,7 +73,7 @@ void Player::Render() {
 
     DrawTexturePro(*sprite, source, dest, origin, rotation, WHITE);
 
-    if (!game->debugMode) return;
+    if (true) return; // false to show colliders and path!
 
     float mag = velocity.length() / 6.f;
     if (mag > 0.f) {

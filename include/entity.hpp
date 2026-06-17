@@ -4,12 +4,12 @@
 
 #include "vec2f.h"
 
-class Game;
+class GameplaySession;
 
 class Entity {
 public:
-    Entity(Game* game, const Vec2f& position) :
-        game(game),
+    Entity(GameplaySession* gameplaySession, const Vec2f& position) :
+        gameplaySession(gameplaySession),
         position(position) {}
     
     virtual ~Entity() = default;
@@ -17,7 +17,7 @@ public:
     virtual void Update(float dt) {}
     virtual void Render() {}
 protected:
-    Game* game;
+    GameplaySession* gameplaySession;
     Vec2f velocity = Vec2f::ZERO;
     Vec2f scale = Vec2f::ONE;
     float rotation = 0.f;

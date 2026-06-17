@@ -7,11 +7,12 @@
 
 #include "random.h"
 
+#include "gameplaySession.hpp"
 #include "game.hpp"
 #include "textureManager.hpp"
 
-World::World(Game* game) :
-    game(game) {
+World::World(GameplaySession* gameplaySession) :
+    gameplaySession(gameplaySession) {
 
     chunks.resize(WIDTH * HEIGHT);
 
@@ -111,5 +112,5 @@ void World::SetBlock(int x, int y, BlockType type) {
 }
 
 void World::Render() {
-    for (Chunk& chunk : chunks) chunk.Render(game->cam, game->SCREEN_WIDTH, game->SCREEN_HEIGHT);
+    for (Chunk& chunk : chunks) chunk.Render(gameplaySession->cam, gameplaySession->game->SCREEN_WIDTH, gameplaySession->game->SCREEN_HEIGHT);
 }

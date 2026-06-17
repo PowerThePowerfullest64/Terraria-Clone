@@ -10,13 +10,13 @@
 #include "chunk.hpp"
 #include "blockTypes.hpp"
 
-class Game;
+class GameplaySession;
 
 class World {
 public:
     static constexpr int WIDTH = 2048, HEIGHT = 72;
 
-    World(Game* game);
+    World(GameplaySession* gameplaySession);
     ~World();
 
     // Gets a copy of a block at a given position.
@@ -34,7 +34,7 @@ public:
     void Generate(uint16_t seed = UINT16_MAX);
 
 private:
-    Game* game;
+    GameplaySession* gameplaySession;
     std::vector<Chunk> chunks;
     int heightMap[WIDTH * Chunk::WIDTH];
 
