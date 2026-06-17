@@ -2,6 +2,8 @@
 
 #include <chrono>
 
+#include "vec2i.h"
+
 #include "game.hpp"
 #include "world.hpp"
 #include "player.hpp"
@@ -33,9 +35,14 @@ private:
 
     int currentZoomLevel = 3;
 
+    Vec2i spawnPoint = Vec2i::ZERO;
+
     std::chrono::high_resolution_clock::time_point timer;
     std::chrono::milliseconds updateTime;
     std::chrono::milliseconds renderTime;
+
+    // Sets the session's spawn point based on the middle of the world and the lowest position from there.
+    void SetSpawnPoint();
 
     void UpdateGame();
     void RenderGame();

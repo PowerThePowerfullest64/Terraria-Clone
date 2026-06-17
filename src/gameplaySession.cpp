@@ -10,6 +10,7 @@
 #include "inputManager.hpp"
 #include "entityManager.hpp"
 #include "player.hpp"
+#include "block.hpp"
 
 void UpdateCamera(Camera2D& cam, Entity* target, float dt) {
     assert(target != nullptr);
@@ -28,7 +29,9 @@ GameplaySession::GameplaySession(Game* game) :
     
     world = new World(this);
     world->Generate();
-    player = em->CreateEntity<Player>(this, Vec2f{96000.f, 0.f});
+
+    SetSpawnPoint();
+    player = em->CreateEntity<Player>(this, spawnPoint);
 
     std::cout << "Opened GameplaySession.\n";
 }
@@ -92,6 +95,23 @@ void GameplaySession::Run() {
 void GameplaySession::SetTPS(float targetTps) {
     tps = targetTps;
     tickDuration = 1.f / tps;
+}
+
+void GameplaySession::SetSpawnPoint() {
+    spawnPoint.x = world->WIDTH * Chunk::WIDTH / 2;
+    
+    for (int y = 0; y < world->HEIGHT * Chunk::HEIGHT; ++y) {
+        if (world->GetBlock(spawnPoint.x, y) != BlockType::AIR) {
+            y -= 2; // Reverse 2 position back. (1 block above ground)
+
+            spawnPoint.y = y;
+            break;
+        }
+    }
+
+    spawnPoint = World::FromWorld(spawnPoint);
+
+    std::cout << "Found spawn point!\n";
 }
 
 void GameplaySession::UpdateGame() {

@@ -23,7 +23,7 @@ World::World(GameplaySession* gameplaySession) :
 }
 
 World::~World() {
-    std::cout << "Deconstructing " << chunks.size() << " chunks! (" << chunks.size() * Chunk::WIDTH * Chunk::HEIGHT << " blocks)\n";
+    std::cout << "Deconstructing chunks." << "\n";
     std::cout << "Deconstructing World!\n";
 }
 
@@ -66,7 +66,7 @@ void World::Generate(int seed) {
         SetBlock(x, HEIGHT * Chunk::HEIGHT - height, BlockType::GRASS);
     }
 
-    std::cout << "Generated World!\n";
+    std::cout << "Generated World! (" << chunks.size() << " chunks, " << chunks.size() * Chunk::WIDTH * Chunk::HEIGHT << " blocks)\n";
 }
 
 BlockType World::GetBlock(int x, int y) {

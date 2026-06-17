@@ -6,6 +6,7 @@
 #include "raylib.h"
 
 #include "vec2f.h"
+#include "vec2i.h"
 
 #include "chunk.hpp"
 #include "block.hpp"
@@ -14,6 +15,7 @@ class GameplaySession;
 
 class World {
 public:
+    // Width and height of the world in chunks.
     static constexpr int WIDTH = 522, HEIGHT = 150;
 
     World(GameplaySession* gameplaySession);
@@ -26,6 +28,9 @@ public:
 
     // Sets a block at a given position to a given type.
     void SetBlock(int x, int y, BlockType type);
+
+    // Converts a block position into a screen coordinate.
+    static Vec2f FromWorld(const Vec2i& pos) { return pos * Chunk::blockSize; }
 
     // Renders every block in the world.
     void Render();
