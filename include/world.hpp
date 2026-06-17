@@ -31,6 +31,7 @@ public:
 
     // Converts a block position into a screen coordinate.
     static Vec2f FromWorld(const Vec2i& pos) { return pos * Chunk::blockSize; }
+    static Vec2i ToWorld(const Vec2f& pos) { return pos / Chunk::blockSize; }
 
     // Renders every block in the world.
     void Render();

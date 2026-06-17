@@ -7,6 +7,7 @@ public:
     static bool moveLeftDown;
     static bool moveRightDown;
     static bool jumpDown;
+    static bool mineDown;
     
     static bool zoomInPressed;
     static bool zoomOutPressed;

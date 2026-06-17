@@ -6,6 +6,7 @@
 #include "game.hpp"
 #include "textureManager.hpp"
 #include "inputManager.hpp"
+#include "block.hpp"
 
 Player::Player(GameplaySession* gameplaySession, const Vec2f& position) :
     Entity(gameplaySession, position),
@@ -61,6 +62,30 @@ void Player::Update(float dt) {
             position.y -= velocity.y * dt;
             velocity.y = 0.f;
         }
+    }
+
+    if (InputManager::mineDown) {
+        Vector2 mouseWorld = GetScreenToWorld2D(GetMousePosition(), gameplaySession->cam);
+
+        Vec2i worldPos = World::ToWorld(Vec2f::fromVector2(mouseWorld));
+        BlockType type = gameplaySession->world->GetBlock(worldPos);
+
+        if (type != BlockType::AIR) {
+            if (miningPosition != worldPos) {
+                miningPosition = worldPos;
+                miningLeft = 0.f; // Mining time is 0 seconds for now.
+            } else {
+                miningLeft -= dt;
+            }
+
+            if (miningLeft <= 0.f) {
+                miningPosition = {-1, -1};
+                gameplaySession->world->SetBlock(worldPos.x, worldPos.y, BlockType::AIR);
+                std::cout << "Mined block at (" << worldPos.x << ", " << worldPos.y << ")\n";
+            }
+        }
+    } else {
+        miningPosition = {-1, -1};
     }
 }
 

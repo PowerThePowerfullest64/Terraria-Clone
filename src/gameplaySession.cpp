@@ -31,7 +31,7 @@ GameplaySession::GameplaySession(Game* game) :
     world->Generate();
 
     SetSpawnPoint();
-    player = em->CreateEntity<Player>(this, spawnPoint);
+    player = em->CreateEntity<Player>(this, Vec2f{0.f, 0.f});
 
     std::cout << "Opened GameplaySession.\n";
 }

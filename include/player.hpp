@@ -1,6 +1,6 @@
 #pragma once
 
-#include "vec2f.h"
+#include "vec2i.h"
 
 #include "entity.hpp"
 #include "collider.hpp"
@@ -19,6 +19,9 @@ private:
     float friction = 15.f;
     float speed = 250.f;
     float jumpPower = 550.f;
+
+    Vec2i miningPosition = {-1, -1};
+    float miningLeft = 0.f;
 
     Collider topRightCollider;
     Collider topLeftCollider;
