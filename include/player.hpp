@@ -28,4 +28,7 @@ private:
     Collider bottomRightCollider;
     Collider bottomLeftCollider;
     Collider groundedCollider;
+
+    void MoveAndSlide(float dt);
+    void MiningUpdate(float dt);
 };
