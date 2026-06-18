@@ -10,13 +10,13 @@
 
 Player::Player(GameplaySession* gameplaySession, const Vec2f& position) :
     Entity(gameplaySession, position),
-    topRightCollider(gameplaySession, this, {10.f, -24.f}),
-    topLeftCollider(gameplaySession, this, {-10.f, -24.f}),
+    topRightCollider(gameplaySession, this, {10.f, -20.f}),
+    topLeftCollider(gameplaySession, this, {-10.f, -20.f}),
     bottomRightCollider(gameplaySession, this, {10.f, 24.f}),
     bottomLeftCollider(gameplaySession, this, {-10.f, 24.f}),
     groundedCollider(gameplaySession, this, {0.f, 34.f})
     {
-        sprite = TextureManager::Get("human"); // use texture
+        sprite = TextureManager::Get("human"); // Use texture
     }
 
 void Player::Update(float dt) {
