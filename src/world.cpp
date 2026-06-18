@@ -49,7 +49,7 @@ void World::Generate(int seed) {
             hills  * 0.9f +
             detail * 0.25f;
 
-        int height = (int)(value * 2000.0f) + 1500;
+        int height = (int)(value * 2200.0f) + 2000;
 
         heightMap[x] = height;
 
