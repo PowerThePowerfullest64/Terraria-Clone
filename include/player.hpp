@@ -22,6 +22,7 @@ private:
 
     Vec2i miningPosition = {-1, -1};
     float miningLeft = 0.f;
+    float miningTimeFactor = 1.f;
 
     Collider topRightCollider;
     Collider topLeftCollider;

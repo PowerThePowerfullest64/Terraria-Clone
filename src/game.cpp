@@ -39,6 +39,8 @@ void Game::Run() {
     TextureManager::LoadTextures();
     TextureManager::SetBlockTextures();
 
+    LoadBlockData();
+
     while (running && !WindowShouldClose()) {
         switch (gs)
         {

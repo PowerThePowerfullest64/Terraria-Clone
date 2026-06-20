@@ -106,7 +106,7 @@ void Player::MiningUpdate(float dt) {
 
     if (miningPosition != worldPos) {
         miningPosition = worldPos;
-        miningLeft = 0.f; // Mining time is 0 seconds for now.
+        miningLeft = GetMiningTime(type) * miningTimeFactor;
     } else {
         miningLeft -= dt;
     }
@@ -116,6 +116,4 @@ void Player::MiningUpdate(float dt) {
         gameplaySession->world->SetBlock(worldPos.x, worldPos.y, BlockType::AIR);
         std::cout << "Mined block at (" << worldPos.x << ", " << worldPos.y << ")\n";
     }
-    
-    miningPosition = {-1, -1};
 }

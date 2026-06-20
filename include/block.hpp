@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdint.h>
+#include <vector>
 
 enum class BlockType : uint8_t {
     AIR,
@@ -12,6 +13,11 @@ enum class BlockType : uint8_t {
     COUNT
 };
 
+inline float miningTimes[static_cast<int>(BlockType::COUNT)];
+
 struct Block {
     BlockType type;
 };
+
+void LoadBlockData();
+float GetMiningTime(BlockType blockType);
