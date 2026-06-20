@@ -11,9 +11,8 @@ std::unordered_map<std::string, Texture2D> TextureManager::textures;
 Texture2D* TextureManager::Get(const std::string& name) {
     auto it = textures.find(name);
 
-    if (it != textures.end()) {
+    if (it != textures.end())
         return &it->second;
-    }
 
     std::cout << "Warning: Did not find texture '" << name << "' in TextureManager\n";
     return &textures[path + "noTexture.png"];
@@ -43,9 +42,8 @@ void TextureManager::LoadTextures() {
 void TextureManager::UnloadTextures() {
     std::cout << "Began unloading textures!\n";
 
-    for (auto it : textures) {
+    for (auto it : textures)
         UnloadTexture(it.second);
-    }
 
     std::cout << "Finished unloading textures!\n";
 }
