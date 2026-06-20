@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <cassert>
+#include <fstream>
 
 #include "raylib.h"
 #include "raygui.h"
@@ -22,16 +23,21 @@ void UpdateCamera(Camera2D& cam, Entity* target, float dt) {
     cam.target = {std::lerp(cam.target.x, target->position.x, blendFactor), std::lerp(cam.target.y, target->position.y, blendFactor)};
 }
 
-GameplaySession::GameplaySession(Game* game) :
+GameplaySession::GameplaySession(Game* game, bool load) :
     game(game) {
 
     em = new EntityManager();
     
     world = new World(this);
-    world->Generate();
 
-    SetSpawnPoint();
-    player = em->CreateEntity<Player>(this, spawnPoint);
+    if (load) {
+        Load("world1");
+    }
+    else {
+        world->Generate();
+        SetSpawnPoint();
+        em->CreateEntity<Player>(this, spawnPoint);
+    }
 
     cam = {{(float)game->SCREEN_WIDTH / 2.f, (float)game->SCREEN_HEIGHT / 2.f}, {0.f, 0.f}, 0.f, 1.f};
 
@@ -88,6 +94,10 @@ void GameplaySession::Run() {
             break;
         case GameState::SAVING:
             RenderGame();
+
+            // For now, just finish saving immediately, since we aren't waiting for naming.
+            Save("world1");
+            game->gs = GameState::GAME;
             
             break;
         
@@ -195,7 +205,53 @@ void GameplaySession::RenderPausedUI() {
     }
 }
 
-void GameplaySession::Save(const char*) {
+void GameplaySession::Save(const std::string& name) {
+    std::string path = game->worldsPath + name + ".bin";
+    std::ofstream save(path, std::ios::binary);
+
+    if (!save.is_open()) {
+        std::cout << "Failed to create save file!\n";
+        return;
+    }
+
+    save.write(reinterpret_cast<char*>(&currentZoomLevel), sizeof(currentZoomLevel));
+    save.write(reinterpret_cast<char*>(&spawnPoint.x), sizeof(spawnPoint.x));
+    save.write(reinterpret_cast<char*>(&spawnPoint.y), sizeof(spawnPoint.y));
+
+    world->Save(save);
+
+    em->Save(save);
+
+    if (!save) {
+        std::cout << "Failed to write save file!!\n";
+        return;
+    }
+
     // Do save stuff!
-    std::cout << "Saved Game!\n";
+    std::cout << "Saved World!\n";
+}
+
+void GameplaySession::Load(const std::string& name) {
+    std::string path = game->worldsPath + name + ".bin";
+    std::ifstream save(path, std::ios::binary);
+
+    if (!save.is_open()) {
+        std::cout << "Failed to open save file!\n";
+        return;
+    }
+
+    save.read(reinterpret_cast<char*>(&currentZoomLevel), sizeof(currentZoomLevel));
+    save.read(reinterpret_cast<char*>(&spawnPoint.x), sizeof(spawnPoint.x));
+    save.read(reinterpret_cast<char*>(&spawnPoint.y), sizeof(spawnPoint.y));
+
+    world->Load(save);
+
+    em->Load(save, this);
+
+    if (!save) {
+        std::cout << "Failed to load save file!\n";
+        return;
+    }
+
+    std::cout << "Loaded World!\n";
 }

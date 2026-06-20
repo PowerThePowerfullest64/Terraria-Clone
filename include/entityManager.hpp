@@ -2,10 +2,14 @@
 
 #include <vector>
 #include <memory>
+#include <fstream>
+#include <stdint.h>
 
 #include "vec2f.h"
 
 #include "entity.hpp"
+
+class GameplaySession;
 
 class EntityManager {
 public:
@@ -45,6 +49,9 @@ public:
 
     void Update(float dt) { for (auto& entity : entities) entity->Update(dt); } // update all entities
     void Render() { for (auto& entity : entities) entity->Render(); } // render all entities
+
+    void Save(std::ofstream& file);
+    void Load(std::ifstream& file, GameplaySession* gameplaySession);
 
 private:
     std::vector<std::unique_ptr<Entity>> entities = {};

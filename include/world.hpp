@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <stdint.h>
+#include <fstream>
 
 #include "raylib.h"
 
@@ -38,6 +39,9 @@ public:
 
     // Generates a random world, random seed if none is provided or seed == UINT16_MAX.
     void Generate(int seed = INT32_MAX);
+
+    void Save(std::ofstream& file) const;
+    void Load(std::ifstream& file);
 
 private:
     GameplaySession* gameplaySession;

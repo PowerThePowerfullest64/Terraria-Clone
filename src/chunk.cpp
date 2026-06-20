@@ -39,6 +39,24 @@ void Chunk::Render(const Camera2D& cam, int sWidth, int sHeight) {
     }
 }
 
+void Chunk::Save(std::ostream& file) const {
+    size_t blockCount = blocks.size();
+    file.write(reinterpret_cast<char*>(&blockCount), sizeof(blockCount));
+
+    file.write(reinterpret_cast<const char*>(blocks.data()),
+           blockCount * sizeof(Block));
+}
+
+void Chunk::Load(std::ifstream& file) {
+    size_t blockCount = 0;
+    file.read(reinterpret_cast<char*>(&blockCount), sizeof(blockCount));
+
+    blocks.resize(blockCount);
+
+    file.read(reinterpret_cast<char*>(blocks.data()),
+        blockCount * sizeof(Block));
+}
+
 bool Chunk::IsVisible(const Camera2D& cam, int sWidth, int sHeight) {
     float chunkW = WIDTH * blockSize;
     float chunkH = HEIGHT * blockSize;

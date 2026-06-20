@@ -101,3 +101,22 @@ void World::SetBlock(int x, int y, BlockType type) {
 void World::Render() {
     for (Chunk& chunk : chunks) chunk.Render(gameplaySession->cam, gameplaySession->game->SCREEN_WIDTH, gameplaySession->game->SCREEN_HEIGHT);
 }
+
+void World::Save(std::ofstream& file) const {
+    size_t chunkCount = chunks.size();
+    file.write(reinterpret_cast<char*>(&chunkCount), sizeof(chunkCount));
+
+    for (const Chunk& chunk : chunks) chunk.Save(file);
+}
+
+void World::Load(std::ifstream& file) {
+    size_t chunkCount = 0;
+
+    file.read(reinterpret_cast<char*>(&chunkCount), sizeof(chunkCount));
+
+    chunks.resize(chunkCount);
+
+    for (Chunk& chunk : chunks) {
+        chunk.Load(file);
+    }
+}

@@ -89,7 +89,13 @@ void Game::RenderMenuUI() {
         gameplaySession = new GameplaySession(this);
     }
 
-    if (GuiButton(Rectangle{x, y + buttonHeight + 16, (float)buttonWidth, (float)buttonHeight}, "Exit")) {
+    if (GuiButton(Rectangle{x, y + (buttonHeight + 16) * 1, (float)buttonWidth, (float)buttonHeight}, "Load")) {
+        gs = GameState::GAME;
+        
+        gameplaySession = new GameplaySession(this, true); // True so it'll load!
+    }
+
+    if (GuiButton(Rectangle{x, y + (buttonHeight + 16) * 2, (float)buttonWidth, (float)buttonHeight}, "Exit")) {
         if (gameplaySession != nullptr) {
             delete gameplaySession;
             gameplaySession = nullptr;

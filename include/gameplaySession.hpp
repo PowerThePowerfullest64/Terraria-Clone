@@ -1,6 +1,7 @@
 #pragma once
 
 #include <chrono>
+#include <string>
 
 #include "vec2i.h"
 
@@ -20,7 +21,7 @@ public:
 
     EntityManager* em = nullptr;
 
-    GameplaySession(Game* game);
+    GameplaySession(Game* game, bool load = false);
     ~GameplaySession();
 
     void Run();
@@ -50,5 +51,6 @@ private:
     void RenderPausedUI();
 
     // Saves all relevant data from the GameplaySession to a file with the given name.
-    void Save(const char*);
+    void Save(const std::string& name);
+    void Load(const std::string& name);
 };

@@ -2,6 +2,7 @@
 
 #include <stdint.h>
 #include <chrono>
+#include <string>
 
 #include "raylib.h"
 
@@ -17,9 +18,9 @@ enum class GameState {
 class Game {
 public:
     const uint16_t SCREEN_WIDTH = 1440u, SCREEN_HEIGHT = 810u;
-
-
     const float GRAVITY = 2000.f;
+    const std::string worldsPath = "Worlds/";
+
     GameState gs = GameState::MENU;
 
     GameplaySession* gameplaySession = nullptr;

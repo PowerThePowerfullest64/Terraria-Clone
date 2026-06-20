@@ -17,6 +17,9 @@ Player::Player(GameplaySession* gameplaySession, const Vec2f& position) :
     groundedCollider(gameplaySession, this, {0.f, 34.f})
     {
         sprite = TextureManager::Get("human"); // Use texture.
+        type = EntityType::Player;
+        gameplaySession->player = this;
+        std::cout << "Player Constructor Called.\n";
     }
 
 void Player::Update(float dt) {

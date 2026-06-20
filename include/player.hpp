@@ -9,10 +9,20 @@ class GameplaySession;
 
 class Player : public Entity {
 public:
-    Player(GameplaySession* gameplaySession, const Vec2f& position);
+    Player(GameplaySession* gameplaySession, const Vec2f& position = Vec2f::ZERO);
     
     void Update(float dt) override;
     void Render() override;
+
+    void Save(std::ofstream& file) const override {
+        file.write(reinterpret_cast<const char*>(&position.x), sizeof(position.x));
+        file.write(reinterpret_cast<const char*>(&position.y), sizeof(position.y));
+    }
+
+    void Load(std::ifstream& file) override {
+        file.read(reinterpret_cast<char*>(&position.x), sizeof(position.x));
+        file.read(reinterpret_cast<char*>(&position.y), sizeof(position.y));
+    }
 
 private:
     float acceleration = 15.f;

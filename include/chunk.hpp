@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include <vector>
 #include <iostream>
+#include <fstream>
 
 #include "raylib.h"
 
@@ -35,6 +36,9 @@ public:
 
     // Renders every block in the chunk.
     void Render(const Camera2D& cam, int sWidth, int sHeight);
+
+    void Save(std::ostream& file) const;
+    void Load(std::ifstream& file);
 
 private:
     World* world;
