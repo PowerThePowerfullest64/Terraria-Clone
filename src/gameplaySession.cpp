@@ -66,6 +66,7 @@ void GameplaySession::Run() {
         }
 
         BeginDrawing();
+        ClearBackground(DARKBLUE);
 
         switch (game->gs)
         {
@@ -84,6 +85,10 @@ void GameplaySession::Run() {
             RenderGame();
             RenderPausedUI();
 
+            break;
+        case GameState::SAVING:
+            RenderGame();
+            
             break;
         
         default:
@@ -146,8 +151,6 @@ void GameplaySession::UpdateGame() {
 void GameplaySession::RenderGame() {
     timer = std::chrono::high_resolution_clock::now();
 
-    ClearBackground(DARKBLUE);
-
     Camera2D renderCam = cam;
     renderCam.target = {roundf(cam.target.x), roundf(cam.target.y)};
 
@@ -182,8 +185,17 @@ void GameplaySession::RenderPausedUI() {
         game->gs = GameState::GAME;
     }
 
-    if (GuiButton(Rectangle{x, y + buttonHeight + 16, (float)buttonWidth, (float)buttonHeight}, "Exit to Menu")) {
+    if (GuiButton(Rectangle{x, y + (buttonHeight + 16) * 1, (float)buttonWidth, (float)buttonHeight}, "Save")) {
+        game->gs = GameState::SAVING;
+    }
+
+    if (GuiButton(Rectangle{x, y + (buttonHeight + 16) * 2, (float)buttonWidth, (float)buttonHeight}, "Exit to Menu")) {
         game->gs = GameState::MENU;
         running = false;
     }
+}
+
+void GameplaySession::Save(const char*) {
+    // Do save stuff!
+    std::cout << "Saved Game!\n";
 }

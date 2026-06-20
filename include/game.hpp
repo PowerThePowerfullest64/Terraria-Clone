@@ -10,7 +10,8 @@ class GameplaySession;
 enum class GameState {
     MENU,
     GAME,
-    PAUSED
+    PAUSED,
+    SAVING
 };
 
 class Game {

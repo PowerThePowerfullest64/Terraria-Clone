@@ -48,4 +48,7 @@ private:
     void RenderGame();
     void RenderGameUI();
     void RenderPausedUI();
+
+    // Saves all relevant data from the GameplaySession to a file with the given name.
+    void Save(const char*);
 };
