@@ -33,7 +33,7 @@ private:
     float tickDuration;
     float accumulator = 0.f;
 
-    int currentZoomLevel = 6;
+    int currentZoomLevel = 4;
 
     Vec2i spawnPoint = Vec2i::ZERO;
 

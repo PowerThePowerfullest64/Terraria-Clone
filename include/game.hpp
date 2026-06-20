@@ -24,8 +24,8 @@ public:
     GameplaySession* gameplaySession = nullptr;
 
     std::vector<float> zoomLevels = {
-        0.005f,
-        0.1f,
+        //0.005f, debug levels, very far
+        //0.1f,
         0.25f,
         0.5f,
         0.625f,
