@@ -13,7 +13,7 @@ class GameplaySession {
 public:
     Game* game;
     
-    Camera2D cam = {{(float)game->SCREEN_WIDTH / 2.f, (float)game->SCREEN_HEIGHT / 2.f}, {0.f, 0.f}, 0.f, 1.f};
+    Camera2D cam;
 
     World* world = nullptr;
     Player* player = nullptr;

@@ -33,6 +33,8 @@ GameplaySession::GameplaySession(Game* game) :
     SetSpawnPoint();
     player = em->CreateEntity<Player>(this, spawnPoint);
 
+    cam = {{(float)game->SCREEN_WIDTH / 2.f, (float)game->SCREEN_HEIGHT / 2.f}, {0.f, 0.f}, 0.f, 1.f};
+
     std::cout << "Opened GameplaySession.\n";
 }
 
@@ -117,14 +119,10 @@ void GameplaySession::SetSpawnPoint() {
 void GameplaySession::UpdateGame() {
     timer = std::chrono::high_resolution_clock::now();
 
-    if (InputManager::zoomInPressed) {
+    if (InputManager::zoomInPressed)
         currentZoomLevel++;
-        std::cout << currentZoomLevel << "\n";
-    }
-    if (InputManager::zoomOutPressed) {
+    if (InputManager::zoomOutPressed)
         currentZoomLevel--;
-        std::cout << currentZoomLevel << "\n";
-    }
 
     currentZoomLevel = std::clamp(currentZoomLevel, 0, game->maxZoomIndex);
     cam.zoom = game->zoomLevels[currentZoomLevel];
