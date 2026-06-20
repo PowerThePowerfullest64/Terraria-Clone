@@ -20,8 +20,8 @@ void InputManager::Update() {
     jumpDown = IsKeyDown(KEY_SPACE) || IsKeyDown(KEY_W);
     mineDown = IsMouseButtonDown(MOUSE_BUTTON_LEFT);
 
-    zoomInPressed = IsKeyPressed(KEY_UP) || GetMouseWheelMove() > -0.05f;
-    zoomOutPressed = IsKeyPressed(KEY_DOWN) || GetMouseWheelMove() < 0.05f;
+    zoomInPressed = IsKeyPressed(KEY_UP) || GetMouseWheelMove() > 0.05f;
+    zoomOutPressed = IsKeyPressed(KEY_DOWN) || GetMouseWheelMove() < -0.05f;
 
     togglePausedReleased = IsKeyReleased(KEY_ESCAPE);
 }

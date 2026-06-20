@@ -36,17 +36,6 @@ void Game::Run() {
     SetTargetFPS(60);
     SetExitKey(KEY_P);
 
-    // zoom levels
-    {
-        zoomLevels[0] = 0.0025f;
-        zoomLevels[1] = 0.025f;
-        zoomLevels[2] = 0.5f;
-        zoomLevels[3] = 1.f;
-        zoomLevels[4] = 2.f;
-        zoomLevels[5] = 4.f;
-        zoomLevels[6] = 6.f;
-    }
-
     TextureManager::LoadTextures();
     TextureManager::SetBlockTextures();
 

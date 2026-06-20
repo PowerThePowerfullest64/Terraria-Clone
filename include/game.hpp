@@ -23,7 +23,20 @@ public:
 
     GameplaySession* gameplaySession = nullptr;
 
-    float zoomLevels[9];
+    std::vector<float> zoomLevels = {
+        0.005f,
+        0.1f,
+        0.25f,
+        0.5f,
+        0.625f,
+        0.875f,
+        1.f,
+        2.f,
+        3.f,
+        4.f,
+        6.f
+    };
+    int maxZoomIndex = zoomLevels.size()-1;
 
     Game();
     ~Game();

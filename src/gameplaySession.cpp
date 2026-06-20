@@ -117,8 +117,17 @@ void GameplaySession::SetSpawnPoint() {
 void GameplaySession::UpdateGame() {
     timer = std::chrono::high_resolution_clock::now();
 
-    if (InputManager::zoomInPressed) { currentZoomLevel++; currentZoomLevel = std::min(currentZoomLevel, 6); cam.zoom = game->zoomLevels[currentZoomLevel]; };
-    if (InputManager::zoomOutPressed) { currentZoomLevel--; currentZoomLevel = std::max(currentZoomLevel, 0); cam.zoom = game->zoomLevels[currentZoomLevel]; }
+    if (InputManager::zoomInPressed) {
+        currentZoomLevel++;
+        std::cout << currentZoomLevel << "\n";
+    }
+    if (InputManager::zoomOutPressed) {
+        currentZoomLevel--;
+        std::cout << currentZoomLevel << "\n";
+    }
+
+    currentZoomLevel = std::clamp(currentZoomLevel, 0, game->maxZoomIndex);
+    cam.zoom = game->zoomLevels[currentZoomLevel];
 
     float dt = GetFrameTime();
 
