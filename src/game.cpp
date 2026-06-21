@@ -4,6 +4,7 @@
 #include <chrono>
 #include <string>
 #include <cassert>
+#include <fstream>
 
 #include "raylib.h"
 #define RAYGUI_IMPLEMENTATION
@@ -90,9 +91,15 @@ void Game::RenderMenuUI() {
     }
 
     if (GuiButton(Rectangle{x, y + (buttonHeight + 16) * 1, (float)buttonWidth, (float)buttonHeight}, "Load")) {
-        gs = GameState::GAME;
-        
-        gameplaySession = new GameplaySession(this, true); // True so it'll load!
+        std::string path = worldsPath + "world1.bin";
+        std::ifstream worldTest(path, std::ios::binary);
+
+        if (worldTest.is_open()) {
+            gs = GameState::GAME;
+            gameplaySession = new GameplaySession(this, true);
+        } else {
+            std::cout << "Failed to open save file! Make sure you have a save file in '" << worldsPath << "/' of '.bin' type.\n";
+        }
     }
 
     if (GuiButton(Rectangle{x, y + (buttonHeight + 16) * 2, (float)buttonWidth, (float)buttonHeight}, "Exit")) {

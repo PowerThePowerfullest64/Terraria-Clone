@@ -223,7 +223,8 @@ void GameplaySession::Save(const std::string& name) {
     em->Save(save);
 
     if (!save) {
-        std::cout << "Failed to write save file!!\n";
+        std::cout << "Failed to write save file!\n";
+        running = false;
         return;
     }
 
@@ -236,7 +237,7 @@ void GameplaySession::Load(const std::string& name) {
     std::ifstream save(path, std::ios::binary);
 
     if (!save.is_open()) {
-        std::cout << "Failed to open save file!\n";
+        std::cout << "Failed to open save file! Make sure you have a save file in '" << game->worldsPath << "/' of '.bin' type.\n";
         return;
     }
 
