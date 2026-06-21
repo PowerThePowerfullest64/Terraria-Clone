@@ -117,6 +117,6 @@ void Player::MiningUpdate(float dt) {
     if (miningLeft <= 0.f) {
         miningPosition = {-1, -1};
         gameplaySession->world->SetBlock(worldPos.x, worldPos.y, BlockType::AIR);
-        std::cout << "Mined block at (" << worldPos.x << ", " << worldPos.y << ")\n";
+        // std::cout << "Mined block at (" << worldPos.x << ", " << worldPos.y << ")\n";
     }
 }
