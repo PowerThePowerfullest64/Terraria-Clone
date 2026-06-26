@@ -69,4 +69,4 @@ Testing/
 .cache/
 
 # My world files!!!
-Worlds/*.bin
+Worlds/
