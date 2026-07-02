@@ -26,11 +26,11 @@ public:
 
     void Run();
 
-    void SetTPS(float targetTps);
+    void SetTickRate(float targetTickRate);
 private:
     bool running = false;
 
-    float tps;
+    float tickRate;
     float tickDuration;
     float accumulator = 0.f;
 

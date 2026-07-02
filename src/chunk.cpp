@@ -5,6 +5,7 @@
 #include "aabb.hpp"
 
 #include "textureManager.hpp"
+#include "debugManager.hpp"
 
 Chunk::Chunk(World* world, const Vec2f& pos) : 
     world(world),
@@ -36,6 +37,11 @@ void Chunk::Render(const Camera2D& cam, int sWidth, int sHeight) {
             0.f,
             WHITE
         );
+
+        if (DebugManager::showChunkBorders) {
+            Rectangle border = {worldPos.x, worldPos.y, blockSize * WIDTH, blockSize * HEIGHT};
+            DrawRectangleLinesEx(border, 1, YELLOW);
+        }
     }
 }
 

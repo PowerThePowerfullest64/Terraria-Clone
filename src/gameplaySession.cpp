@@ -61,7 +61,7 @@ GameplaySession::~GameplaySession() {
 void GameplaySession::Run() {
     running = true;
 
-    SetTPS(240.f);
+    SetTickRate(1000.f);
 
     while (running && !WindowShouldClose()) {
         InputManager::Update();
@@ -109,9 +109,9 @@ void GameplaySession::Run() {
     }
 }
 
-void GameplaySession::SetTPS(float targetTps) {
-    tps = targetTps;
-    tickDuration = 1.f / tps;
+void GameplaySession::SetTickRate(float targetTickRate) {
+    tickRate = targetTickRate;
+    tickDuration = 1.f / tickRate;
 }
 
 void GameplaySession::SetSpawnPoint() {
