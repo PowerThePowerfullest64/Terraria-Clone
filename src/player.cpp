@@ -57,12 +57,14 @@ void Player::MoveAndSlide(float dt) {
 
     velocity.y += Settings::gravity * dt;
 
-    if (InputManager::moveLeftDown) velocity.x = std::lerp(velocity.x, -speed, acceleration * dt);
-    else if (InputManager::moveRightDown) velocity.x = std::lerp(velocity.x, speed, acceleration * dt);
-    else if (grounded) velocity.x = std::lerp(velocity.x, 0.f, friction * dt);
+    if (!gameplaySession->console.open) {
+        if (InputManager::moveLeftDown) velocity.x = std::lerp(velocity.x, -speed, acceleration * dt);
+        else if (InputManager::moveRightDown) velocity.x = std::lerp(velocity.x, speed, acceleration * dt);
+        else if (grounded) velocity.x = std::lerp(velocity.x, 0.f, friction * dt);
 
-    if (InputManager::jumpDown && grounded) {
-        velocity.y = -jumpPower;
+        if (InputManager::jumpDown && grounded) {
+            velocity.y = -jumpPower;
+        }
     }
 
     // Test position.

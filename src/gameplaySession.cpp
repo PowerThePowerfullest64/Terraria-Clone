@@ -183,7 +183,27 @@ void GameplaySession::RenderGameUI() {
     auto now = std::chrono::high_resolution_clock::now();
     renderTime = std::chrono::duration_cast<std::chrono::milliseconds>(now - timer);
     
-    DrawFPS(4, 4);
+    if (Settings::showFPS) DrawFPS(4, 4);
+
+    if (Settings::showMouseCoords) {
+        Vector2 mouseWorld = GetScreenToWorld2D(GetMousePosition(), cam);
+        Vec2i worldPos = World::ToWorld(Vec2f::fromVector2(mouseWorld));
+
+        std::string text = "(" + std::to_string(worldPos.x) + ", " + std::to_string(worldPos.y) + ")";
+        
+        DrawText(text.c_str(), GetMouseX()+24, GetMouseY()-24, 16, WHITE);
+    }
+
+    if (Settings::showMouseBlockType) {
+        Vector2 mouseWorld = GetScreenToWorld2D(GetMousePosition(), cam);
+        Vec2i worldPos = World::ToWorld(Vec2f::fromVector2(mouseWorld));
+
+        BlockType type = world->GetBlock(worldPos);
+
+        std::string text = "block: " + typeToName[type];
+
+        DrawText(text.c_str(), GetMouseX()+24, GetMouseY(), 16, WHITE);
+    }
 
     std::string ut = "Update = " + std::to_string(updateTime.count()) + " ms";
     DrawText(ut.c_str(), 4, 26, 14, WHITE);

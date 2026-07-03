@@ -6,6 +6,9 @@ public:
 
     // Debug
     static bool showChunkBorders;
+    static bool showMouseBlockType;
+    static bool showMouseCoords;
+    static bool showFPS;
 
     // Physics
     static float gravity;

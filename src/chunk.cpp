@@ -31,7 +31,7 @@ void Chunk::Render(const Camera2D& cam, int sWidth, int sHeight) {
 
         DrawTexturePro(
             *tex,
-            {0.f, 0.f, (float)tex->width, -(float)tex->height},
+            {0.f, 0.f, (float)tex->width, (float)tex->height},
             {worldPos.x + x * blockSize, worldPos.y + y * blockSize, (float)tex->width, (float)tex->height},
             {0.f, 0.f},
             0.f,

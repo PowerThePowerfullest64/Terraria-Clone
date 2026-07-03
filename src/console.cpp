@@ -21,6 +21,8 @@ Console::Console(GameplaySession* gameplaySession) :
     commands["spawnpoint"] = SpawnpointCommand;
     commands["gravity"] = SetGravityCommand;
     commands["show_chunk_borders"] = SetChunkBorderVisibilityCommand;
+    commands["setblock"] = SetBlockCommand;
+    commands["getblock"] = GetBlockCommand;
 
     std::cout << "Constructed Console!\n";
 }

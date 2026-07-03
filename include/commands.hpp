@@ -7,6 +7,7 @@
 #include "entity.hpp"
 #include "world.hpp"
 #include "settings.hpp"
+#include "block.hpp"
 
 bool StringToBool(const std::string& s) {
     return s == "1" || s == "true";
@@ -18,6 +19,8 @@ void HelpCommand(const std::vector<std::string>& args, GameplaySession* gameplay
     std::cout << " - /spawnpoint <x> <y>\n";
     std::cout << " - /gravity <value>\n";
     std::cout << " - /show_chunk_borders <value>\n";
+    std::cout << " - /setblock <x> <y> <block type>\n";
+    std::cout << " - /getblock <x> <y>\n";
 
     std::cout << "@s = self, @e = all entities\n";
     std::cout << "Also use ~ to use default/current position component. :)\n";
@@ -67,4 +70,30 @@ void SetChunkBorderVisibilityCommand(const std::vector<std::string>& args, Gamep
     bool value = StringToBool(args[1]);
 
     Settings::showChunkBorders = value;
+}
+
+void SetBlockCommand(const std::vector<std::string>& args, GameplaySession* gameplaySession) {
+    std::string _x = args[1];
+    std::string _y = args[2];
+
+    std::string _type = args[3];
+
+    int x = std::stoi(_x);
+    int y = std::stoi(_y);
+
+    BlockType type = nameToType[_type];
+
+    gameplaySession->world->SetBlock(x, y, type);
+}
+
+void GetBlockCommand(const std::vector<std::string>& args, GameplaySession* gameplaySession) {
+    std::string _x = args[1];
+    std::string _y = args[2];
+
+    int x = std::stoi(_x);
+    int y = std::stoi(_y);
+
+    std::string type = typeToName[gameplaySession->world->GetBlock(x, y)];
+
+    std::cout << "Block at " << x << ", " << y << " is " << type << ".\n";
 }

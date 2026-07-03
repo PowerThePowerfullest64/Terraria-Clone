@@ -10,6 +10,20 @@ void LoadBlockData() {
     miningTimes[static_cast<int>(BlockType::SAND)] = 0.5f;
     miningTimes[static_cast<int>(BlockType::QUARTZ)] = 10.f;
 
+    typeToName[BlockType::AIR] = "air";
+    typeToName[BlockType::DIRT] = "dirt";
+    typeToName[BlockType::GRASS] = "grass";
+    typeToName[BlockType::STONE] = "stone";
+    typeToName[BlockType::SAND] = "sand";
+    typeToName[BlockType::QUARTZ] = "quartz";
+
+    nameToType["air"] = BlockType::AIR;
+    nameToType["dirt"] = BlockType::DIRT;
+    nameToType["grass"] = BlockType::GRASS;
+    nameToType["stone"] = BlockType::STONE;
+    nameToType["sand"] = BlockType::SAND;
+    nameToType["quartz"] = BlockType::QUARTZ;
+
     std::cout << "Loaded Block Data!\n";
 }
 
