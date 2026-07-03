@@ -7,6 +7,7 @@
 #include "textureManager.hpp"
 #include "inputManager.hpp"
 #include "block.hpp"
+#include "settings.hpp"
 
 Player::Player(GameplaySession* gameplaySession, const Vec2f& position) :
     Entity(gameplaySession, position),
@@ -54,7 +55,7 @@ void Player::Render() {
 void Player::MoveAndSlide(float dt) {
     bool grounded = groundedCollider.CheckCollision();
 
-    velocity.y += gameplaySession->game->GRAVITY * dt;
+    velocity.y += Settings::gravity * dt;
 
     if (InputManager::moveLeftDown) velocity.x = std::lerp(velocity.x, -speed, acceleration * dt);
     else if (InputManager::moveRightDown) velocity.x = std::lerp(velocity.x, speed, acceleration * dt);

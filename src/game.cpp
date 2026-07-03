@@ -18,6 +18,7 @@
 #include "textureManager.hpp"
 #include "inputManager.hpp"
 #include "entityManager.hpp"
+#include "settings.hpp"
 
 Game::Game() {
     // do stuff here
@@ -33,7 +34,7 @@ Game::~Game() {
 void Game::Run() {
     running = true;
 
-    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Terraria Clone Haha");
+    InitWindow(Settings::windowWidth, Settings::windowHeight, "Terraria Clone Haha");
     SetTargetFPS(60);
     SetExitKey(KEY_NULL);
 
@@ -81,8 +82,8 @@ void Game::RenderMenuUI() {
 
     int buttonWidth = 256, buttonHeight = 48;
 
-    float x = SCREEN_WIDTH / 2.f - buttonWidth / 2.f;
-    float y = SCREEN_HEIGHT / 2.f - buttonHeight;
+    float x = Settings::windowWidth / 2.f - buttonWidth / 2.f;
+    float y = Settings::windowHeight / 2.f - buttonHeight;
 
     if (GuiButton(Rectangle{x, y, (float)buttonWidth, (float)buttonHeight}, "Play")) {
         gs = GameState::GAME;

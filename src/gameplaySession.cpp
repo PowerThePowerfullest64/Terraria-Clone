@@ -12,6 +12,7 @@
 #include "entityManager.hpp"
 #include "player.hpp"
 #include "block.hpp"
+#include "settings.hpp"
 
 void UpdateCamera(Camera2D& cam, Entity* target, float dt) {
     assert(target != nullptr);
@@ -24,7 +25,7 @@ void UpdateCamera(Camera2D& cam, Entity* target, float dt) {
 }
 
 GameplaySession::GameplaySession(Game* game, bool load) :
-    game(game) {
+    game(game), console(this) {
 
     em = new EntityManager();
     
@@ -35,11 +36,11 @@ GameplaySession::GameplaySession(Game* game, bool load) :
     }
     else {
         world->Generate();
-        SetSpawnPoint();
+        ComputeSpawnpoint();
         em->CreateEntity<Player>(this, spawnPoint);
     }
 
-    cam = {{(float)game->SCREEN_WIDTH / 2.f, (float)game->SCREEN_HEIGHT / 2.f}, {0.f, 0.f}, 0.f, 1.f};
+    cam = {{(float)Settings::windowWidth / 2.f, (float)Settings::windowHeight / 2.f}, {0.f, 0.f}, 0.f, 1.f};
 
     std::cout << "Opened GameplaySession.\n";
 }
@@ -117,7 +118,7 @@ void GameplaySession::SetTickRate(float targetTickRate) {
     tickDuration = 1.f / tickRate;
 }
 
-void GameplaySession::SetSpawnPoint() {
+void GameplaySession::ComputeSpawnpoint() {
     spawnPoint.x = world->WIDTH * Chunk::WIDTH / 2;
     
     for (int y = 0; y < world->HEIGHT * Chunk::HEIGHT; ++y) {
@@ -188,13 +189,15 @@ void GameplaySession::RenderGameUI() {
     DrawText(ut.c_str(), 4, 26, 14, WHITE);
     std::string rt = "Render = " + std::to_string(renderTime.count()) + " ms";
     DrawText(rt.c_str(), 4, 48, 14, WHITE);
+
+    console.Render();
 }
 
 void GameplaySession::RenderPausedUI() {
     int buttonWidth = 256, buttonHeight = 48;
 
-    float x = game->SCREEN_WIDTH / 2.f - buttonWidth / 2.f;
-    float y = game->SCREEN_HEIGHT / 2.f - buttonHeight;
+    float x = Settings::windowWidth / 2.f - buttonWidth / 2.f;
+    float y = Settings::windowHeight / 2.f - buttonHeight;
 
     if (GuiButton(Rectangle{x, y, (float)buttonWidth, (float)buttonHeight}, "Resume")) {
         game->gs = GameState::GAME;

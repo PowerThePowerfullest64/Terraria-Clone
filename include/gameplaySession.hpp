@@ -24,6 +24,8 @@ public:
 
     EntityManager* em = nullptr;
 
+    Vec2i spawnPoint = Vec2i::ZERO;
+
     GameplaySession(Game* game, bool load = false);
     ~GameplaySession();
 
@@ -39,14 +41,12 @@ private:
 
     int currentZoomLevel = 4;
 
-    Vec2i spawnPoint = Vec2i::ZERO;
-
     std::chrono::high_resolution_clock::time_point timer;
     std::chrono::milliseconds updateTime;
     std::chrono::milliseconds renderTime;
 
     // Sets the session's spawn point based on the middle of the world and the lowest position from there.
-    void SetSpawnPoint();
+    void ComputeSpawnpoint();
 
     void UpdateGame();
     void RenderGame();

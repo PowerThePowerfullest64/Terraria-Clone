@@ -10,6 +10,7 @@
 #include "gameplaySession.hpp"
 #include "game.hpp"
 #include "textureManager.hpp"
+#include "settings.hpp"
 
 World::World(GameplaySession* gameplaySession) :
     gameplaySession(gameplaySession) {
@@ -99,7 +100,7 @@ void World::SetBlock(int x, int y, BlockType type) {
 }
 
 void World::Render() {
-    for (Chunk& chunk : chunks) chunk.Render(gameplaySession->cam, gameplaySession->game->SCREEN_WIDTH, gameplaySession->game->SCREEN_HEIGHT);
+    for (Chunk& chunk : chunks) chunk.Render(gameplaySession->cam, Settings::windowWidth, Settings::windowHeight);
 }
 
 void World::Save(std::ofstream& file) const {

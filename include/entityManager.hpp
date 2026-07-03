@@ -47,8 +47,20 @@ public:
         }
     }
 
-    void Update(float dt) { for (auto& entity : entities) entity->Update(dt); } // update all entities
-    void Render() { for (auto& entity : entities) entity->Render(); } // render all entities
+    // Returns a vector containing all entities as pointers.
+    std::vector<Entity*> GetAllEntities() {
+        std::vector<Entity*> ptrs;
+        ptrs.reserve(entities.size());
+
+        for (auto& entity : entities) {
+            ptrs.push_back(entity.get()); // Gets raw pointer.
+        }
+
+        return ptrs;
+    }
+
+    void Update(float dt) { for (auto& entity : entities) entity->Update(dt); } // Updates all entities.
+    void Render() { for (auto& entity : entities) entity->Render(); } // Renders all entities.
 
     void Save(std::ofstream& file);
     void Load(std::ifstream& file, GameplaySession* gameplaySession);
