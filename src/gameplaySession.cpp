@@ -67,8 +67,11 @@ void GameplaySession::Run() {
         InputManager::Update();
 
         if (InputManager::togglePausedReleased) {
-            if (game->gs == GameState::GAME) game->gs = GameState::PAUSED;
-            else if (game->gs == GameState::PAUSED) game->gs = GameState::GAME;
+            // If operating the console don't check the next code.
+            if (!console.open) {
+                if (game->gs == GameState::GAME) game->gs = GameState::PAUSED;
+                else if (game->gs == GameState::PAUSED) game->gs = GameState::GAME;
+            }
         }
 
         BeginDrawing();
@@ -141,6 +144,8 @@ void GameplaySession::UpdateGame() {
 
     currentZoomLevel = std::clamp(currentZoomLevel, 0, game->maxZoomIndex);
     cam.zoom = game->zoomLevels[currentZoomLevel];
+
+    console.Update();
 
     float dt = GetFrameTime();
 

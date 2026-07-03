@@ -13,6 +13,7 @@ public:
     static bool zoomOutPressed;
 
     static bool togglePausedReleased;
+    static bool consoleOpenReleased;
 
     static void Update();
 };

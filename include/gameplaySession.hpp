@@ -9,10 +9,13 @@
 #include "world.hpp"
 #include "player.hpp"
 #include "entityManager.hpp"
+#include "console.hpp"
 
 class GameplaySession {
 public:
     Game* game;
+
+    Console console;
     
     Camera2D cam;
 

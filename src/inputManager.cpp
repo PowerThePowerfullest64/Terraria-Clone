@@ -13,6 +13,7 @@ bool InputManager::zoomInPressed = false;
 bool InputManager::zoomOutPressed = false;
 
 bool InputManager::togglePausedReleased = false;
+bool InputManager::consoleOpenReleased = false;
 
 void InputManager::Update() {
     moveLeftDown = IsKeyDown(KEY_A);
@@ -24,4 +25,5 @@ void InputManager::Update() {
     zoomOutPressed = IsKeyPressed(KEY_DOWN) || GetMouseWheelMove() < -0.05f;
 
     togglePausedReleased = IsKeyReleased(KEY_ESCAPE);
+    consoleOpenReleased = IsKeyReleased(KEY_T);
 }

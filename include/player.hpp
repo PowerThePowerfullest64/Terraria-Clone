@@ -1,5 +1,7 @@
 #pragma once
 
+#include <iostream>
+
 #include "vec2i.h"
 
 #include "entity.hpp"
@@ -10,6 +12,7 @@ class GameplaySession;
 class Player : public Entity {
 public:
     Player(GameplaySession* gameplaySession, const Vec2f& position = Vec2f::ZERO);
+    ~Player() { std::cout << "Deconstructed Player!\n"; }
     
     void Update(float dt) override;
     void Render() override;

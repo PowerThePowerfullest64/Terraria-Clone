@@ -19,7 +19,7 @@ Player::Player(GameplaySession* gameplaySession, const Vec2f& position) :
         sprite = TextureManager::Get("human"); // Use texture.
         type = EntityType::Player;
         gameplaySession->player = this;
-        std::cout << "Player Constructor Called.\n";
+        std::cout << "Constructed Player!\n";
     }
 
 void Player::Update(float dt) {

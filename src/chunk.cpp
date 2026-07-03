@@ -40,7 +40,7 @@ void Chunk::Render(const Camera2D& cam, int sWidth, int sHeight) {
 
         if (DebugManager::showChunkBorders) {
             Rectangle border = {worldPos.x, worldPos.y, blockSize * WIDTH, blockSize * HEIGHT};
-            DrawRectangleLinesEx(border, 1, YELLOW);
+            DrawRectangleLinesEx(border, 1.f, YELLOW);
         }
     }
 }
