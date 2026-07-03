@@ -9,6 +9,8 @@ public:
     static bool showMouseBlockType;
     static bool showMouseCoords;
     static bool showFPS;
+    static bool showPlayerVelocity;
+    static bool showPlayerColliders;
 
     // Physics
     static float gravity;

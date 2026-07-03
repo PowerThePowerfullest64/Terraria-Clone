@@ -38,18 +38,20 @@ void Player::Render() {
 
     DrawTexturePro(*sprite, source, dest, origin, rotation, WHITE);
 
-    if (true) return; // false to show colliders and path!
-
-    float mag = velocity.length() / 6.f;
-    if (mag > 0.f) {
-        DrawLineV(position, position + velocity.normalized() * mag, YELLOW);
+    if (Settings::showPlayerVelocity) {
+        float mag = velocity.length() / 6.f;
+        if (mag > 0.f) {
+            DrawLineV(position, position + velocity.normalized() * mag, YELLOW);
+        }
     }
 
-    topRightCollider.Render();
-    topLeftCollider.Render();
-    bottomRightCollider.Render();
-    bottomLeftCollider.Render();
-    groundedCollider.Render();
+    if (Settings::showPlayerColliders) {
+        topRightCollider.Render();
+        topLeftCollider.Render();
+        bottomRightCollider.Render();
+        bottomLeftCollider.Render();
+        groundedCollider.Render();
+    }
 }
 
 void Player::MoveAndSlide(float dt) {
