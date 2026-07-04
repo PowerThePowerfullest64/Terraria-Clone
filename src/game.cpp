@@ -39,6 +39,7 @@ void Game::Run() {
     SetExitKey(KEY_NULL);
 
     TextureManager::LoadTextures();
+    TextureManager::LoadFonts();
     TextureManager::SetBlockTextures();
 
     LoadBlockData();
@@ -73,6 +74,7 @@ void Game::Run() {
     }
 
     TextureManager::UnloadTextures();
+    TextureManager::UnloadFonts();
 
     CloseWindow();
 }
@@ -92,8 +94,8 @@ void Game::RenderMenuUI() {
     }
 
     if (GuiButton(Rectangle{x, y + (buttonHeight + 16) * 1, (float)buttonWidth, (float)buttonHeight}, "Load")) {
-        std::string path = worldsPath + "world1.bin";
-        std::ifstream worldTest(path, std::ios::binary);
+        std::string texturePath = worldsPath + "world1.bin";
+        std::ifstream worldTest(texturePath, std::ios::binary);
 
         if (worldTest.is_open()) {
             gs = GameState::GAME;

@@ -15,13 +15,13 @@ Texture2D* TextureManager::Get(const std::string& name) {
         return &it->second;
 
     std::cout << "Warning: Did not find texture '" << name << "' in TextureManager\n";
-    return &textures[path + "noTexture.png"];
+    return &textures[texturePath + "noTexture.png"];
 }
 
 void TextureManager::LoadTextures() {
     std::cout << "Began loading textures!\n";
 
-    for (const auto& entry : fs::recursive_directory_iterator(path)) {
+    for (const auto& entry : fs::recursive_directory_iterator(texturePath)) {
         if (!entry.is_regular_file())
             continue;
         
@@ -55,4 +55,21 @@ void TextureManager::SetBlockTextures() {
     blockTextures[3] = TextureManager::Get("stone");
     blockTextures[4] = TextureManager::Get("sand");
     blockTextures[5] = TextureManager::Get("quartz");
+}
+
+void TextureManager::LoadFonts() {
+    std::cout << "Began loading fonts!\n";
+
+    std::string path = fontPath + "Andy_Bold.ttf";
+    font = LoadFont(path.c_str());
+
+    std::cout << "Finished loading fonts!\n";
+}
+
+void TextureManager::UnloadFonts() {
+    std::cout << "Began unloading fonts!\n";
+
+    UnloadFont(font);
+
+    std::cout << "Finished unloading fonts!\n";
 }

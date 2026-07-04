@@ -13,6 +13,7 @@
 #include "player.hpp"
 #include "block.hpp"
 #include "settings.hpp"
+#include "textureManager.hpp"
 
 void UpdateCamera(Camera2D& cam, Entity* target, float dt) {
     assert(target != nullptr);
@@ -183,33 +184,36 @@ void GameplaySession::RenderGameUI() {
     auto now = std::chrono::high_resolution_clock::now();
     renderTime = std::chrono::duration_cast<std::chrono::milliseconds>(now - timer);
     
-    if (Settings::showFPS) DrawFPS(4, 4);
+    if (Settings::showFPS) {
+        DrawTextEx(TextureManager::font, ("FPS: " + std::to_string(GetFPS())).c_str(), {4.f, 4.f}, 20.f, 0.f, WHITE);
+    }
+
+    Vector2 mousePos = GetMousePosition();
+    Vector2 mouseWorld = GetScreenToWorld2D(mousePos, cam);
+    Vec2i worldPos = World::ToWorld(Vec2f::fromVector2(mouseWorld));
 
     if (Settings::showMouseCoords) {
-        Vector2 mouseWorld = GetScreenToWorld2D(GetMousePosition(), cam);
-        Vec2i worldPos = World::ToWorld(Vec2f::fromVector2(mouseWorld));
-
         std::string text = "(" + std::to_string(worldPos.x) + ", " + std::to_string(worldPos.y) + ")";
+
+        Vector2 textPos = {mousePos.x + 24, mousePos.y - 24};
         
-        DrawText(text.c_str(), GetMouseX()+24, GetMouseY()-24, 16, WHITE);
+        DrawTextEx(TextureManager::font, text.c_str(), textPos, 20, 0.f, WHITE);
     }
 
     if (Settings::showMouseBlockType) {
-        Vector2 mouseWorld = GetScreenToWorld2D(GetMousePosition(), cam);
-        Vec2i worldPos = World::ToWorld(Vec2f::fromVector2(mouseWorld));
-
         BlockType type = world->GetBlock(worldPos);
 
         std::string text = "block: " + typeToName[type];
 
-        DrawText(text.c_str(), GetMouseX()+24, GetMouseY(), 16, WHITE);
+        Vector2 textPos = {mousePos.x + 24, mousePos.y};
+        
+        DrawTextEx(TextureManager::font, text.c_str(), textPos, 20.f, 0.f, WHITE);
     }
 
     std::string ut = "Update = " + std::to_string(updateTime.count()) + " ms";
-    DrawText(ut.c_str(), 4, 26, 14, WHITE);
+    DrawTextEx(TextureManager::font, ut.c_str(), {4.f, 26.f}, 20.f, 0.f, WHITE);
     std::string rt = "Render = " + std::to_string(renderTime.count()) + " ms";
-    DrawText(rt.c_str(), 4, 48, 14, WHITE);
-
+    DrawTextEx(TextureManager::font, rt.c_str(), {4.f, 48.f}, 20.f, 0.f, WHITE);
     console.Render();
 }
 
@@ -234,8 +238,8 @@ void GameplaySession::RenderPausedUI() {
 }
 
 void GameplaySession::Save(const std::string& name) {
-    std::string path = game->worldsPath + name + ".bin";
-    std::ofstream save(path, std::ios::binary);
+    std::string texturePath = game->worldsPath + name + ".bin";
+    std::ofstream save(texturePath, std::ios::binary);
 
     if (!save.is_open()) {
         std::cout << "Failed to create save file!\n";
@@ -261,8 +265,8 @@ void GameplaySession::Save(const std::string& name) {
 }
 
 void GameplaySession::Load(const std::string& name) {
-    std::string path = game->worldsPath + name + ".bin";
-    std::ifstream save(path, std::ios::binary);
+    std::string texturePath = game->worldsPath + name + ".bin";
+    std::ifstream save(texturePath, std::ios::binary);
 
     if (!save.is_open()) {
         std::cout << "Failed to open save file! Make sure you have a save file in '" << game->worldsPath << "/' of '.bin' type.\n";
