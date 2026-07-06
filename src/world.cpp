@@ -99,8 +99,30 @@ void World::SetBlock(int x, int y, BlockType type) {
     chunks[chunk].SetBlock(block, type);
 }
 
+void World::Mine(int x, int y, float time) {
+    int id = Index(x, y);
+
+    if (activeMiningTimes.contains(id)) {
+        activeMiningTimes[id] -= time;
+    } else {
+        BlockType type = GetBlock(id);
+
+        if (type == BlockType::AIR) return;
+
+        activeMiningTimes[id] = GetMiningTime(type) - time;
+    }
+
+    // If block is fully mined.
+    if (activeMiningTimes[id] <= 0.f) {
+        // Mine the block.
+        SetBlock(id, BlockType::AIR);
+        // Remove it from the active mined blocks hash-map.
+        activeMiningTimes.erase(id);
+    }
+}
+
 void World::Render() {
-    for (Chunk& chunk : chunks) chunk.Render(gameplaySession->cam, Settings::windowWidth, Settings::windowHeight);
+    for (Chunk& chunk : chunks) chunk.Render(gameplaySession->cam);
 }
 
 void World::Save(std::ofstream& file) const {

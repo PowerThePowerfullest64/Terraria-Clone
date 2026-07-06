@@ -6,6 +6,8 @@
 
 #include "textureManager.hpp"
 #include "settings.hpp"
+#include "block.hpp"
+#include "world.hpp"
 
 Chunk::Chunk(World* world, const Vec2f& pos) : 
     world(world),
@@ -13,13 +15,13 @@ Chunk::Chunk(World* world, const Vec2f& pos) :
         blocks.resize(WIDTH * HEIGHT, {BlockType::AIR});
     }
 
-void Chunk::Render(const Camera2D& cam, int sWidth, int sHeight) {
+void Chunk::Render(const Camera2D& cam) {
     // The position of the chunk in world space
     Vec2f worldPos;
     worldPos.x = pos.x * (float)blockSize * WIDTH;
     worldPos.y = pos.y * (float)blockSize * HEIGHT;
     
-    if (!IsVisible(cam, sWidth, sHeight)) return;
+    if (!IsVisible(cam)) return;
 
     for (int y = 0; y < HEIGHT; ++y)
     for (int x = 0; x < WIDTH; ++x) {
@@ -28,7 +30,7 @@ void Chunk::Render(const Camera2D& cam, int sWidth, int sHeight) {
         if (type == BlockType::AIR) continue; // comment this line out to see air as missing texture (might be useful)
 
         Texture2D* tex = TextureManager::blockTextures[static_cast<size_t>(type)];
-
+        
         DrawTexturePro(
             *tex,
             {0.f, 0.f, (float)tex->width, (float)tex->height},
@@ -37,6 +39,11 @@ void Chunk::Render(const Camera2D& cam, int sWidth, int sHeight) {
             0.f,
             WHITE
         );
+
+        if (Settings::showActivelyMinedBlocks) {
+            if (world->activeMiningTimes.contains(World::Index(pos.x * WIDTH + x, pos.y * HEIGHT + y)))
+                DrawRectangle(worldPos.x + x * blockSize, worldPos.y + y * blockSize, tex->width, tex->height, {255, 0, 0, 75});
+        }
 
         if (Settings::showChunkBorders) {
             Rectangle border = {worldPos.x, worldPos.y, blockSize * WIDTH, blockSize * HEIGHT};
@@ -63,7 +70,7 @@ void Chunk::Load(std::ifstream& file) {
         blockCount * sizeof(Block));
 }
 
-bool Chunk::IsVisible(const Camera2D& cam, int sWidth, int sHeight) {
+bool Chunk::IsVisible(const Camera2D& cam) {
     float chunkW = WIDTH * blockSize;
     float chunkH = HEIGHT * blockSize;
 
@@ -74,8 +81,8 @@ bool Chunk::IsVisible(const Camera2D& cam, int sWidth, int sHeight) {
         chunkH
     };
 
-    float viewW = sWidth / cam.zoom;
-    float viewH = sHeight / cam.zoom;
+    float viewW = Settings::windowWidth / cam.zoom;
+    float viewH = Settings::windowHeight / cam.zoom;
 
     float viewX = cam.target.x - viewW * 0.5f;
     float viewY = cam.target.y - viewH * 0.5f;

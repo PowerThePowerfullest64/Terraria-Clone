@@ -35,7 +35,7 @@ public:
     void Reset() { for (int i = 0; i < blocks.size(); ++i) SetBlock(i, BlockType::AIR); }
 
     // Renders every block in the chunk.
-    void Render(const Camera2D& cam, int sWidth, int sHeight);
+    void Render(const Camera2D& cam);
 
     void Save(std::ostream& file) const;
     void Load(std::ifstream& file);
@@ -50,5 +50,5 @@ private:
     size_t Index(int x, int y) { return static_cast<size_t>(y * WIDTH + x); }
     size_t Index(const Vec2f& pos) { return static_cast<size_t>((int)pos.y * WIDTH + (int)pos.x); }
 
-    bool IsVisible(const Camera2D& cam, int sWidth, int sHeight);
+    bool IsVisible(const Camera2D& cam);
 };

@@ -11,6 +11,7 @@ public:
     static bool showFPS;
     static bool showPlayerVelocity;
     static bool showPlayerColliders;
+    static bool showActivelyMinedBlocks;
 
     // Physics
     static float gravity;
