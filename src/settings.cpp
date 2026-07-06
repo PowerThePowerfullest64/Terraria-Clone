@@ -9,4 +9,4 @@ bool Settings::showPlayerVelocity = false;
 bool Settings::showPlayerColliders = false;
 
 // Physics
-float Settings::gravity = 2000.f;
+float Settings::gravity = 1500.f;
