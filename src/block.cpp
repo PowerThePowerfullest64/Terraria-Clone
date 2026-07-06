@@ -3,12 +3,12 @@
 #include <iostream>
 
 void LoadBlockData() {
-    miningTimes[static_cast<int>(BlockType::AIR)] = 0.f;
-    miningTimes[static_cast<int>(BlockType::DIRT)] = 0.4f;
-    miningTimes[static_cast<int>(BlockType::GRASS)] = 0.6f;
-    miningTimes[static_cast<int>(BlockType::STONE)] = 1.f;
-    miningTimes[static_cast<int>(BlockType::SAND)] = 0.5f;
-    miningTimes[static_cast<int>(BlockType::QUARTZ)] = 10.f;
+    miningTimes[BlockType::AIR] = 0.f;
+    miningTimes[BlockType::DIRT] = 0.4f;
+    miningTimes[BlockType::GRASS] = 0.6f;
+    miningTimes[BlockType::STONE] = 1.f;
+    miningTimes[BlockType::SAND] = 0.5f;
+    miningTimes[BlockType::QUARTZ] = 10.f;
 
     typeToName[BlockType::AIR] = "air";
     typeToName[BlockType::DIRT] = "dirt";
@@ -28,5 +28,11 @@ void LoadBlockData() {
 }
 
 float GetMiningTime(BlockType blockType) {
-    return miningTimes[static_cast<int>(blockType)];
+    auto it = miningTimes.find(blockType);
+
+    if (it == miningTimes.end()) {
+        std::cout << "Missing mining time for block type '" << (int)blockType << ".\n";
+    }
+
+    return it->second;
 }

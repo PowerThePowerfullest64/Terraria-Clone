@@ -15,7 +15,7 @@ enum class BlockType : uint8_t {
     COUNT
 };
 
-inline float miningTimes[static_cast<int>(BlockType::COUNT)];
+inline std::unordered_map<BlockType, float> miningTimes;
 inline std::unordered_map<BlockType, std::string> typeToName;
 inline std::unordered_map<std::string, BlockType> nameToType;
 

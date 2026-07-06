@@ -44,6 +44,7 @@ public:
 
     // Turns a 2D-coordinate into a 1D-index.
     static inline int Index(int x, int y) { return y * (WIDTH * Chunk::WIDTH) + x; }
+    static inline int Index(const Vec2i& pos) { return Index(pos.x, pos.y); }
 
     // Renders every block in the world, chunk by chunk.
     void Render();

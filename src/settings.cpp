@@ -7,7 +7,7 @@ bool Settings::showMouseCoords = true;
 bool Settings::showFPS = true;
 bool Settings::showPlayerVelocity = false;
 bool Settings::showPlayerColliders = false;
-bool Settings::showActivelyMinedBlocks = false;
+bool Settings::showActivelyMinedBlocks = true;
 
 // Physics
 float Settings::gravity = 1500.f;
