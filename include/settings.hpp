@@ -15,4 +15,7 @@ public:
 
     // Physics
     static float gravity;
+
+    // How many seconds pass before a somewhat mined block resets to fully unmined.
+    static float resetMineCooldown;
 };

@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <fstream>
 #include <unordered_map>
+#include <chrono>
 
 #include "raylib.h"
 
@@ -15,12 +16,27 @@
 
 class GameplaySession;
 
+struct MiningData {
+    float timeRemaining;
+    float timeSinceMined;
+
+    MiningData(float totalTime) {
+        timeRemaining = totalTime;
+        timeSinceMined = 0.f;
+    }
+
+    void Mine(float time) {
+        timeRemaining -= time;
+        timeSinceMined = 0.f;
+    }
+};
+
 class World {
 public:
     // Width and height of the world in chunks.
     static constexpr int WIDTH = 522, HEIGHT = 150;
 
-    std::unordered_map<int, float> activeMiningTimes;
+    std::unordered_map<int, MiningData> activeMiningTimes;
 
     World(GameplaySession* gameplaySession);
     ~World();
@@ -45,6 +61,9 @@ public:
     // Turns a 2D-coordinate into a 1D-index.
     static inline int Index(int x, int y) { return y * (WIDTH * Chunk::WIDTH) + x; }
     static inline int Index(const Vec2i& pos) { return Index(pos.x, pos.y); }
+
+    // For now, it only checks for if active mined blocks should be reset.
+    void Update(float dt);
 
     // Renders every block in the world, chunk by chunk.
     void Render();

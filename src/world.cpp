@@ -105,23 +105,36 @@ void World::Mine(int x, int y, float time) {
     auto it = activeMiningTimes.find(id);
 
     if (it != activeMiningTimes.end()) {
-        it->second -= time;
+        it->second.Mine(time);
     } else {
         BlockType type = GetBlock(id);
 
         if (type == BlockType::AIR) return;
 
         // Add it to the hash-map and set mining time remaining.
-        it = activeMiningTimes.emplace(id, GetMiningTime(type) - time).first;
+        it = activeMiningTimes.emplace(id, MiningData(GetMiningTime(type) - time)).first;
     }
 
     // If block is fully mined.
-    if (it->second <= 0.f) {
+    if (it->second.timeRemaining <= 0.f) {
         // Mine the block.
         SetBlock(id, BlockType::AIR);
         // Remove it from the active mined blocks hash-map.
         activeMiningTimes.erase(it);
     }
+}
+
+void World::Update(float dt) {
+    std::vector<int> markedIndices;
+    for (auto& it : activeMiningTimes) {
+        it.second.timeSinceMined += dt;
+
+        if (it.second.timeSinceMined >= Settings::resetMineCooldown)
+            markedIndices.push_back(it.first);
+    }
+
+    for (int idx : markedIndices)
+        activeMiningTimes.erase(idx);
 }
 
 void World::Render() {

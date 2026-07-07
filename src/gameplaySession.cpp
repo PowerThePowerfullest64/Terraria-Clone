@@ -154,6 +154,7 @@ void GameplaySession::UpdateGame() {
     accumulator += dt;
     while (accumulator >= tickDuration) {
         em->Update(tickDuration);
+        world->Update(tickDuration);
 
         accumulator -= tickDuration;
     }

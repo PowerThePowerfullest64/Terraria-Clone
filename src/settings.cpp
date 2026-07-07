@@ -1,7 +1,7 @@
 #include "settings.hpp"
 
 // Debug
-bool Settings::showChunkBorders = false;
+bool Settings::showChunkBorders = true;
 bool Settings::showMouseBlockType = true;
 bool Settings::showMouseCoords = true;
 bool Settings::showFPS = true;
@@ -11,3 +11,5 @@ bool Settings::showActivelyMinedBlocks = false;
 
 // Physics
 float Settings::gravity = 1500.f;
+
+float Settings::resetMineCooldown = 5.f;
