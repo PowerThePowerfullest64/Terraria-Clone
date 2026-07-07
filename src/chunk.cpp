@@ -44,11 +44,11 @@ void Chunk::Render(const Camera2D& cam) {
             if (world->activeMiningTimes.contains(World::Index(pos.x * WIDTH + x, pos.y * HEIGHT + y)))
                 DrawRectangle(worldPos.x + x * blockSize, worldPos.y + y * blockSize, tex->width, tex->height, {255, 0, 0, 75});
         }
+    }
 
-        if (Settings::showChunkBorders) {
-            Rectangle border = {worldPos.x, worldPos.y, blockSize * WIDTH, blockSize * HEIGHT};
-            DrawRectangleLinesEx(border, 1.f, YELLOW);
-        }
+    if (Settings::showChunkBorders) {
+        Rectangle border = {worldPos.x, worldPos.y, blockSize * WIDTH, blockSize * HEIGHT};
+        DrawRectangleLinesEx(border, 1.f, YELLOW);
     }
 }
 
