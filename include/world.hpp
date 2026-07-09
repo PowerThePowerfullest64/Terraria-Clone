@@ -57,10 +57,13 @@ public:
     static Vec2f FromWorld(const Vec2i& pos) { return pos * Chunk::blockSize; }
     static Vec2f FromWorld(int x, int y) { return FromWorld({x, y}); }
     static Vec2i ToWorld(const Vec2f& pos) { return pos / Chunk::blockSize; }
+    static Vec2i ToWorld(int x, int y) { return Vec2f{static_cast<float>(x), static_cast<float>(y)} / Chunk::blockSize; }
 
     // Turns a 2D-coordinate into a 1D-index.
     static inline int Index(int x, int y) { return y * (WIDTH * Chunk::WIDTH) + x; }
     static inline int Index(const Vec2i& pos) { return Index(pos.x, pos.y); }
+    
+    static inline int IndexChunks(int x, int y) { return y * WIDTH + x; }
 
     // For now, it only checks for if active mined blocks should be reset.
     void Update(float dt);
@@ -81,4 +84,6 @@ private:
 
     int stoneDepth = 10;
     int quartzDepth = 1500;
+
+    static constexpr int additionalChunkRendering = 1;
 };

@@ -138,7 +138,23 @@ void World::Update(float dt) {
 }
 
 void World::Render() {
-    for (Chunk& chunk : chunks) chunk.Render(gameplaySession->cam);
+    const Camera2D* cam = &gameplaySession->cam;
+
+    float viewW = Settings::windowWidth / cam->zoom;
+    float viewH = Settings::windowHeight / cam->zoom;
+
+    float viewX = cam->target.x - viewW * 0.5f;
+    float viewY = cam->target.y - viewH * 0.5f;
+
+    int firstChunkX = floorf(viewX / Chunk::pixelWidth) - additionalChunkRendering;
+    int lastChunkX = floorf((viewX + viewW) / Chunk::pixelWidth) + additionalChunkRendering;
+
+    int firstChunkY = floorf(viewY / Chunk::pixelHeight) - additionalChunkRendering;
+    int lastChunkY = floorf((viewY + viewH) / Chunk::pixelHeight) + additionalChunkRendering;
+
+    for (int y = firstChunkY; y <= lastChunkY; ++y)
+    for (int x = firstChunkX; x <= lastChunkX; ++x)
+        chunks[IndexChunks(x, y)].Render();
 }
 
 void World::Save(std::ofstream& file) const {

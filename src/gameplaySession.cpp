@@ -15,6 +15,18 @@
 #include "settings.hpp"
 #include "textureManager.hpp"
 
+void RenderCamera(const Camera2D& cam) {
+    float viewW = Settings::windowWidth / cam.zoom;
+    float viewH = Settings::windowHeight / cam.zoom;
+
+    float viewX = cam.target.x - viewW * 0.5f;
+    float viewY = cam.target.y - viewH * 0.5f;
+
+    Rectangle camRec = {viewX, viewY, viewW, viewH};
+
+    DrawRectangleLinesEx(camRec, 8.f, YELLOW);
+}
+
 void UpdateCamera(Camera2D& cam, Entity* target, float dt) {
     assert(target != nullptr);
 
@@ -42,6 +54,7 @@ GameplaySession::GameplaySession(Game* game, bool load) :
     }
 
     cam = {{(float)Settings::windowWidth / 2.f, (float)Settings::windowHeight / 2.f}, {0.f, 0.f}, 0.f, 1.f};
+    testCam = {{(float)Settings::windowWidth / 2.f, (float)Settings::windowHeight / 2.f}, player->position, 0.f, 0.15f};
 
     std::cout << "Opened GameplaySession.\n";
 }

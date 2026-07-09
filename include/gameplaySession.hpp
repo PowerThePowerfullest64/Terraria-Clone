@@ -18,6 +18,7 @@ public:
     Console console;
     
     Camera2D cam;
+    Camera2D testCam;
 
     World* world = nullptr;
     Player* player = nullptr;

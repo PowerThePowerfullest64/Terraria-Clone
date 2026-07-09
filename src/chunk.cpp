@@ -15,13 +15,11 @@ Chunk::Chunk(World* world, const Vec2f& pos) :
         blocks.resize(WIDTH * HEIGHT, {BlockType::AIR});
     }
 
-void Chunk::Render(const Camera2D& cam) {
+void Chunk::Render() {
     // The position of the chunk in world space
     Vec2f worldPos;
     worldPos.x = pos.x * (float)blockSize * WIDTH;
     worldPos.y = pos.y * (float)blockSize * HEIGHT;
-    
-    if (!IsVisible(cam)) return;
 
     for (int y = 0; y < HEIGHT; ++y)
     for (int x = 0; x < WIDTH; ++x) {
@@ -68,31 +66,4 @@ void Chunk::Load(std::ifstream& file) {
 
     file.read(reinterpret_cast<char*>(blocks.data()),
         blockCount * sizeof(Block));
-}
-
-bool Chunk::IsVisible(const Camera2D& cam) {
-    float chunkW = WIDTH * blockSize;
-    float chunkH = HEIGHT * blockSize;
-
-    AABB chunk = {
-        pos.x * chunkW,
-        pos.y * chunkH,
-        chunkW,
-        chunkH
-    };
-
-    float viewW = Settings::windowWidth / cam.zoom;
-    float viewH = Settings::windowHeight / cam.zoom;
-
-    float viewX = cam.target.x - viewW * 0.5f;
-    float viewY = cam.target.y - viewH * 0.5f;
-
-    AABB camera = {
-        viewX,
-        viewY,
-        viewW,
-        viewH
-    };
-
-    return Intersects(chunk, camera);
 }

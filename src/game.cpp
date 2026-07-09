@@ -35,7 +35,7 @@ void Game::Run() {
     running = true;
 
     InitWindow(Settings::windowWidth, Settings::windowHeight, "Terraria Clone Haha");
-    SetTargetFPS(165);
+    //SetTargetFPS(165);
     SetExitKey(KEY_NULL);
 
     TextureManager::LoadTextures();

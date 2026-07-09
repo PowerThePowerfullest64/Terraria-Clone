@@ -20,6 +20,9 @@ public:
     static constexpr int WIDTH = 16, HEIGHT = 16;
     // Pixel width and height of a singular block (maybe I'll go 16 later, but that'll be harder).
     static constexpr int blockSize = 24;
+    
+    static constexpr int pixelWidth = WIDTH * blockSize;
+    static constexpr int pixelHeight = HEIGHT * blockSize;
 
     Chunk(World* world = nullptr, const Vec2f& pos = Vec2f::ZERO);
 
@@ -35,7 +38,7 @@ public:
     void Reset() { for (int i = 0; i < blocks.size(); ++i) SetBlock(i, BlockType::AIR); }
 
     // Renders every block in the chunk.
-    void Render(const Camera2D& cam);
+    void Render();
 
     void Save(std::ostream& file) const;
     void Load(std::ifstream& file);
@@ -49,6 +52,4 @@ private:
     // Turns a 2D-coordinate into a 1D-index.
     size_t Index(int x, int y) { return static_cast<size_t>(y * WIDTH + x); }
     size_t Index(const Vec2f& pos) { return static_cast<size_t>((int)pos.y * WIDTH + (int)pos.x); }
-
-    bool IsVisible(const Camera2D& cam);
 };
