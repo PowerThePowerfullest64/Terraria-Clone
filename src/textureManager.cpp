@@ -36,6 +36,9 @@ void TextureManager::LoadTextures() {
         SetTextureFilter(textures[name], TEXTURE_FILTER_POINT);
     }
 
+    SetBlockTextures();
+    LoadFonts();
+
     std::cout << "Finished loading textures!\n";
 }
 

@@ -39,8 +39,6 @@ void Game::Run() {
     SetExitKey(KEY_NULL);
 
     TextureManager::LoadTextures();
-    TextureManager::LoadFonts();
-    TextureManager::SetBlockTextures();
 
     LoadBlockData();
 
