@@ -40,7 +40,7 @@ private:
     float tickDuration;
     float accumulator = 0.f;
 
-    int currentZoomLevel = 4;
+    int currentZoomLevel = 3;
 
     std::chrono::high_resolution_clock::time_point timer;
     std::chrono::milliseconds updateTime;
