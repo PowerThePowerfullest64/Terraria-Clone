@@ -17,7 +17,7 @@ class Chunk {
 public:
 
     // Width and height of the chunk in blocks.
-    static constexpr int WIDTH = 16, HEIGHT = 16;
+    static constexpr int WIDTH = 32, HEIGHT = 32;
     // Pixel width and height of a singular block.
     static constexpr int blockSize = 16;
     // The width of a chunk in pixels.

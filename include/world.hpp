@@ -39,7 +39,7 @@ struct MiningData {
 class World {
 public:
     // Width and height of the world in chunks.
-    static constexpr int WIDTH = 522, HEIGHT = 150;
+    static constexpr int WIDTH = 261, HEIGHT = 75;
 
     std::unordered_map<int, MiningData> activeMiningTimes;
 
@@ -90,5 +90,6 @@ private:
     int stoneDepth = 10;
     int quartzDepth = 1500;
 
-    static constexpr int additionalChunkRendering = 1;
+    // Chunks in radius x outside of the view that will be rendered.
+    static constexpr int additionalChunkRendering = 0;
 };
