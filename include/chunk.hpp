@@ -18,10 +18,11 @@ public:
 
     // Width and height of the chunk in blocks.
     static constexpr int WIDTH = 16, HEIGHT = 16;
-    // Pixel width and height of a singular block (maybe I'll go 16 later, but that'll be harder).
-    static constexpr int blockSize = 24;
-    
+    // Pixel width and height of a singular block.
+    static constexpr int blockSize = 16;
+    // The width of a chunk in pixels.
     static constexpr int pixelWidth = WIDTH * blockSize;
+    // The height of a chunk in pixels.
     static constexpr int pixelHeight = HEIGHT * blockSize;
 
     Chunk(World* world = nullptr, const Vec2f& pos = Vec2f::ZERO);

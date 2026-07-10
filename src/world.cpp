@@ -112,7 +112,8 @@ void World::Mine(int x, int y, float time) {
         if (type == BlockType::AIR) return;
 
         // Add it to the hash-map and set mining time remaining.
-        it = activeMiningTimes.emplace(id, MiningData(GetMiningTime(type) - time)).first;
+        it = activeMiningTimes.emplace(id, MiningData(GetMiningTime(type))).first;
+        it->second.Mine(time);
     }
 
     // If block is fully mined.

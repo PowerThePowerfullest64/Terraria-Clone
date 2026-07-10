@@ -17,17 +17,22 @@
 class GameplaySession;
 
 struct MiningData {
+    float totalTime;
     float timeRemaining;
     float timeSinceMined;
 
-    MiningData(float totalTime) {
-        timeRemaining = totalTime;
-        timeSinceMined = 0.f;
-    }
+    MiningData(float totalTime) : 
+    totalTime(totalTime),
+    timeRemaining(totalTime),
+    timeSinceMined(0.f) {}
 
     void Mine(float time) {
         timeRemaining -= time;
         timeSinceMined = 0.f;
+    }
+
+    float GetProgress() const {
+        return (totalTime - timeRemaining) / totalTime;
     }
 };
 

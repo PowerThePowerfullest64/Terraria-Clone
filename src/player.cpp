@@ -11,14 +11,15 @@
 
 Player::Player(GameplaySession* gameplaySession, const Vec2f& position) :
     Entity(gameplaySession, position),
-    topRightCollider(gameplaySession, this, {10.f, -20.f}),
-    topLeftCollider(gameplaySession, this, {-10.f, -20.f}),
-    bottomRightCollider(gameplaySession, this, {10.f, 24.f}),
-    bottomLeftCollider(gameplaySession, this, {-10.f, 24.f}),
-    groundedCollider(gameplaySession, this, {0.f, 34.f})
+    topRightCollider(gameplaySession, this, {7.f, -14.f}),
+    topLeftCollider(gameplaySession, this, {-7.f, -14.f}),
+    bottomRightCollider(gameplaySession, this, {7.f, 16.f}),
+    bottomLeftCollider(gameplaySession, this, {-7.f, 16.f}),
+    groundedCollider(gameplaySession, this, {0.f, 24.f})
     {
         sprite = TextureManager::Get("human"); // Use texture.
         type = EntityType::Player;
+        scale = Vec2f::ONE * (2.f / 3.f);
         gameplaySession->player = this;
         std::cout << "Constructed Player!\n";
     }

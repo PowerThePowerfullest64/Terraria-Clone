@@ -72,7 +72,6 @@ void Game::Run() {
     }
 
     TextureManager::UnloadTextures();
-    TextureManager::UnloadFonts();
 
     CloseWindow();
 }

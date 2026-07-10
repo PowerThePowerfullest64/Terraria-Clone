@@ -37,6 +37,7 @@ void TextureManager::LoadTextures() {
     }
 
     SetBlockTextures();
+    SetBlockBreakingTextures();
     LoadFonts();
 
     std::cout << "Finished loading textures!\n";
@@ -47,17 +48,26 @@ void TextureManager::UnloadTextures() {
 
     for (auto it : textures)
         UnloadTexture(it.second);
+    
+    UnloadFonts();
 
     std::cout << "Finished unloading textures!\n";
 }
 
 void TextureManager::SetBlockTextures() {
-    blockTextures[0] = TextureManager::Get("noTexture"); // air
-    blockTextures[1] = TextureManager::Get("dirt");
-    blockTextures[2] = TextureManager::Get("grass");
-    blockTextures[3] = TextureManager::Get("stone");
-    blockTextures[4] = TextureManager::Get("sand");
-    blockTextures[5] = TextureManager::Get("quartz");
+    blockTextures[0] = Get("noTexture"); // air
+    blockTextures[1] = Get("dirt");
+    blockTextures[2] = Get("grass");
+    blockTextures[3] = Get("stone");
+    blockTextures[4] = Get("sand");
+    blockTextures[5] = Get("quartz");
+}
+
+void TextureManager::SetBlockBreakingTextures() {
+    blockBreakingTextures[0] = Get("bb0");
+    blockBreakingTextures[1] = Get("bb1");
+    blockBreakingTextures[2] = Get("bb2");
+    blockBreakingTextures[3] = Get("bb3");
 }
 
 void TextureManager::LoadFonts() {

@@ -27,20 +27,50 @@ void Chunk::Render() {
         
         if (type == BlockType::AIR) continue; // comment this line out to see air as missing texture (might be useful)
 
-        Texture2D* tex = TextureManager::blockTextures[static_cast<size_t>(type)];
-        
-        DrawTexturePro(
-            *tex,
-            {0.f, 0.f, (float)tex->width, (float)tex->height},
-            {worldPos.x + x * blockSize, worldPos.y + y * blockSize, (float)tex->width, (float)tex->height},
-            {0.f, 0.f},
-            0.f,
-            WHITE
-        );
+        {
+            Texture2D* tex = TextureManager::blockTextures[static_cast<size_t>(type)];
+
+            float texWidth = tex->width;
+            float texHeight = tex->height;
+            
+            DrawTexturePro(
+                *tex,
+                {0.f, 0.f, texWidth, texHeight},
+                {worldPos.x + x * blockSize, worldPos.y + y * blockSize, blockSize, blockSize},
+                {0.f, 0.f},
+                0.f,
+                WHITE
+            );
+        }
 
         if (Settings::showActivelyMinedBlocks) {
-            if (world->activeMiningTimes.contains(World::Index(pos.x * WIDTH + x, pos.y * HEIGHT + y)))
-                DrawRectangle(worldPos.x + x * blockSize, worldPos.y + y * blockSize, tex->width, tex->height, {255, 0, 0, 75});
+            int index = World::Index(pos.x * WIDTH + x, pos.y * HEIGHT + y);
+            auto it = world->activeMiningTimes.find(index);
+
+            if (it != world->activeMiningTimes.end()) {
+                float progress = it->second.GetProgress();
+
+                Texture2D* tex = nullptr;
+
+                for (int i = TextureManager::blockBreakingStages; i >= 0; i--) {
+                    if (progress >= static_cast<float>(i) / static_cast<float>(TextureManager::blockBreakingStages)) {
+                        tex = TextureManager::blockBreakingTextures[i];
+                        break;
+                    }
+                }
+
+                float texWidth = tex->width;
+                float texHeight = tex->height;
+
+                DrawTexturePro(
+                    *tex,
+                    {0.f, 0.f, texWidth, texHeight},
+                    {worldPos.x + x * blockSize, worldPos.y + y * blockSize, blockSize, blockSize},
+                    {0.f, 0.f},
+                    0.f,
+                    WHITE
+                );
+            }
         }
     }
 
