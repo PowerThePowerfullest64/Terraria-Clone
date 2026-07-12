@@ -1,8 +1,8 @@
 #pragma once
 
 struct AABB {
-    float x, y;
-    float w, h;
+    float x = 0.f, y = 0.f;
+    float w = 0.f, h = 0.f;
 };
 
 inline bool Intersects(const AABB& a, const AABB& b) {

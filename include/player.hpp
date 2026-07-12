@@ -5,7 +5,6 @@
 #include "vec2i.h"
 
 #include "entity.hpp"
-#include "collider.hpp"
 
 class GameplaySession;
 
@@ -35,11 +34,7 @@ private:
 
     float miningTimeFactor = 1.f;
 
-    Collider topRightCollider;
-    Collider topLeftCollider;
-    Collider bottomRightCollider;
-    Collider bottomLeftCollider;
-    Collider groundedCollider;
+    bool grounded = false;
 
     void MoveAndSlide(float dt);
     void MiningUpdate(float dt);

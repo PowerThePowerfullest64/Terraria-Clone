@@ -2,8 +2,6 @@
 
 #include <iostream>
 
-#include "aabb.hpp"
-
 #include "textureManager.hpp"
 #include "settings.hpp"
 #include "block.hpp"
@@ -15,18 +13,42 @@ Chunk::Chunk(World* world, const Vec2f& pos) :
         blocks.resize(WIDTH * HEIGHT, {BlockType::AIR});
     }
 
+void Chunk::BuildColliders() {
+    colliders.clear();
+
+    for (int y = 0; y < HEIGHT; ++y)
+    for (int x = 0; x < WIDTH; ++x) {
+        if (GetBlock(x, y) == BlockType::AIR)
+            continue;
+
+        colliders.push_back(
+            {
+                GetChunkX() + x * blockSize,
+                GetChunkY() + y * blockSize,
+                blockSize,
+                blockSize
+            }
+        );
+    }
+}
+
+void Chunk::Update() {
+    if (blocksChanged) {
+        BuildColliders();
+
+        blocksChanged = false;
+    }
+}
+
 void Chunk::Render() {
-    // The position of the chunk in world space
-    Vec2f worldPos;
-    worldPos.x = pos.x * (float)blockSize * WIDTH;
-    worldPos.y = pos.y * (float)blockSize * HEIGHT;
+    Vec2f chunkPos = GetChunkPos();
 
     for (int y = 0; y < HEIGHT; ++y)
     for (int x = 0; x < WIDTH; ++x) {
         BlockType type = GetBlock(x, y);
         
-        if (type == BlockType::AIR) continue; // comment this line out to see air as missing texture (might be useful)
-
+        if (type == BlockType::AIR) continue; // comment this line out to see air as missing texture (might be useful).
+        
         {
             Texture2D* tex = TextureManager::blockTextures[static_cast<size_t>(type)];
 
@@ -36,7 +58,7 @@ void Chunk::Render() {
             DrawTexturePro(
                 *tex,
                 {0.f, 0.f, texWidth, texHeight},
-                {worldPos.x + x * blockSize, worldPos.y + y * blockSize, blockSize, blockSize},
+                {chunkPos.x + x * blockSize, chunkPos.y + y * blockSize, blockSize, blockSize},
                 {0.f, 0.f},
                 0.f,
                 WHITE
@@ -65,7 +87,7 @@ void Chunk::Render() {
                 DrawTexturePro(
                     *tex,
                     {0.f, 0.f, texWidth, texHeight},
-                    {worldPos.x + x * blockSize, worldPos.y + y * blockSize, blockSize, blockSize},
+                    {chunkPos.x + x * blockSize, chunkPos.y + y * blockSize, blockSize, blockSize},
                     {0.f, 0.f},
                     0.f,
                     WHITE
@@ -75,7 +97,7 @@ void Chunk::Render() {
     }
 
     if (Settings::showChunkBorders) {
-        Rectangle border = {worldPos.x, worldPos.y, blockSize * WIDTH, blockSize * HEIGHT};
+        Rectangle border = {chunkPos.x, chunkPos.y, blockSize * WIDTH, blockSize * HEIGHT};
         DrawRectangleLinesEx(border, 1.f, YELLOW);
     }
 }

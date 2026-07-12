@@ -10,6 +10,7 @@
 
 #include "vec2f.h"
 #include "vec2i.h"
+#include "aabb.hpp"
 
 #include "chunk.hpp"
 #include "block.hpp"
@@ -58,11 +59,16 @@ public:
 
     void Mine(int x, int y, float time);
 
+    // Given a world coordinate, get all the relevant rectangle colliders.
+    std::vector<AABB> GetBlockColliders(const Vec2f& pos);
+
     // Converts a block position into a screen coordinate.
-    static Vec2f FromWorld(const Vec2i& pos) { return pos * Chunk::blockSize; }
-    static Vec2f FromWorld(int x, int y) { return FromWorld({x, y}); }
-    static Vec2i ToWorld(const Vec2f& pos) { return pos / Chunk::blockSize; }
-    static Vec2i ToWorld(int x, int y) { return Vec2f{static_cast<float>(x), static_cast<float>(y)} / Chunk::blockSize; }
+    static Vec2f ToWorld(const Vec2i& pos) { return pos * Chunk::blockSize; }
+    static Vec2f ToWorld(int x, int y) { return ToWorld({x, y}); }
+    static Vec2i ToBlock(const Vec2f& pos) { return pos / Chunk::blockSize; }
+    static Vec2i ToBlock(int x, int y) { return Vec2f{static_cast<float>(x), static_cast<float>(y)} / Chunk::blockSize; }
+    // Given a world coordinate, convert it to chunk coordinates.
+    static Vec2i ToChunk(const Vec2f& pos) { return {static_cast<int>(pos.x / static_cast<float>(Chunk::blockSize * Chunk::WIDTH)), static_cast<int>(pos.y / static_cast<float>(Chunk::blockSize * Chunk::HEIGHT))}; }
 
     // Turns a 2D-coordinate into a 1D-index.
     static inline int Index(int x, int y) { return y * (WIDTH * Chunk::WIDTH) + x; }
@@ -72,7 +78,6 @@ public:
 
     // For now, it only checks for if active mined blocks should be reset.
     void Update(float dt);
-
     // Renders every block in the world, chunk by chunk.
     void Render();
 

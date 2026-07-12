@@ -34,17 +34,17 @@ void TPCommand(const std::vector<std::string>& args, GameplaySession* gameplaySe
     if (target == "@s") {
         Entity* e = gameplaySession->player;
 
-        int x =  (_x == "~") ? World::ToWorld(e->position).x : std::stoi(_x);
-        int y = (_y == "~") ? World::ToWorld(e->position).y : std::stoi(_y);
+        int x =  (_x == "~") ? World::ToBlock(e->position).x : std::stoi(_x);
+        int y = (_y == "~") ? World::ToBlock(e->position).y : std::stoi(_y);
 
-        e->position = World::FromWorld(x, y);
+        e->position = World::ToWorld(x, y);
 
     } else if (target == "@e") {
         for (Entity* e : gameplaySession->em->GetAllEntities()) {
-            int x =  (_x == "~") ? World::ToWorld(e->position).x : std::stoi(_x);
-            int y = (_y == "~") ? World::ToWorld(e->position).y : std::stoi(_y);
+            int x =  (_x == "~") ? World::ToBlock(e->position).x : std::stoi(_x);
+            int y = (_y == "~") ? World::ToBlock(e->position).y : std::stoi(_y);
 
-            e->position = World::FromWorld(x, y);
+            e->position = World::ToWorld(x, y);
         }
     }
 }

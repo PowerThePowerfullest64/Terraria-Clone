@@ -6,7 +6,7 @@ bool Settings::showMouseBlockType = true;
 bool Settings::showMouseCoords = true;
 bool Settings::showFPS = true;
 bool Settings::showPlayerVelocity = false;
-bool Settings::showPlayerColliders = false;
+bool Settings::showEntityColliders = true;
 bool Settings::showActivelyMinedBlocks = true;
 
 // Physics

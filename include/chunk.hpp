@@ -5,9 +5,8 @@
 #include <iostream>
 #include <fstream>
 
-#include "raylib.h"
-
 #include "vec2f.h"
+#include "aabb.hpp"
 
 #include "block.hpp"
 
@@ -25,6 +24,8 @@ public:
     // The height of a chunk in pixels.
     static constexpr int pixelHeight = HEIGHT * blockSize;
 
+    std::vector<AABB> colliders;
+
     Chunk(World* world = nullptr, const Vec2f& pos = Vec2f::ZERO);
 
     // Gets a copy of a block at a given position.
@@ -33,11 +34,22 @@ public:
     BlockType GetBlock(const Vec2f& pos) { return GetBlock(Index(pos)); }
 
     // Sets a block at a given position to a given type.
-    void SetBlock(size_t index, BlockType type) { if (index >= WIDTH * HEIGHT) return; blocks[index].type = type; }
+    void SetBlock(size_t index, BlockType type) { if (index >= WIDTH * HEIGHT) return; blocks[index].type = type; blocksChanged = true; }
     void SetBlock(int x, int y, BlockType type) { SetBlock(Index(x, y), type); }
+
+    Vec2f GetChunkPos() const {
+        return {
+            pos.x * pixelWidth,
+            pos.y * pixelHeight
+        };
+    }
+
+    float GetChunkX() const { return pos.x * pixelWidth; }
+    float GetChunkY() const { return pos.y * pixelHeight; }
 
     void Reset() { for (int i = 0; i < blocks.size(); ++i) SetBlock(i, BlockType::AIR); }
 
+    void Update();
     // Renders every block in the chunk.
     void Render();
 
@@ -49,6 +61,10 @@ private:
     // Chunk position in chunk coordinates.
     Vec2f pos;
     std::vector<Block> blocks;
+
+    bool blocksChanged = true;
+
+    void BuildColliders();
 
     // Turns a 2D-coordinate into a 1D-index.
     size_t Index(int x, int y) { return static_cast<size_t>(y * WIDTH + x); }

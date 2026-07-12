@@ -10,7 +10,7 @@ public:
     static bool showMouseCoords;
     static bool showFPS;
     static bool showPlayerVelocity;
-    static bool showPlayerColliders;
+    static bool showEntityColliders;
     static bool showActivelyMinedBlocks;
 
     // Physics

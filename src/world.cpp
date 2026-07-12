@@ -19,7 +19,7 @@ World::World(GameplaySession* gameplaySession) :
 
     // Initialize chunks properly
     for (int i = 0; i < WIDTH * HEIGHT; ++i) {
-        chunks[i] = Chunk(this, {(float)(i % WIDTH), (float)(i / WIDTH)});
+        chunks[i] = Chunk(this, Vec2f{(float)(i % WIDTH), (float)(i / WIDTH)});
     }
 }
 
@@ -125,6 +125,29 @@ void World::Mine(int x, int y, float time) {
     }
 }
 
+std::vector<AABB> World::GetBlockColliders(const Vec2f& pos) {
+    std::vector<AABB> colliders;
+    colliders.reserve(9 * Chunk::WIDTH * Chunk::HEIGHT);
+
+    Vec2i chunkPos = ToChunk(pos);
+
+    for (int y = -1; y <= 1; ++y)
+    for (int x = -1; x <= 1; ++x) {
+        int chunkX = chunkPos.x + x;
+        int chunkY = chunkPos.y + y;
+
+        // Outside of bounds, ignore it.
+        if (chunkX < 0 || chunkX >= WIDTH || chunkY < 0 || chunkY >= HEIGHT)
+            continue;
+
+        int index = IndexChunks(chunkX, chunkY);
+        const std::vector<AABB>& chunkColliders = chunks[index].colliders;
+        colliders.insert(colliders.end(), chunkColliders.begin(), chunkColliders.end());
+    }
+
+    return colliders;
+}
+
 void World::Update(float dt) {
     std::vector<int> markedIndices;
     for (auto& it : activeMiningTimes) {
@@ -136,6 +159,10 @@ void World::Update(float dt) {
 
     for (int idx : markedIndices)
         activeMiningTimes.erase(idx);
+    
+    for (Chunk& chunk : chunks) {
+        chunk.Update();
+    }
 }
 
 void World::Render() {

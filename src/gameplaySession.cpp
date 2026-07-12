@@ -76,7 +76,7 @@ GameplaySession::~GameplaySession() {
 void GameplaySession::Run() {
     running = true;
 
-    SetTickRate(1000.f);
+    SetTickRate(240.f);
 
     while (running && !WindowShouldClose()) {
         InputManager::Update();
@@ -144,7 +144,7 @@ void GameplaySession::ComputeSpawnpoint() {
         }
     }
 
-    spawnPoint = World::FromWorld(spawnPoint);
+    spawnPoint = World::ToWorld(spawnPoint);
 
     std::cout << "Found spawn point!\n";
 }
@@ -204,7 +204,7 @@ void GameplaySession::RenderGameUI() {
 
     Vector2 mousePos = GetMousePosition();
     Vector2 mouseWorld = GetScreenToWorld2D(mousePos, cam);
-    Vec2i worldPos = World::ToWorld(Vec2f::fromVector2(mouseWorld));
+    Vec2i worldPos = World::ToBlock(Vec2f::fromVector2(mouseWorld));
 
     if (Settings::showMouseCoords) {
         std::string text = "(" + std::to_string(worldPos.x) + ", " + std::to_string(worldPos.y) + ")";
