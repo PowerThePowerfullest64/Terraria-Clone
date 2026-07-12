@@ -15,6 +15,7 @@ Chunk::Chunk(World* world, const Vec2f& pos) :
 
 void Chunk::BuildColliders() {
     colliders.clear();
+    colliders.reserve(WIDTH * HEIGHT);
 
     for (int y = 0; y < HEIGHT; ++y)
     for (int x = 0; x < WIDTH; ++x) {
