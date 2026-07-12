@@ -62,7 +62,7 @@ void SpawnpointCommand(const std::vector<std::string>& args, GameplaySession* ga
 }
 
 void SetGravityCommand(const std::vector<std::string>& args, GameplaySession* gameplaySession) {
-    int value = std::stoi(args[1]);
+    int value = std::stof(args[1]);
 
     Settings::gravity = value;
 }
