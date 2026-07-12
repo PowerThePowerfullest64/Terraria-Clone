@@ -23,6 +23,7 @@ Console::Console(GameplaySession* gameplaySession) :
     commands["show_chunk_borders"] = SetChunkBorderVisibilityCommand;
     commands["setblock"] = SetBlockCommand;
     commands["getblock"] = GetBlockCommand;
+    commands["set_tick_rate"] = SetTickRateCommand;
 
     std::cout << "Constructed Console!\n";
 }

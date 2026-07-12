@@ -21,6 +21,7 @@ void HelpCommand(const std::vector<std::string>& args, GameplaySession* gameplay
     std::cout << " - /show_chunk_borders <value>\n";
     std::cout << " - /setblock <x> <y> <block type>\n";
     std::cout << " - /getblock <x> <y>\n";
+    std::cout << " - /set_tick_rate <value>\n";
 
     std::cout << "@s = self, @e = all entities\n";
     std::cout << "Also use ~ to use default/current position component. :)\n";
@@ -96,4 +97,10 @@ void GetBlockCommand(const std::vector<std::string>& args, GameplaySession* game
     std::string type = typeToName[gameplaySession->world->GetBlock(x, y)];
 
     std::cout << "Block at " << x << ", " << y << " is " << type << ".\n";
+}
+
+void SetTickRateCommand(const std::vector<std::string>& args, GameplaySession* gameplaySession) {
+    float tickRate = std::stof(args[1]);
+
+    gameplaySession->SetTickRate(tickRate);
 }
