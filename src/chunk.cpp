@@ -17,6 +17,9 @@ void Chunk::BuildColliders() {
     colliders.clear();
     colliders.reserve(WIDTH * HEIGHT);
 
+    float chunkX = GetChunkX();
+    float chunkY = GetChunkY();
+
     for (int y = 0; y < HEIGHT; ++y)
     for (int x = 0; x < WIDTH; ++x) {
         if (GetBlock(x, y) == BlockType::AIR)
@@ -24,8 +27,8 @@ void Chunk::BuildColliders() {
 
         colliders.push_back(
             {
-                GetChunkX() + x * blockSize,
-                GetChunkY() + y * blockSize,
+                chunkX + x * blockSize,
+                chunkY + y * blockSize,
                 blockSize,
                 blockSize
             }
