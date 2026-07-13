@@ -4,6 +4,9 @@
 #include <vector>
 #include <iostream>
 #include <fstream>
+#include <memory>
+
+#include "raylib.h"
 
 #include "vec2f.h"
 #include "aabb.hpp"
@@ -34,7 +37,7 @@ public:
     BlockType GetBlock(const Vec2f& pos) { return GetBlock(Index(pos)); }
 
     // Sets a block at a given position to a given type.
-    void SetBlock(size_t index, BlockType type) { if (index >= WIDTH * HEIGHT) return; blocks[index].type = type; blocksChanged = true; }
+    void SetBlock(size_t index, BlockType type) { if (index >= WIDTH * HEIGHT) return; blocks[index].type = type; colliderUpdateFlag = true; textureUpdateFlag = true; }
     void SetBlock(int x, int y, BlockType type) { SetBlock(Index(x, y), type); }
 
     Vec2f GetChunkPos() const {
@@ -56,15 +59,22 @@ public:
     void Save(std::ostream& file) const;
     void Load(std::ifstream& file);
 
+    void Load() { texture = LoadRenderTexture(pixelWidth, pixelHeight); textureUpdateFlag = true;  }
+    void Unload() { UnloadRenderTexture(texture); }
+
 private:
     World* world;
     // Chunk position in chunk coordinates.
     Vec2f pos;
     std::vector<Block> blocks;
 
-    bool blocksChanged = true;
+    bool colliderUpdateFlag = true;
+    bool textureUpdateFlag = false;
+
+    RenderTexture2D texture{};
 
     void BuildColliders();
+    void BuildTexture();
 
     // Turns a 2D-coordinate into a 1D-index.
     size_t Index(int x, int y) { return static_cast<size_t>(y * WIDTH + x); }

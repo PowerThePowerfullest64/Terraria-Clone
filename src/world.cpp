@@ -1,6 +1,7 @@
 #include "world.hpp"
 
 #include <iostream>
+#include <algorithm>
 
 #include "raylib.h"
 #include "FastNoiseLite.h"
@@ -180,9 +181,39 @@ void World::Render() {
     int firstChunkY = floorf(viewY / Chunk::pixelHeight) - additionalChunkRendering;
     int lastChunkY = floorf((viewY + viewH) / Chunk::pixelHeight) + additionalChunkRendering;
 
+    // Chunks that are loaded in this frame.
+    std::vector<int> currentChunks;
+
     for (int y = firstChunkY; y <= lastChunkY; ++y)
-    for (int x = firstChunkX; x <= lastChunkX; ++x)
-        chunks[IndexChunks(x, y)].Render();
+    for (int x = firstChunkX; x <= lastChunkX; ++x) {
+        int idx = IndexChunks(x, y);
+
+        // Find chunk in previous frame render...
+        auto it = std::find(previouslyLoadedChunks.begin(), previouslyLoadedChunks.end(), idx);
+
+        // If the chunk was rendered the previous frame...
+        if (it != previouslyLoadedChunks.end()) {
+            // This chunk is also loaded this frame, remove it so it doesn't get unloaded.
+            previouslyLoadedChunks.erase(it);
+        // If the chunk wasn't rendered the previous frame...
+        } else {
+            // Load this newly loaded chunk.
+            chunks[idx].Load();
+        }
+
+        chunks[idx].Render();
+
+        // Add to current frame, which will become previously loaded next frame.
+        currentChunks.push_back(idx);
+    }
+
+    // Unload chunks which are no longer visible.
+    for (int chunkIdx : previouslyLoadedChunks) {
+        chunks[chunkIdx].Unload();
+    }
+
+    // This frame's chunks become the previous frame!
+    previouslyLoadedChunks = currentChunks;
 }
 
 void World::Save(std::ofstream& file) const {

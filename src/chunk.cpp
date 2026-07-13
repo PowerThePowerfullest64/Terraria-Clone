@@ -37,38 +37,26 @@ void Chunk::BuildColliders() {
 }
 
 void Chunk::Update() {
-    if (blocksChanged) {
+    if (colliderUpdateFlag) {
         BuildColliders();
 
-        blocksChanged = false;
+        colliderUpdateFlag = false;
     }
 }
 
 void Chunk::Render() {
+    if (textureUpdateFlag) {
+        BuildTexture();
+    }
+
+    DrawTextureRec(texture.texture, {0.f, 0.f, (float)pixelWidth, -(float)pixelHeight}, GetChunkPos(), WHITE);
+
+    return; // SKIP BLOCK BREAKING VISUALS; FOR NOW THEY DON'T WORK WITHOUT USING A LOT OF TIME.
+
     Vec2f chunkPos = GetChunkPos();
 
     for (int y = 0; y < HEIGHT; ++y)
     for (int x = 0; x < WIDTH; ++x) {
-        BlockType type = GetBlock(x, y);
-        
-        if (type == BlockType::AIR) continue; // comment this line out to see air as missing texture (might be useful).
-        
-        {
-            Texture2D* tex = TextureManager::blockTextures[static_cast<size_t>(type)];
-
-            float texWidth = tex->width;
-            float texHeight = tex->height;
-            
-            DrawTexturePro(
-                *tex,
-                {0.f, 0.f, texWidth, texHeight},
-                {chunkPos.x + x * blockSize, chunkPos.y + y * blockSize, blockSize, blockSize},
-                {0.f, 0.f},
-                0.f,
-                WHITE
-            );
-        }
-
         if (Settings::showActivelyMinedBlocks) {
             int index = World::Index(pos.x * WIDTH + x, pos.y * HEIGHT + y);
             auto it = world->activeMiningTimes.find(index);
@@ -91,7 +79,7 @@ void Chunk::Render() {
                 DrawTexturePro(
                     *tex,
                     {0.f, 0.f, texWidth, texHeight},
-                    {chunkPos.x + x * blockSize, chunkPos.y + y * blockSize, blockSize, blockSize},
+                    {chunkPos.x + (float)x * blockSize, chunkPos.y + (float)y * blockSize, blockSize, blockSize},
                     {0.f, 0.f},
                     0.f,
                     WHITE
@@ -99,11 +87,47 @@ void Chunk::Render() {
             }
         }
     }
+}
+
+void Chunk::BuildTexture() {
+    SetTextureFilter(texture.texture, TEXTURE_FILTER_POINT);
+
+    BeginTextureMode(texture);
+    ClearBackground(BLANK);
+
+    for (int y = 0; y < HEIGHT; ++y)
+    for (int x = 0; x < WIDTH; ++x) {
+        BlockType type = GetBlock(x, y);
+        
+        if (type == BlockType::AIR) continue; // comment this line out to see air as missing texture (might be useful).
+        
+        {
+            Texture2D* tex = TextureManager::blockTextures[static_cast<size_t>(type)];
+
+            float texWidth = tex->width;
+            float texHeight = tex->height;
+            
+            DrawTexturePro(
+                *tex,
+                {0.f, 0.f, texWidth, texHeight},
+                {(float)x * blockSize, (float)y * blockSize, blockSize, blockSize},
+                {0.f, 0.f},
+                0.f,
+                WHITE
+            );
+        }
+    }
 
     if (Settings::showChunkBorders) {
-        Rectangle border = {chunkPos.x, chunkPos.y, blockSize * WIDTH, blockSize * HEIGHT};
+        Rectangle border = {0.f, 0.f, pixelWidth, pixelHeight};
         DrawRectangleLinesEx(border, 1.f, YELLOW);
     }
+
+    EndTextureMode();
+
+    textureUpdateFlag = false;
+
+    std::cout << "Built texture for chunk " << world->IndexChunks(pos.x, pos.y) << "\n";
 }
 
 void Chunk::Save(std::ostream& file) const {

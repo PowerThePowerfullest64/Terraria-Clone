@@ -32,7 +32,7 @@ void TextureManager::LoadTextures() {
 
         textures[name] = LoadTexture(entry.path().string().c_str());
         
-        GenTextureMipmaps(&textures[name]);
+        //GenTextureMipmaps(&textures[name]); Mipmapping off for now :( Caused problems with my new rendering.
         SetTextureFilter(textures[name], TEXTURE_FILTER_POINT);
     }
 
