@@ -13,6 +13,8 @@ class GameplaySession;
 
 class EntityManager {
 public:
+    bool active = false;
+
     EntityManager();
     ~EntityManager();
 
@@ -59,7 +61,7 @@ public:
         return ptrs;
     }
 
-    void Update(float dt) { for (auto& entity : entities) entity->Update(dt); } // Updates all entities.
+    void Update(float dt) { if (!active) return; for (auto& entity : entities) entity->Update(dt); } // Updates all entities.
     void Render() { for (auto& entity : entities) entity->Render(); } // Renders all entities.
 
     void Save(std::ofstream& file);

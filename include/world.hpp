@@ -5,6 +5,7 @@
 #include <fstream>
 #include <unordered_map>
 #include <chrono>
+#include <iostream>
 
 #include "raylib.h"
 
@@ -81,6 +82,9 @@ public:
     // Renders every block in the world, chunk by chunk.
     void Render();
 
+    void LoadChunk(int idx) { previouslyLoadedChunks.push_back(idx); chunks[idx].ForceLoad(); std::cout << "Forceloaded chunk " << idx << ".\n"; }
+    void LoadChunk(const Vec2f& pos) { Vec2i chunkPos = ToChunk(pos); int idx = IndexChunks(chunkPos.x, chunkPos.y); LoadChunk(idx); }
+
     // Generates a random world, random seed if none is provided or seed == INT32_MAX.
     void Generate(int seed = INT32_MAX);
 
@@ -98,5 +102,5 @@ private:
     std::vector<int> previouslyLoadedChunks;
 
     // Chunks in radius x outside of the view that will be rendered.
-    static constexpr int additionalChunkRendering = 0;
+    static constexpr int additionalChunkRendering = 1;
 };

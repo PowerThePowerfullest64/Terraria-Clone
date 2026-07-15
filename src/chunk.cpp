@@ -32,6 +32,8 @@ void Chunk::BuildColliders() {
             }
         );
     }
+
+    std::cout << "Built colliders for chunk " << world->IndexChunks(pos.x, pos.y) << ".\n";
 }
 
 void Chunk::Update() {
@@ -88,6 +90,7 @@ void Chunk::Render() {
 }
 
 void Chunk::BuildTexture() {
+    texture = LoadRenderTexture(pixelWidth, pixelHeight);
     SetTextureFilter(texture.texture, TEXTURE_FILTER_POINT);
 
     BeginTextureMode(texture);
@@ -125,7 +128,7 @@ void Chunk::BuildTexture() {
 
     textureUpdateFlag = false;
 
-    std::cout << "Built texture for chunk " << world->IndexChunks(pos.x, pos.y) << "\n";
+    std::cout << "Built texture for chunk " << world->IndexChunks(pos.x, pos.y) << ".\n";
 }
 
 void Chunk::Save(std::ostream& file) const {

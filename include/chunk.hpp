@@ -30,6 +30,7 @@ public:
     std::vector<Vec2f> colliders;
 
     Chunk(World* world = nullptr, const Vec2f& pos = Vec2f::ZERO);
+    ~Chunk() { Unload(); }
 
     // Gets a copy of a block at a given position.
     BlockType GetBlock(size_t index) { if (index >= WIDTH * HEIGHT) return BlockType::AIR; return (BlockType)blocks[index].type; }
@@ -50,7 +51,7 @@ public:
     float GetChunkX() const { return pos.x * pixelWidth; }
     float GetChunkY() const { return pos.y * pixelHeight; }
 
-    void Reset() { for (int i = 0; i < blocks.size(); ++i) SetBlock(i, BlockType::AIR); }
+    void Reset() { for (Block& block : blocks) block.type = BlockType::AIR; }
 
     void Update();
     // Renders every block in the chunk.
@@ -59,8 +60,10 @@ public:
     void Save(std::ostream& file) const;
     void Load(std::ifstream& file);
 
-    void Load() { texture = LoadRenderTexture(pixelWidth, pixelHeight); textureUpdateFlag = true;  }
-    void Unload() { UnloadRenderTexture(texture); }
+    void Load() { textureUpdateFlag = true; colliderUpdateFlag = true; }
+    void Unload() { UnloadRenderTexture(texture); colliders.clear(); textureUpdateFlag = false; colliderUpdateFlag = false; }
+    // Loads and build textures and colliders for the chunk as soon as the function is run, instead of just flagging it for later.
+    void ForceLoad() { Load(); BuildTexture(); BuildColliders(); }
 
 private:
     World* world;
@@ -68,7 +71,7 @@ private:
     Vec2f pos;
     std::vector<Block> blocks;
 
-    bool colliderUpdateFlag = true;
+    bool colliderUpdateFlag = false;
     bool textureUpdateFlag = false;
 
     RenderTexture2D texture{};

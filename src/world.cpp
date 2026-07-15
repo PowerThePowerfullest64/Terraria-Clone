@@ -171,8 +171,8 @@ void World::Update(float dt) {
     for (int idx : markedIndices)
         activeMiningTimes.erase(idx);
     
-    for (Chunk& chunk : chunks) {
-        chunk.Update();
+    for (int idx : previouslyLoadedChunks) {
+        chunks[idx].Update();
     }
 }
 

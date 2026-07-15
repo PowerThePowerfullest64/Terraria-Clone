@@ -120,7 +120,7 @@ void GameplaySession::Run() {
             break;
         
         default:
-            running = false; // No gamestate set, exit because wth?
+            running = false; // No valid gamestate set, exit because wth?
         }
 
         EndDrawing();
@@ -137,7 +137,7 @@ void GameplaySession::ComputeSpawnpoint() {
     
     for (int y = 0; y < world->HEIGHT * Chunk::HEIGHT; ++y) {
         if (world->GetBlock(spawnPoint.x, y) != BlockType::AIR) {
-            y -= 2; // Reverse 2 position back. (1 block above ground)
+            y -= 5; // Reverse 5 position back. (4 block above ground)
 
             spawnPoint.y = y;
             break;
@@ -166,8 +166,8 @@ void GameplaySession::UpdateGame() {
 
     accumulator += dt;
     while (accumulator >= tickDuration) {
-        em->Update(tickDuration);
         world->Update(tickDuration);
+        em->Update(tickDuration);
 
         accumulator -= tickDuration;
     }
@@ -191,6 +191,9 @@ void GameplaySession::RenderGame() {
     em->Render();
 
     EndMode2D();
+
+    // Now that the world has been rendered for the first time, the chunks should be loaded on the next update.
+    em->active = true;
 }
 
 void GameplaySession::RenderGameUI() {
@@ -228,6 +231,7 @@ void GameplaySession::RenderGameUI() {
     DrawTextEx(TextureManager::font, ut.c_str(), {4.f, 26.f}, 20.f, 0.f, WHITE);
     std::string rt = "Render = " + std::to_string(renderTime.count()) + " ms";
     DrawTextEx(TextureManager::font, rt.c_str(), {4.f, 48.f}, 20.f, 0.f, WHITE);
+
     console.Render();
 }
 
