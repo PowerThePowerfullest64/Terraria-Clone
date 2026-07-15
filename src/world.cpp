@@ -142,8 +142,18 @@ std::vector<AABB> World::GetBlockColliders(const Vec2f& pos) {
             continue;
 
         int index = IndexChunks(chunkX, chunkY);
-        const std::vector<AABB>& chunkColliders = chunks[index].colliders;
-        colliders.insert(colliders.end(), chunkColliders.begin(), chunkColliders.end());
+        const std::vector<Vec2f>& chunkColliders = chunks[index].colliders;
+        
+        for (int i = 0; i < chunkColliders.size(); ++i) {
+            colliders.push_back(
+                {
+                    chunkColliders[i].x,
+                    chunkColliders[i].y,
+                    Chunk::blockSize,
+                    Chunk::blockSize
+                }
+            );
+        }
     }
 
     return colliders;

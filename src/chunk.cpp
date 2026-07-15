@@ -28,9 +28,7 @@ void Chunk::BuildColliders() {
         colliders.push_back(
             {
                 chunkX + x * blockSize,
-                chunkY + y * blockSize,
-                blockSize,
-                blockSize
+                chunkY + y * blockSize
             }
         );
     }

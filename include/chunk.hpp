@@ -27,7 +27,7 @@ public:
     // The height of a chunk in pixels.
     static constexpr int pixelHeight = HEIGHT * blockSize;
 
-    std::vector<AABB> colliders;
+    std::vector<Vec2f> colliders;
 
     Chunk(World* world = nullptr, const Vec2f& pos = Vec2f::ZERO);
 
