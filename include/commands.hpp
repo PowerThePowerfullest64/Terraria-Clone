@@ -21,7 +21,7 @@ void HelpCommand(const std::vector<std::string>& args, GameplaySession* gameplay
     std::cout << " - /show_chunk_borders <value>\n";
     std::cout << " - /setblock <x> <y> <block type>\n";
     std::cout << " - /getblock <x> <y>\n";
-    std::cout << " - /set_tick_rate <value>\n";
+    std::cout << " - /tick_rate <value>\n";
 
     std::cout << "@s = self, @e = all entities\n";
     std::cout << "Also use ~ to use default/current position component. :)\n";
