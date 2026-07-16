@@ -103,4 +103,6 @@ private:
 
     // Chunks in radius x outside of the view that will be rendered.
     static constexpr int additionalChunkRendering = 1;
+
+    void BuildAllColliders() { for (Chunk& chunk : chunks) { chunk.BuildColliders(); } }
 };

@@ -76,7 +76,9 @@ private:
 
     RenderTexture2D texture{};
 
+public:
     void BuildColliders();
+private:
     void BuildTexture();
 
     // Turns a 2D-coordinate into a 1D-index.

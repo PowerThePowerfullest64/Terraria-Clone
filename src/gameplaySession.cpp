@@ -78,6 +78,9 @@ void GameplaySession::Run() {
 
     SetTickRate(240.f);
 
+    world->LoadChunk(player->position);
+    world->LoadChunk({player->position.x, player->position.y + Chunk::blockSize * 16});
+
     while (running && !WindowShouldClose()) {
         InputManager::Update();
 
@@ -192,7 +195,7 @@ void GameplaySession::RenderGame() {
 
     EndMode2D();
 
-    // Now that the world has been rendered for the first time, the chunks should be loaded on the next update.
+    // Relevant chunks and their colliders have been loaded, which means entity simulation is good to go.
     em->active = true;
 }
 

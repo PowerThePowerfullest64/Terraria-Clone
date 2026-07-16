@@ -67,6 +67,8 @@ void World::Generate(int seed) {
         SetBlock(x, HEIGHT * Chunk::HEIGHT - height, BlockType::GRASS);
     }
 
+    //BuildAllColliders();
+
     std::cout << "Generated World! (" << chunks.size() << " chunks, " << chunks.size() * Chunk::WIDTH * Chunk::HEIGHT << " blocks)\n";
 }
 
@@ -243,4 +245,6 @@ void World::Load(std::ifstream& file) {
     for (Chunk& chunk : chunks) {
         chunk.Load(file);
     }
+
+    //BuildAllColliders();
 }
